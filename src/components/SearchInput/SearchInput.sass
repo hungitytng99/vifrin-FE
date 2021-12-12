@@ -1,0 +1,24 @@
+$width-box: 240px
+$height-box: 30px
+
+.search
+    position: relative
+    color: var(--grey-9)
+    width: $width-box
+    height: $height-box
+    &__input
+        width: $width-box
+        height: $height-box
+        padding: 2px 8px 2px 25px
+        font-size: 1.55rem
+        border: 1px solid var(--grey-11)
+        border-radius: 4px
+        &:focus
+            outline: none
+            border: 1px solid var(--grey-10)
+    &__icon
+        position: absolute
+        left: 6px
+        top: 50%
+        transform: translateY(-50%)
+        font-size: 1.4rem

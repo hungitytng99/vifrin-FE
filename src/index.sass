@@ -1,0 +1,135 @@
+@import-normalize
+
+html
+  font-size: 62.5%
+  box-sizing: border-box
+  line-height: 1.6rem
+  box-sizing: border-box
+  background-color: var(--grey-white)
+.text-over-flow-1
+  line-height: 22px
+  -webkit-line-clamp: 1
+  -webkit-box-orient: vertical
+  overflow: hidden
+  display: -webkit-box
+  text-overflow: ellipsis
+.text-over-flow-2
+  line-height: 22px
+  -webkit-line-clamp: 2
+  -webkit-box-orient: vertical
+  overflow: hidden
+  display: -webkit-box
+  text-overflow: ellipsis
+.text-over-flow-3
+  line-height: 22px
+  -webkit-line-clamp: 3
+  -webkit-box-orient: vertical
+  overflow: hidden
+  display: -webkit-box
+  text-overflow: ellipsis
+.text-over-flow-4
+  line-height: 22px
+  -webkit-line-clamp: 4
+  -webkit-box-orient: vertical
+  overflow: hidden
+  display: -webkit-box
+  text-overflow: ellipsis
+
+/* --- Variable --- */
+:root
+  --primary: rgba(68, 49, 141, 1)
+  --primary-2: rgba(68, 49, 141, 0.2)
+  --primary-3: rgba(68, 49, 141, 0.3)
+  --primary-8: rgba(68, 49, 141, 0.8)
+  --grey-3: #333
+  --grey-6: #666
+  --grey-7: #777
+  --grey-9: #777
+  --grey-10: #9D9D9D
+  --grey-11: #dbdbdb
+  --grey-12: #f0f0f0
+  --grey-white: #fafafa
+  --red-dark: #8C2B13
+  --red-light: rgb(196, 44, 44)
+  --blue-light: #526caa
+  --blue-normal: #0095F6
+  --blue-dark: #3055ac
+  // length
+  --content-width: 940px
+
+/* My custom styles */
+html
+
+/* --- Bootstrap ---*/
+.btn
+  display: flex
+  justify-content: center
+  align-items: center
+  width: 100%
+  height: 28px
+
+/* --- My custom --- */
+.flex-center
+  display: flex
+  justify-content: center
+  align-items: center
+  text-align: center
+
+.f-screen-background
+  position: fixed
+  top: 50px
+  left: 0
+  bottom: 0
+  right: 0
+  background-color: white
+
+.noselect
+  -webkit-touch-callout: none
+  -webkit-user-select: none
+  -khtml-user-select: none
+  -moz-user-select: none
+  -ms-user-select: none
+  user-select: none
+
+.no-focus-outline:focus
+  outline: none
+
+.my-container
+  margin: auto
+  width: var(--content-width)
+
+// My tag style
+button
+  border: none
+  padding: 0px
+
+a
+  color: var(--grey-3)
+  text-decoration: none
+
+a:hover
+  color: var(--grey-3)
+
+textarea
+  resize: none
+
+textarea:focus
+  outline: none
+
+ul
+  list-style: none
+  padding-left: 0px
+  margin: 0px
+@keyframes appear
+    from
+      opacity: 0
+    to 
+      opacity: 1
+
+@keyframes zoominoutsinglefeatured
+  0%
+    transform: scale(1.1,1.1) translate(-50.5%, -50.5%)
+
+  100%
+    opacity: 1
+    transform: scale(1,1) translate(-50%, -50%)

@@ -1,0 +1,25 @@
+.post-interactive
+    font-size: 2.8rem
+    display: flex
+    justify-content: space-between
+    &__icon
+        cursor: pointer
+        margin-right: 10px
+        &.--loved
+            color: red
+        &.--bookmark
+            margin-right: 10px
+        &.--bookmarked
+            margin-right: 10px
+            color: black
+.user-interactive
+    display: flex
+    justify-content: space-between
+    &__liked
+        font-size: 1.4rem
+        font-weight: 600
+        cursor: pointer
+    &__time-created
+        text-transform: uppercase
+        color: var(--grey-6)
+        font-size: 1.2rem

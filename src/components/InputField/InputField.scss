@@ -1,0 +1,29 @@
+.field{
+    display: flex;
+    flex-direction: column;
+
+    &-label{
+
+    }
+
+    &-input{
+        margin-top: 3px;
+        outline: none;
+        border: 1px solid var(--primary-2);
+        border-radius: 5px;
+        line-height: 1.8rem;
+        padding: 6px 10px;
+        font-size: 1.4rem;
+        // box-sizing: content-box;
+        &:hover{
+            outline-width: 0px;
+            box-shadow: 0px 0px 4px 1px var(--primary-2);
+        }
+        &:focus{
+            outline-width: 0px;
+            box-shadow: 0px 0px 4px 1px var(--primary-2);
+        }
+
+    }
+
+}

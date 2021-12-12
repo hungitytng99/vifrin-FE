@@ -1,0 +1,33 @@
+.home{
+    &-header{
+        position: sticky;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 999;
+        background-color: white;
+    }
+    &-follows{
+        position: sticky;
+        top: 80px;
+    }
+
+    &-new-feed{
+    }
+}
+.content {
+    width: 100%;    
+    display: flex;
+}
+
+
+@media screen and (max-width: 992px) {
+    .home{
+        &-follows{
+            display: none;
+        }
+    }
+    .my-container{
+        width: 700px;
+    }
+}

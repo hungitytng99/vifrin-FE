@@ -1,0 +1,253 @@
+import { useState } from "react";
+import { Col, Row } from "react-bootstrap";
+import ReactModal from "react-modal";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import {
+  DELETE_FOLLOW,
+  FOLLOW,
+  GET_LIST_FOLLOWER,
+  GET_LIST_FOLLOWING,
+  UNFOLLOW,
+} from "../redux/action";
+import "./Profile.sass";
+import { CloseOutlined } from "@ant-design/icons";
+import FollowCard from "components/FollowCard/FollowCard";
+import { REQUEST_STATE } from "configs";
+import FullComponentLoading from "components/Loading/FullComponentLoading";
+import { useTranslation } from "react-i18next";
+import { Tabs } from "antd";
+import { BorderInnerOutlined, FlagOutlined } from "@ant-design/icons";
+import PostCard from "./PostCard";
+
+const { TabPane } = Tabs;
+const customStyles = {
+  overlay: {
+    animation: "appear 0.3s linear",
+  },
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    width: "400px",
+    borderRadius: "10px",
+    padding: "0px",
+    border: "1px solid rgba(219,219,219,1)",
+    animation: "zoominoutsinglefeatured 0.3s ease-out",
+  },
+};
+// openModal,
+ReactModal.setAppElement("#root");
+
+function Profile(props) {
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
+  const user = useSelector((state) => state.user.profile);
+  const profile = useSelector((state) => state.profile);
+  const [isShowListFollowers, setIsShowListFollowers] = useState(false);
+  const [isShowListFollowing, setIsShowListFollowing] = useState(false);
+
+  function onClickListFollower(userId) {
+    dispatch(GET_LIST_FOLLOWER({ userId }));
+    setIsShowListFollowers(true);
+  }
+
+  function onClickListFollowing(userId) {
+    dispatch(GET_LIST_FOLLOWING({ userId }));
+    setIsShowListFollowing(true);
+  }
+
+  function onFollow(userId) {
+    dispatch(FOLLOW({ userId }));
+  }
+  function onDeleteFollow(userId) {
+    dispatch(DELETE_FOLLOW({ userId }));
+  }
+  function onUnFollow(userId) {
+    dispatch(UNFOLLOW({ userId }));
+  }
+
+  return (
+    <div className="profile">
+      <Row>
+        <Col lg={4} style={{ maxHeight: "250px" }}>
+          <div className="profile__avatar flex-center">
+            <img src={user?.avatarUrl} alt="avatar" />
+          </div>
+        </Col>
+        <Col lg={8}>
+          <div className="profile__info">
+            <div className="profile__info-box">
+              <div className="profile__info-username">{user?.username}</div>
+              <div className="profile__info-edit">
+                <Link to="#">{t("editProfile")}</Link>
+              </div>
+              <div className="profile__info-setting">
+                <i className="profile__info-setting-icon fas fa-tools"></i>
+              </div>
+            </div>
+            <div className="profile__info-box --mid">
+              <div className="profile__info-detail">
+                <span>{user?.postsCount}</span>
+                {user?.postsCount > 1 ? (
+                  <p>{t("posts")}</p>
+                ) : (
+                  <p>{t("post")}</p>
+                )}
+              </div>
+              <div
+                className="profile__info-detail  --hover"
+                onClick={() => onClickListFollower(user.id)}
+              >
+                <span>{user?.followersCount}</span>
+                {user?.followersCount > 1 ? (
+                  <p>{t("followers")}</p>
+                ) : (
+                  <p>{t("follower")}</p>
+                )}
+              </div>
+
+              <div
+                className="profile__info-detail --hover"
+                onClick={() => onClickListFollowing(user.id)}
+              >
+                <span>{user?.followingsCount}</span>
+                {user?.followingsCount > 1 ? (
+                  <p>{t("followings")}</p>
+                ) : (
+                  <p>{t("following")}</p>
+                )}
+              </div>
+            </div>
+            <div className="profile__info-box">
+              <div className="profile__info-detail">
+                <span>{user?.fullName}</span>
+              </div>
+            </div>
+            <div className="profile__info-box">
+              <div className="profile__info-detail">
+                <p>{user?.bio}</p>
+              </div>
+            </div>
+          </div>
+        </Col>
+      </Row>
+      <Row style={{ marginTop: "10px" }}>
+        <Tabs defaultActiveKey="1">
+          <TabPane
+            tab={
+              <span className="flex-center">
+                <BorderInnerOutlined />
+                {t("posts")}
+              </span>
+            }
+            key="1"
+          >
+            <Row>
+              {profile.listPostByUsername.map((post) => {
+                return (
+                  <Col key={post.id} lg={4} style={{ marginBottom: "10px" }}>
+                    <PostCard post={post} />
+                  </Col>
+                );
+              })}
+            </Row>
+          </TabPane>
+          <TabPane
+            tab={
+              <span className="flex-center">
+                <FlagOutlined />
+                {t("savedPosts")}
+              </span>
+            }
+            key="2"
+          >
+            Tab 2
+          </TabPane>
+        </Tabs>
+      </Row>
+
+      <ReactModal
+        isOpen={isShowListFollowers}
+        onRequestClose={() => setIsShowListFollowers(false)}
+        style={customStyles}
+      >
+        <div className="profile_followers">
+          <div className="profile_followers-header">
+            <div className="profile_followers-header-text">{t("follower")}</div>
+            <div
+              className="profile_followers-header-close"
+              onClick={() => setIsShowListFollowers(false)}
+            >
+              <CloseOutlined />
+            </div>
+          </div>
+          <ul className="profile_followers-list">
+            {profile.getListFollowerState === REQUEST_STATE.REQUEST && (
+              <FullComponentLoading />
+            )}
+            {profile?.listFollowers.length > 0 ? (
+              profile?.listFollowers.map((user) => {
+                user.description = user.fullName;
+                return (
+                  <FollowCard
+                    key={user.id}
+                    user={user}
+                    cardActionText="Xóa"
+                    headerActionText="Theo dõi"
+                    onClickHeaderAction={onFollow}
+                    onClickCardAction={onDeleteFollow}
+                  />
+                );
+              })
+            ) : (
+              <div style={{ textAlign: "center" }}>{t("nobodyFollowYou")}</div>
+            )}
+          </ul>
+        </div>
+      </ReactModal>
+
+      <ReactModal
+        isOpen={isShowListFollowing}
+        onRequestClose={() => setIsShowListFollowing(false)}
+        style={customStyles}
+      >
+        <div className="profile_followers">
+          <div className="profile_followers-header">
+            <div className="profile_followers-header-text">{t("follower")}</div>
+            <div
+              className="profile_followers-header-close"
+              onClick={() => setIsShowListFollowing(false)}
+            >
+              <CloseOutlined />
+            </div>
+          </div>
+          <ul className="profile_followers-list">
+            {profile.getListFollowingState === REQUEST_STATE.REQUEST && (
+              <FullComponentLoading />
+            )}
+            {profile?.listFollowing.length > 0 ? (
+              profile?.listFollowing.map((user) => {
+                user.description = user.fullName;
+                return (
+                  <FollowCard
+                    key={user.id}
+                    user={user}
+                    cardActionText="Hủy theo dõi"
+                    onClickCardAction={onUnFollow}
+                  />
+                );
+              })
+            ) : (
+              <div style={{ textAlign: "center" }}>{t("nobodyFollowYou")}</div>
+            )}
+          </ul>
+        </div>
+      </ReactModal>
+    </div>
+  );
+}
+export default Profile;
