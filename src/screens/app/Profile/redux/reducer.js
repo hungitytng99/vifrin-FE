@@ -27,6 +27,8 @@ import {
   GET_DETAIL_USER_BY_USERNAME,
   GET_DETAIL_USER_BY_USERNAME_SUCCESS,
   RESET_DETAIL_USER_BY_USERNAME,
+  UPDATE_AVATAR_SUCCESS,
+  UPDATE_AVATAR,
 } from "./action";
 
 const defaultState = {
@@ -48,6 +50,7 @@ const defaultState = {
   followState: null,
   unFollowState: null,
   deleteFollowState: null,
+  uploadAvatarState: null,
 };
 
 export default function profileReducer(state = defaultState, action) {
@@ -210,6 +213,25 @@ export default function profileReducer(state = defaultState, action) {
         detailPost: null,
         getDetailPostState: null,
       };
+    }
+
+    case UPDATE_AVATAR().type: {
+      return {
+        ...state,
+        uploadAvatarState: REQUEST_STATE.REQUEST,
+      }
+    }
+
+    case UPDATE_AVATAR_SUCCESS().type: {
+      const { avatarUrl } = action.payload;
+      return {
+        ...state,
+        profileUserByUsername: {
+          ...state.profileUserByUsername,
+          avatarUrl: avatarUrl,
+        },
+        uploadAvatarState: REQUEST_STATE.SUCCESS,
+      }
     }
 
     case GET_DETAIL_USER_BY_USERNAME().type: {

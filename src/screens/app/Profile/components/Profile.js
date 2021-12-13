@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Col, Row } from "react-bootstrap";
 import ReactModal from "react-modal";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +11,7 @@ import {
   RESET_CREATE_POST_STATE,
   RESET_EDIT_POST_STATE,
   UNFOLLOW,
+  UPDATE_AVATAR,
 } from "../redux/action";
 import "./Profile.sass";
 import { CloseOutlined } from "@ant-design/icons";
@@ -22,10 +23,11 @@ import {
   BorderInnerOutlined,
   FlagOutlined,
   PlusSquareOutlined,
+  FileImageOutlined,
 } from "@ant-design/icons";
 import PostCard from "./PostCard";
 import { AVATAR_DEFAULT } from "../../../../configs";
-import { Tabs, Button, notification, Spin } from "antd";
+import { Tabs, Button, notification, Spin, Dropdown, Menu, Input } from "antd";
 import PostCreate from "./PostCreate";
 
 const { TabPane } = Tabs;
@@ -75,6 +77,7 @@ function Profile(props) {
   const [isShowListFollowers, setIsShowListFollowers] = useState(false);
   const [isShowListFollowing, setIsShowListFollowing] = useState(false);
   const [isShowAddPost, setIsShowAddPost] = useState(false);
+  const uploadAvatarInput = useRef();
 
   function onClickListFollower(userId) {
     dispatch(GET_LIST_FOLLOWER({ userId }));
@@ -94,6 +97,21 @@ function Profile(props) {
   }
   function onUnFollow(userId) {
     dispatch(UNFOLLOW({ userId }));
+  }
+
+  function onClickAvatar({ key }) {
+    console.log("key: ", key);
+    switch (key) {
+      case "0":
+        uploadAvatarInput.current.click();
+        break;
+      default:
+        break;
+    }
+  }
+
+  function onInputAvatarChange(e) {
+    dispatch(UPDATE_AVATAR({ newAvatar: e.target.files[0] }));
   }
 
   useEffect(() => {
@@ -117,19 +135,49 @@ function Profile(props) {
     }
   }, [profile.editPostState, dispatch, t]);
 
+  const menu = (
+    <Menu onClick={onClickAvatar}>
+      <Menu.Item key="0">
+        <input
+          ref={uploadAvatarInput}
+          type="file"
+          style={{ display: "none" }}
+          onChange={onInputAvatarChange}
+          accept="image/*"
+        />
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <FileImageOutlined style={{ fontSize: "17px", marginRight: "5px" }} />
+          <span>{t("changeAvatar")}</span>
+        </div>
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
     <>
-      {profile.deletePostState === REQUEST_STATE.REQUEST && (
-        <FullComponentLoading bgColor="rgba(255,255,255,0.6)" />
-      )}
       <div className="profile">
         <Row>
           <Col lg={4} style={{ maxHeight: "250px" }}>
             <div className="profile__avatar flex-center">
-              <img
-                src={profile.profileUserByUsername?.avatarUrl ?? AVATAR_DEFAULT}
-                alt="avatar"
-              />
+              {profile.getDetailUserState === REQUEST_STATE.SUCCESS &&
+              (profile.isCurrentUser ? (
+                <Dropdown overlay={menu} trigger={["click"]}>
+                  <img
+                    className="profileAvatarImg"
+                    src={
+                      profile.profileUserByUsername?.avatarUrl ?? AVATAR_DEFAULT
+                    }
+                    alt="avatar"
+                  />
+                </Dropdown>
+              ) : (
+                <img
+                  src={
+                    profile.profileUserByUsername?.avatarUrl ?? AVATAR_DEFAULT
+                  }
+                  alt="avatar"
+                />
+              ))}
             </div>
           </Col>
           <Col lg={8}>
@@ -238,9 +286,12 @@ function Profile(props) {
                   REQUEST_STATE.REQUEST && <Spin />}
                 {profile.listPostByUsername.length === 0 &&
                   profile.getListPostByUsernameState ===
-                    REQUEST_STATE.SUCCESS && (
+                    REQUEST_STATE.SUCCESS &&
+                  (profile.isCurrentUser ? (
                     <div>{t("youHaveNotCreatedPostsYet")}</div>
-                  )}
+                  ) : (
+                    <div>{t("thisPersonHavenotCreatedPost")}</div>
+                  ))}
                 {profile.listPostByUsername.map((post) => {
                   return (
                     <Col key={post.id} lg={4} style={{ marginBottom: "10px" }}>

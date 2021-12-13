@@ -97,7 +97,7 @@ export const apiUpdateUserProfile = async (params) => {
 
 export const apiUploadAvatar = async (params) => {
   try {
-    const response = await PUT("/users/avatar", params, {
+    const response = await POST("/users/avatar", params, {
       isFullPath: false,
     });
     return {

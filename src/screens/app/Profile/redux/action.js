@@ -191,6 +191,26 @@ export function CREATE_POST_FAIL(payload) {
   };
 }
 
+export function UPDATE_AVATAR(payload) {
+  return {
+    type: "UPDATE_AVATAR",
+    payload,
+  };
+}
+
+export function UPDATE_AVATAR_SUCCESS(payload) {
+  return {
+    type: "UPDATE_AVATAR_SUCCESS",
+    payload,
+  };
+}
+export function UPDATE_AVATAR_FAIL(payload) {
+  return {
+    type: "UPDATE_AVATAR_FAIL",
+    payload,
+  };
+}
+
 export function RESET_CREATE_POST_STATE(payload) {
   return {
     type: "RESET_CREATE_POST_STATE",

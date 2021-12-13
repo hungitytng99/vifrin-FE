@@ -10,7 +10,7 @@ import FullComponentLoading from "components/Loading/FullComponentLoading";
 function AppRoute() {
   return (
     <MainLayout>
-      <Suspense fallback={<FullComponentLoading />}>
+      <Suspense fallback={<FullComponentLoading bgColor="rgba(255,255,255,0.8)"/>}>
         <Switch>
           {appRoutes.map(
             ({

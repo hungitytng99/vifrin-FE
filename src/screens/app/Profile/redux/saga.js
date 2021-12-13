@@ -12,6 +12,7 @@ import {
   apiGetListFollowing,
   apiGetUserByUserName,
   apiUnFollowOtherUser,
+  apiUploadAvatar,
 } from "data-source/users";
 import { apiUploadMedia } from "../../../../data-source/media";
 import { apiCreatePost } from "../../../../data-source/posts";
@@ -36,6 +37,8 @@ import {
   EDIT_POST_SUCCESS,
   GET_DETAIL_USER_BY_USERNAME,
   GET_DETAIL_USER_BY_USERNAME_SUCCESS,
+  UPDATE_AVATAR,
+  UPDATE_AVATAR_SUCCESS,
 } from "./action";
 
 function* getListFollowers({ type, payload }) {
@@ -191,11 +194,26 @@ function* editPost({ type, payload }) {
 
 function* getDetailUserByUsername({ type, payload }) {
   const { username } = payload;
-  console.log('username: ', username);
+  console.log("username: ", username);
   try {
     const response = yield call(apiGetUserByUserName, username);
-    if(response.state === REQUEST_STATE.SUCCESS) {
+    if (response.state === REQUEST_STATE.SUCCESS) {
       yield put(GET_DETAIL_USER_BY_USERNAME_SUCCESS(response.data));
+    }
+  } catch (error) {
+    console.log("error: ", error);
+  }
+}
+
+function* updateAvatar({ type, payload }) {
+  const { newAvatar } = payload;
+  try {
+    const uploadAvatarRes = yield call(apiUploadMedia, newAvatar);
+    const response = yield call(apiUploadAvatar, {
+      avatarUrl: uploadAvatarRes.data.url,
+    });
+    if (response.state === REQUEST_STATE.SUCCESS) {
+      yield put(UPDATE_AVATAR_SUCCESS({ avatarUrl: uploadAvatarRes.data.url }));
     }
   } catch (error) {
     console.log("error: ", error);
@@ -213,4 +231,5 @@ export default function* userSaga() {
   yield takeLatest(DELETE_POST().type, deletePost);
   yield takeLatest(EDIT_POST().type, editPost);
   yield takeLatest(GET_DETAIL_USER_BY_USERNAME().type, getDetailUserByUsername);
+  yield takeLatest(UPDATE_AVATAR().type, updateAvatar);
 }
