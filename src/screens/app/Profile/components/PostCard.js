@@ -22,7 +22,7 @@ import { getMounthAndDay } from "../../../../utils/datetime";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import PostEdit from "./PostEdit";
-import { REQUEST_STATE } from "configs";
+import { IMAGE_DEFAULT, REQUEST_STATE } from "configs";
 
 const customStyles = {
   overlay: {
@@ -125,7 +125,7 @@ function PostCard({ post }) {
         className="postCard flex-center"
         onClick={() => setIsShowDetailPost(true)}
       >
-        <img className="postCardImg" src={post.medias[0]?.url} alt="avatar" />
+        <img className="postCardImg" src={post.medias[0]?.url ?? IMAGE_DEFAULT} alt="avatar" />
         <div className="postCardOverlay flex-center">
           <div className="postCardOverlayAction">
             <DeleteOutlined
@@ -166,7 +166,7 @@ function PostCard({ post }) {
                     <img
                       key={item.id}
                       className="feeds-post__img"
-                      src={item.url}
+                      src={item?.url}
                       alt="img"
                     ></img>
                   );
@@ -231,10 +231,10 @@ function PostCard({ post }) {
                   {post.content && (
                     <div className="postCardStatus">
                       <Link
-                        to={`/profile/aaaa`}
+                        to={`/profile/${post?.user?.username}`}
                         className="postCardStatusUsername"
                       >
-                        aaaa
+                        {post?.user?.username}
                       </Link>
                       <div className="postCardStatusStatus">{post.content}</div>
                     </div>

@@ -1,3 +1,4 @@
+import { AVATAR_DEFAULT } from "configs";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -17,18 +18,19 @@ function FollowCard(props) {
     sizeAvatar = 32,
     onClickHeaderAction = () => {},
     onClickCardAction = () => {},
+    onClick = () => {},
   } = props;
   const [isShowFollow, setIsShowFollow] = useState(true);
   const [isShowUnFollow, setIsShowUnFollow] = useState(true);
 
   return (
-    <div className="follow-card">
+    <div onClick={onClick}  className="follow-card">
       <Link to={`/profile/${user.username}`} className="follow-card__avatar">
         <img
           className="follow-card__avatar-img"
           style={{ width: `${sizeAvatar}px`, height: `${sizeAvatar}px` }}
-          src={user.avatarUrl}
-          alt={user.username}
+          src={user?.avatarUrl ?? AVATAR_DEFAULT}
+          alt={user?.username}
         />
       </Link>
       <div className="follow-card__info">

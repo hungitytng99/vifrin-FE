@@ -24,6 +24,9 @@ import {
   EDIT_POST,
   EDIT_POST_SUCCESS,
   RESET_EDIT_POST_STATE,
+  GET_DETAIL_USER_BY_USERNAME,
+  GET_DETAIL_USER_BY_USERNAME_SUCCESS,
+  RESET_DETAIL_USER_BY_USERNAME,
 } from "./action";
 
 const defaultState = {
@@ -32,8 +35,10 @@ const defaultState = {
   detailPost: {},
   listFollowers: [],
   listFollowing: [],
+  profileUserByUsername: null,
 
   getDetailPostState: null,
+  getDetailUserState: null,
   getListFollowerState: null,
   getListFollowingState: null,
   getListPostByUsernameState: null,
@@ -207,6 +212,26 @@ export default function profileReducer(state = defaultState, action) {
       };
     }
 
+    case GET_DETAIL_USER_BY_USERNAME().type: {
+      return {
+        ...state,
+        getDetailUserState: REQUEST_STATE.REQUEST,
+      };
+    }
+    case GET_DETAIL_USER_BY_USERNAME_SUCCESS().type: {
+      return {
+        ...state,
+        getDetailUserState: REQUEST_STATE.SUCCESS,
+        profileUserByUsername: action.payload,
+      };
+    }
+    case RESET_DETAIL_USER_BY_USERNAME().type: {
+      return {
+        ...state,
+        getDetailUserState: null,
+      }
+    }
+    
     case RESET_PROFILE_STATE().type: {
       return {
         ...defaultState,

@@ -71,7 +71,6 @@ ReactModal.setAppElement("#root");
 function Profile(props) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const user = useSelector((state) => state.user.profile);
   const profile = useSelector((state) => state.profile);
   const [isShowListFollowers, setIsShowListFollowers] = useState(false);
   const [isShowListFollowing, setIsShowListFollowing] = useState(false);
@@ -127,13 +126,18 @@ function Profile(props) {
         <Row>
           <Col lg={4} style={{ maxHeight: "250px" }}>
             <div className="profile__avatar flex-center">
-              <img src={user?.avatarUrl ?? AVATAR_DEFAULT} alt="avatar" />
+              <img
+                src={profile.profileUserByUsername?.avatarUrl ?? AVATAR_DEFAULT}
+                alt="avatar"
+              />
             </div>
           </Col>
           <Col lg={8}>
             <div className="profile__info">
               <div className="profile__info-box">
-                <div className="profile__info-username">{user?.username}</div>
+                <div className="profile__info-username">
+                  {profile.profileUserByUsername?.username}
+                </div>
                 {profile.isCurrentUser ? (
                   <>
                     <div className="profile__info-edit">
@@ -154,8 +158,8 @@ function Profile(props) {
               </div>
               <div className="profile__info-box --mid">
                 <div className="profile__info-detail">
-                  <span>{user?.postsCount}</span>
-                  {user?.postsCount > 1 ? (
+                  <span>{profile.profileUserByUsername?.postsCount}</span>
+                  {profile.profileUserByUsername?.postsCount > 1 ? (
                     <p>{t("posts")}</p>
                   ) : (
                     <p>{t("post")}</p>
@@ -163,10 +167,12 @@ function Profile(props) {
                 </div>
                 <div
                   className="profile__info-detail  --hover"
-                  onClick={() => onClickListFollower(user.id)}
+                  onClick={() =>
+                    onClickListFollower(profile.profileUserByUsername.id)
+                  }
                 >
-                  <span>{user?.followersCount}</span>
-                  {user?.followersCount > 1 ? (
+                  <span>{profile.profileUserByUsername?.followersCount}</span>
+                  {profile.profileUserByUsername?.followersCount > 1 ? (
                     <p>{t("followers")}</p>
                   ) : (
                     <p>{t("follower")}</p>
@@ -175,10 +181,12 @@ function Profile(props) {
 
                 <div
                   className="profile__info-detail --hover"
-                  onClick={() => onClickListFollowing(user.id)}
+                  onClick={() =>
+                    onClickListFollowing(profile.profileUserByUsername.id)
+                  }
                 >
-                  <span>{user?.followingsCount}</span>
-                  {user?.followingsCount > 1 ? (
+                  <span>{profile.profileUserByUsername?.followingsCount}</span>
+                  {profile.profileUserByUsername?.followingsCount > 1 ? (
                     <p>{t("followings")}</p>
                   ) : (
                     <p>{t("following")}</p>
@@ -187,12 +195,12 @@ function Profile(props) {
               </div>
               <div className="profile__info-box">
                 <div className="profile__info-detail">
-                  <span>{user?.fullName}</span>
+                  <span>{profile.profileUserByUsername?.fullName}</span>
                 </div>
               </div>
               <div className="profile__info-box">
                 <div className="profile__info-detail">
-                  <p>{user?.bio}</p>
+                  <p>{profile.profileUserByUsername?.bio}</p>
                 </div>
               </div>
               {profile.isCurrentUser ? (
@@ -227,7 +235,7 @@ function Profile(props) {
             >
               <Row>
                 {profile.getListPostByUsernameState ===
-                    REQUEST_STATE.REQUEST && <Spin/>}
+                  REQUEST_STATE.REQUEST && <Spin />}
                 {profile.listPostByUsername.length === 0 &&
                   profile.getListPostByUsernameState ===
                     REQUEST_STATE.SUCCESS && (
@@ -282,6 +290,7 @@ function Profile(props) {
                   user.description = user.fullName;
                   return (
                     <FollowCard
+                      onClick={() => setIsShowListFollowers(false)}
                       key={user.id}
                       user={user}
                       cardActionText="Xóa"
@@ -326,6 +335,7 @@ function Profile(props) {
                   user.description = user.fullName;
                   return (
                     <FollowCard
+                      onClick={() => setIsShowListFollowing(false)}
                       key={user.id}
                       user={user}
                       cardActionText="Hủy theo dõi"

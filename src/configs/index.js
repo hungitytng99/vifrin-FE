@@ -46,5 +46,5 @@ export const LANGUAGES = {
   VI: 'vi',
 }
 
-export const AVATAR_DEFAULT = "https://vifrin.s3.ap-southeast-1.amazonaws.com/vifrin_upload_test/avatar-default.png"
-
+export const AVATAR_DEFAULT = "https://vifrin.s3.ap-southeast-1.amazonaws.com/vifrin_upload_test/avatar-default.png";
+export const IMAGE_DEFAULT = "https://vifrin.s3.ap-southeast-1.amazonaws.com/vifrin_upload_test/images.jpeg";

@@ -3,6 +3,7 @@ import Profile from "./components/Profile";
 import { useDispatch, useSelector } from "react-redux";
 import {
   CHECK_ISCURRENT_USER,
+  GET_DETAIL_USER_BY_USERNAME,
   GET_LIST_POST_BY_USERNAME,
 } from "./redux/action";
 
@@ -18,6 +19,10 @@ function Todos({ match }) {
     dispatch(GET_LIST_POST_BY_USERNAME({ username: match.params.username }));
   }, [match.params.username, dispatch]);
 
+  useEffect(() => {
+    dispatch(GET_DETAIL_USER_BY_USERNAME({ username: match.params.username }));
+  }, [match.params.username, dispatch]);
+  
   return (
     <div className="my-container">
       <div className="profile-page">

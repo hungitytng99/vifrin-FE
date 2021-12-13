@@ -19,11 +19,15 @@ export const apiAddUser = async (params) => {
   }
 };
 
-export const apiGetUserByUserName = async (params) => {
+export const apiGetUserByUserName = async (username) => {
   try {
-    const response = await GET("/users/", params, {
-      isFullPath: false,
-    });
+    const response = await GET(
+      "/users/" + username,
+      {},
+      {
+        isFullPath: false,
+      }
+    );
     return {
       state: REQUEST_STATE.SUCCESS,
       data: response.data,

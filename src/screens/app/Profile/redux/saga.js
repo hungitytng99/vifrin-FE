@@ -10,6 +10,7 @@ import {
   apiFollowOtherUser,
   apiGetListFollower,
   apiGetListFollowing,
+  apiGetUserByUserName,
   apiUnFollowOtherUser,
 } from "data-source/users";
 import { apiUploadMedia } from "../../../../data-source/media";
@@ -33,6 +34,8 @@ import {
   DELETE_POST_SUCCESS,
   EDIT_POST,
   EDIT_POST_SUCCESS,
+  GET_DETAIL_USER_BY_USERNAME,
+  GET_DETAIL_USER_BY_USERNAME_SUCCESS,
 } from "./action";
 
 function* getListFollowers({ type, payload }) {
@@ -158,7 +161,6 @@ function* editPost({ type, payload }) {
   try {
     let newListImage = [];
     for (let i = 0; i < post?.medias?.fileList.length; i++) {
-      console.log('post?.medias?.fileList: ', post?.medias?.fileList);
       if (
         post?.medias?.fileList[i].originFileObj &&
         post?.medias?.fileList[i].thumbUrl
@@ -172,11 +174,8 @@ function* editPost({ type, payload }) {
         }
       } else {
         newListImage.push(post?.medias?.fileList[i].id);
-        
       }
     }
-    console.log('newListImage: ', newListImage);
-
     const response = yield call(apiUpdatePost, post.id, {
       content: post.content,
       mediaIds: newListImage,
@@ -184,6 +183,19 @@ function* editPost({ type, payload }) {
     });
     if (response.state === REQUEST_STATE.SUCCESS) {
       yield put(EDIT_POST_SUCCESS({ posts: response.data }));
+    }
+  } catch (error) {
+    console.log("error: ", error);
+  }
+}
+
+function* getDetailUserByUsername({ type, payload }) {
+  const { username } = payload;
+  console.log('username: ', username);
+  try {
+    const response = yield call(apiGetUserByUserName, username);
+    if(response.state === REQUEST_STATE.SUCCESS) {
+      yield put(GET_DETAIL_USER_BY_USERNAME_SUCCESS(response.data));
     }
   } catch (error) {
     console.log("error: ", error);
@@ -200,4 +212,5 @@ export default function* userSaga() {
   yield takeLatest(CREATE_POST().type, createPost);
   yield takeLatest(DELETE_POST().type, deletePost);
   yield takeLatest(EDIT_POST().type, editPost);
+  yield takeLatest(GET_DETAIL_USER_BY_USERNAME().type, getDetailUserByUsername);
 }

@@ -145,6 +145,31 @@ export function GET_DETAIL_POST_BY_ID_FAIL(payload) {
     payload,
   };
 }
+export function GET_DETAIL_USER_BY_USERNAME(payload) {
+  return {
+    type: "GET_DETAIL_USER_BY_USERNAME",
+    payload,
+  };
+}
+export function GET_DETAIL_USER_BY_USERNAME_SUCCESS(payload) {
+  return {
+    type: "GET_DETAIL_USER_BY_USERNAME_SUCCESS",
+    payload,
+  };
+}
+export function GET_DETAIL_USER_BY_USERNAME_FAIL(payload) {
+  return {
+    type: "GET_DETAIL_USER_BY_USERNAME_FAIL",
+    payload,
+  };
+}
+
+export function RESET_DETAIL_USER_BY_USERNAME(payload) {
+  return {
+    type: "RESET_DETAIL_USER_BY_USERNAME",
+    payload,
+  };
+}
 
 export function CREATE_POST(payload) {
   return {
@@ -199,7 +224,6 @@ export function RESET_EDIT_POST_STATE(payload) {
     payload,
   };
 }
-
 
 export function RESET_PROFILE_STATE(payload) {
   return {
