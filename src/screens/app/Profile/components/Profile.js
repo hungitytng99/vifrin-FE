@@ -207,7 +207,7 @@ function Profile(props) {
             tab={
               <span className="flex-center">
                 <BorderInnerOutlined />
-                {t("posts")}
+                {t("profile.uppercase.posts")}
               </span>
             }
             key="1"

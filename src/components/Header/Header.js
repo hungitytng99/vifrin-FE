@@ -6,12 +6,17 @@ import { appRoutes } from "router";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "redux/users/action";
 import "./Header.sass";
+import { I18LANGUAGE } from "configs";
+import { useTranslation } from "react-i18next";
+import i18n from "i18next";
+import { Tooltip } from "antd";
 
 function Header() {
   const [isSelectItem, setIsSelectItem] = useState(false);
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   let history = useHistory();
-  const user = useSelector(state => state.user.profile);
+  const user = useSelector((state) => state.user.profile);
   const handleLogout = () => {
     dispatch(logout());
     history.push("/login");
@@ -36,6 +41,20 @@ function Header() {
         </div>
         <div className="header-control">
           <ul className="header-control__list">
+            {/* <li
+              onClick={(e) => {
+                e.preventDefault();
+                const lng =
+                  localStorage.getItem(I18LANGUAGE) === "vi" ? "en" : "vi";
+                localStorage.setItem(I18LANGUAGE, lng);
+                i18n.changeLanguage(lng);
+              }}
+              className="headerChangeLanguage flex-center"
+            >
+              <Tooltip title={t("changeLanguage")}>
+                <span>{t("languageKey")}</span>
+              </Tooltip>
+            </li> */}
             {appRoutes.map((route, index) => {
               return (
                 <>
@@ -77,7 +96,10 @@ function Header() {
                             handleClickUserActionDropdown(0, "Hung")
                           }
                         >
-                          <Link className="header__dropdown-link" to={"/profile/" + user.username}>
+                          <Link
+                            className="header__dropdown-link"
+                            to={"/profile/" + user.username}
+                          >
                             <i className="header__dropdown-item-icon fas fa-user"></i>
                             <div className="header__dropdown-item-text">
                               Profile
@@ -92,14 +114,7 @@ function Header() {
                             </div>
                           </Link>
                         </li>
-                        <li className="header__dropdown-item">
-                          <Link className="header__dropdown-link" to="#">
-                            <i className="header__dropdown-item-icon fas fa-exchange-alt"></i>
-                            <div className="header__dropdown-item-text">
-                              Switch Account
-                            </div>
-                          </Link>
-                        </li>
+
                         <li className="header__dropdown-item">
                           <Link className="header__dropdown-link" to="#">
                             <i className="header__dropdown-item-icon fas fa-cogs"></i>
@@ -107,6 +122,27 @@ function Header() {
                               Settings
                             </div>
                           </Link>
+                        </li>
+                        <li className="header__dropdown-item">
+                          <div
+                            className="header__dropdown-link"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              const lng =
+                                localStorage.getItem(I18LANGUAGE) === "vi"
+                                  ? "en"
+                                  : "vi";
+                              localStorage.setItem(I18LANGUAGE, lng);
+                              i18n.changeLanguage(lng);
+                              setIsSelectItem(false);
+                            }}
+                            to="#"
+                          >
+                            <i className="header__dropdown-item-icon fas fa-exchange-alt"></i>
+                            <div className="header__dropdown-item-text">
+                              {t("switchLanguage")}
+                            </div>
+                          </div>
                         </li>
                         <li className="header__dropdown-item">
                           <div onClick={handleLogout}>
