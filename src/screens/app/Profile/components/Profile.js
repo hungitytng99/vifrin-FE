@@ -9,6 +9,7 @@ import {
   GET_LIST_FOLLOWER,
   GET_LIST_FOLLOWING,
   RESET_CREATE_POST_STATE,
+  RESET_EDIT_POST_STATE,
   UNFOLLOW,
 } from "../redux/action";
 import "./Profile.sass";
@@ -24,7 +25,7 @@ import {
 } from "@ant-design/icons";
 import PostCard from "./PostCard";
 import { AVATAR_DEFAULT } from "../../../../configs";
-import { Tabs, Button, notification } from "antd";
+import { Tabs, Button, notification, Spin } from "antd";
 import PostCreate from "./PostCreate";
 
 const { TabPane } = Tabs;
@@ -107,234 +108,287 @@ function Profile(props) {
     }
   }, [profile.createPostState, dispatch, t]);
 
+  useEffect(() => {
+    if (profile.editPostState === REQUEST_STATE.SUCCESS) {
+      notification.success({
+        message: t("successfull!"),
+        description: t("youEditPostSuccessfully!"),
+      });
+      dispatch(RESET_EDIT_POST_STATE());
+    }
+  }, [profile.editPostState, dispatch, t]);
+
   return (
-    <div className="profile">
-      <Row>
-        <Col lg={4} style={{ maxHeight: "250px" }}>
-          <div className="profile__avatar flex-center">
-            <img src={user?.avatarUrl ?? AVATAR_DEFAULT} alt="avatar" />
-          </div>
-        </Col>
-        <Col lg={8}>
-          <div className="profile__info">
-            <div className="profile__info-box">
-              <div className="profile__info-username">{user?.username}</div>
+    <>
+      {profile.deletePostState === REQUEST_STATE.REQUEST && (
+        <FullComponentLoading bgColor="rgba(255,255,255,0.6)" />
+      )}
+      <div className="profile">
+        <Row>
+          <Col lg={4} style={{ maxHeight: "250px" }}>
+            <div className="profile__avatar flex-center">
+              <img src={user?.avatarUrl ?? AVATAR_DEFAULT} alt="avatar" />
+            </div>
+          </Col>
+          <Col lg={8}>
+            <div className="profile__info">
+              <div className="profile__info-box">
+                <div className="profile__info-username">{user?.username}</div>
+                {profile.isCurrentUser ? (
+                  <>
+                    <div className="profile__info-edit">
+                      <Link to="#">{t("editProfile")}</Link>
+                    </div>
+                    <div className="profile__info-setting">
+                      <i className="profile__info-setting-icon fas fa-tools"></i>
+                    </div>
+                  </>
+                ) : (
+                  // check xem currentuser co theo doi khong
+                  <>
+                    <Button style={{ marginLeft: "10px" }} type="ghost">
+                      {t("inbox")}
+                    </Button>
+                  </>
+                )}
+              </div>
+              <div className="profile__info-box --mid">
+                <div className="profile__info-detail">
+                  <span>{user?.postsCount}</span>
+                  {user?.postsCount > 1 ? (
+                    <p>{t("posts")}</p>
+                  ) : (
+                    <p>{t("post")}</p>
+                  )}
+                </div>
+                <div
+                  className="profile__info-detail  --hover"
+                  onClick={() => onClickListFollower(user.id)}
+                >
+                  <span>{user?.followersCount}</span>
+                  {user?.followersCount > 1 ? (
+                    <p>{t("followers")}</p>
+                  ) : (
+                    <p>{t("follower")}</p>
+                  )}
+                </div>
+
+                <div
+                  className="profile__info-detail --hover"
+                  onClick={() => onClickListFollowing(user.id)}
+                >
+                  <span>{user?.followingsCount}</span>
+                  {user?.followingsCount > 1 ? (
+                    <p>{t("followings")}</p>
+                  ) : (
+                    <p>{t("following")}</p>
+                  )}
+                </div>
+              </div>
+              <div className="profile__info-box">
+                <div className="profile__info-detail">
+                  <span>{user?.fullName}</span>
+                </div>
+              </div>
+              <div className="profile__info-box">
+                <div className="profile__info-detail">
+                  <p>{user?.bio}</p>
+                </div>
+              </div>
               {profile.isCurrentUser ? (
-                <>
-                  <div className="profile__info-edit">
-                    <Link to="#">{t("editProfile")}</Link>
-                  </div>
-                  <div className="profile__info-setting">
-                    <i className="profile__info-setting-icon fas fa-tools"></i>
-                  </div>
-                </>
-              ) : (
-                // check xem currentuser co theo doi khong
-                <>
-                  <Button style={{ marginLeft: "10px" }} type="ghost">
-                    {t("inbox")}
+                <div className="profile__info-box">
+                  <Button
+                    type="primary"
+                    className="flex-center"
+                    onClick={() => setIsShowAddPost(true)}
+                  >
+                    <PlusSquareOutlined
+                      style={{ fontSize: "18px", marginBottom: "2px" }}
+                    />
+                    <span>{t("addPost")}</span>
                   </Button>
-                </>
+                </div>
+              ) : (
+                <div></div>
               )}
             </div>
-            <div className="profile__info-box --mid">
-              <div className="profile__info-detail">
-                <span>{user?.postsCount}</span>
-                {user?.postsCount > 1 ? (
-                  <p>{t("posts")}</p>
-                ) : (
-                  <p>{t("post")}</p>
-                )}
+          </Col>
+        </Row>
+        <Row style={{ marginTop: "10px" }}>
+          <Tabs defaultActiveKey="1">
+            <TabPane
+              tab={
+                <span className="flex-center">
+                  <BorderInnerOutlined />
+                  {t("profile.uppercase.posts")}
+                </span>
+              }
+              key="1"
+            >
+              <Row>
+                {profile.getListPostByUsernameState ===
+                    REQUEST_STATE.REQUEST && <Spin/>}
+                {profile.listPostByUsername.length === 0 &&
+                  profile.getListPostByUsernameState ===
+                    REQUEST_STATE.SUCCESS && (
+                    <div>{t("youHaveNotCreatedPostsYet")}</div>
+                  )}
+                {profile.listPostByUsername.map((post) => {
+                  return (
+                    <Col key={post.id} lg={4} style={{ marginBottom: "10px" }}>
+                      <PostCard post={post} />
+                    </Col>
+                  );
+                })}
+              </Row>
+            </TabPane>
+            <TabPane
+              tab={
+                <span className="flex-center">
+                  <FlagOutlined />
+                  {t("savedPosts")}
+                </span>
+              }
+              key="2"
+            >
+              Tab 2
+            </TabPane>
+          </Tabs>
+        </Row>
+
+        <ReactModal
+          isOpen={isShowListFollowers}
+          onRequestClose={() => setIsShowListFollowers(false)}
+          style={customStyles}
+        >
+          <div className="profile_followers">
+            <div className="profile_followers-header">
+              <div className="profile_followers-header-text">
+                {t("follower")}
               </div>
               <div
-                className="profile__info-detail  --hover"
-                onClick={() => onClickListFollower(user.id)}
+                className="profile_followers-header-close"
+                onClick={() => setIsShowListFollowers(false)}
               >
-                <span>{user?.followersCount}</span>
-                {user?.followersCount > 1 ? (
-                  <p>{t("followers")}</p>
-                ) : (
-                  <p>{t("follower")}</p>
-                )}
+                <CloseOutlined />
               </div>
+            </div>
+            <ul className="profile_followers-list">
+              {profile.getListFollowerState === REQUEST_STATE.REQUEST && (
+                <FullComponentLoading />
+              )}
+              {profile?.listFollowers.length > 0 ? (
+                profile?.listFollowers.map((user) => {
+                  user.description = user.fullName;
+                  return (
+                    <FollowCard
+                      key={user.id}
+                      user={user}
+                      cardActionText="Xóa"
+                      headerActionText="Theo dõi"
+                      onClickHeaderAction={onFollow}
+                      onClickCardAction={onDeleteFollow}
+                    />
+                  );
+                })
+              ) : (
+                <div style={{ textAlign: "center" }}>
+                  {t("nobodyFollowYou")}
+                </div>
+              )}
+            </ul>
+          </div>
+        </ReactModal>
 
+        <ReactModal
+          isOpen={isShowListFollowing}
+          onRequestClose={() => setIsShowListFollowing(false)}
+          style={customStyles}
+        >
+          <div className="profile_followers">
+            <div className="profile_followers-header">
+              <div className="profile_followers-header-text">
+                {t("follower")}
+              </div>
               <div
-                className="profile__info-detail --hover"
-                onClick={() => onClickListFollowing(user.id)}
+                className="profile_followers-header-close"
+                onClick={() => setIsShowListFollowing(false)}
               >
-                <span>{user?.followingsCount}</span>
-                {user?.followingsCount > 1 ? (
-                  <p>{t("followings")}</p>
-                ) : (
-                  <p>{t("following")}</p>
-                )}
+                <CloseOutlined />
               </div>
             </div>
-            <div className="profile__info-box">
-              <div className="profile__info-detail">
-                <span>{user?.fullName}</span>
-              </div>
-            </div>
-            <div className="profile__info-box">
-              <div className="profile__info-detail">
-                <p>{user?.bio}</p>
-              </div>
-            </div>
-            {profile.isCurrentUser ? (
-              <div className="profile__info-box">
-                <Button
-                  type="primary"
-                  className="flex-center"
-                  onClick={() => setIsShowAddPost(true)}
-                >
-                  <PlusSquareOutlined
-                    style={{ fontSize: "18px", marginBottom: "2px" }}
-                  />
-                  <span>{t("addPost")}</span>
-                </Button>
-              </div>
-            ) : (
-              <div></div>
-            )}
+            <ul className="profile_followers-list">
+              {profile.getListFollowingState === REQUEST_STATE.REQUEST && (
+                <FullComponentLoading />
+              )}
+              {profile?.listFollowing.length > 0 ? (
+                profile?.listFollowing.map((user) => {
+                  user.description = user.fullName;
+                  return (
+                    <FollowCard
+                      key={user.id}
+                      user={user}
+                      cardActionText="Hủy theo dõi"
+                      onClickCardAction={onUnFollow}
+                    />
+                  );
+                })
+              ) : (
+                <div style={{ textAlign: "center" }}>
+                  {t("nobodyFollowYou")}
+                </div>
+              )}
+            </ul>
           </div>
-        </Col>
-      </Row>
-      <Row style={{ marginTop: "10px" }}>
-        <Tabs defaultActiveKey="1">
-          <TabPane
-            tab={
-              <span className="flex-center">
-                <BorderInnerOutlined />
-                {t("profile.uppercase.posts")}
-              </span>
-            }
-            key="1"
-          >
-            <Row>
-              {profile.listPostByUsername.map((post) => {
-                return (
-                  <Col key={post.id} lg={4} style={{ marginBottom: "10px" }}>
-                    <PostCard post={post} />
-                  </Col>
-                );
-              })}
-            </Row>
-          </TabPane>
-          <TabPane
-            tab={
-              <span className="flex-center">
-                <FlagOutlined />
-                {t("savedPosts")}
-              </span>
-            }
-            key="2"
-          >
-            Tab 2
-          </TabPane>
-        </Tabs>
-      </Row>
+        </ReactModal>
 
-      <ReactModal
-        isOpen={isShowListFollowers}
-        onRequestClose={() => setIsShowListFollowers(false)}
-        style={customStyles}
-      >
-        <div className="profile_followers">
-          <div className="profile_followers-header">
-            <div className="profile_followers-header-text">{t("follower")}</div>
-            <div
-              className="profile_followers-header-close"
-              onClick={() => setIsShowListFollowers(false)}
-            >
-              <CloseOutlined />
+        <ReactModal
+          isOpen={isShowAddPost}
+          onRequestClose={() => setIsShowAddPost(false)}
+          style={customAddPostStyles}
+        >
+          <div className="profile_followers">
+            <div className="profile_followers-header">
+              <div className="profile_followers-header-text">
+                {t("createNewPost")}
+              </div>
+              <div
+                className="profile_followers-header-close"
+                onClick={() => setIsShowAddPost(false)}
+              >
+                <CloseOutlined />
+              </div>
+            </div>
+            <div className="profileCreatePost">
+              <PostCreate />
             </div>
           </div>
-          <ul className="profile_followers-list">
-            {profile.getListFollowerState === REQUEST_STATE.REQUEST && (
-              <FullComponentLoading />
-            )}
-            {profile?.listFollowers.length > 0 ? (
-              profile?.listFollowers.map((user) => {
-                user.description = user.fullName;
-                return (
-                  <FollowCard
-                    key={user.id}
-                    user={user}
-                    cardActionText="Xóa"
-                    headerActionText="Theo dõi"
-                    onClickHeaderAction={onFollow}
-                    onClickCardAction={onDeleteFollow}
-                  />
-                );
-              })
-            ) : (
-              <div style={{ textAlign: "center" }}>{t("nobodyFollowYou")}</div>
-            )}
-          </ul>
-        </div>
-      </ReactModal>
+        </ReactModal>
 
-      <ReactModal
-        isOpen={isShowListFollowing}
-        onRequestClose={() => setIsShowListFollowing(false)}
-        style={customStyles}
-      >
-        <div className="profile_followers">
-          <div className="profile_followers-header">
-            <div className="profile_followers-header-text">{t("follower")}</div>
-            <div
-              className="profile_followers-header-close"
-              onClick={() => setIsShowListFollowing(false)}
-            >
-              <CloseOutlined />
+        <ReactModal
+          isOpen={isShowAddPost}
+          onRequestClose={() => setIsShowAddPost(false)}
+          style={customAddPostStyles}
+        >
+          <div className="profile_followers">
+            <div className="profile_followers-header">
+              <div className="profile_followers-header-text">
+                {t("createNewPost")}
+              </div>
+              <div
+                className="profile_followers-header-close"
+                onClick={() => setIsShowAddPost(false)}
+              >
+                <CloseOutlined />
+              </div>
+            </div>
+            <div className="profileCreatePost">
+              <PostCreate />
             </div>
           </div>
-          <ul className="profile_followers-list">
-            {profile.getListFollowingState === REQUEST_STATE.REQUEST && (
-              <FullComponentLoading />
-            )}
-            {profile?.listFollowing.length > 0 ? (
-              profile?.listFollowing.map((user) => {
-                user.description = user.fullName;
-                return (
-                  <FollowCard
-                    key={user.id}
-                    user={user}
-                    cardActionText="Hủy theo dõi"
-                    onClickCardAction={onUnFollow}
-                  />
-                );
-              })
-            ) : (
-              <div style={{ textAlign: "center" }}>{t("nobodyFollowYou")}</div>
-            )}
-          </ul>
-        </div>
-      </ReactModal>
-
-      <ReactModal
-        isOpen={isShowAddPost}
-        onRequestClose={() => setIsShowAddPost(false)}
-        style={customAddPostStyles}
-      >
-        <div className="profile_followers">
-          <div className="profile_followers-header">
-            <div className="profile_followers-header-text">
-              {t("createNewPost")}
-            </div>
-            <div
-              className="profile_followers-header-close"
-              onClick={() => setIsShowAddPost(false)}
-            >
-              <CloseOutlined />
-            </div>
-          </div>
-          <div className="profileCreatePost">
-            <PostCreate />
-          </div>
-        </div>
-      </ReactModal>
-    </div>
+        </ReactModal>
+      </div>
+    </>
   );
 }
 export default Profile;

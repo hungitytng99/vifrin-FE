@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from "react";
 import "./PostCard.sass";
-import { HeartOutlined, CommentOutlined } from "@ant-design/icons";
+import {
+  HeartOutlined,
+  CommentOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  ExclamationCircleOutlined,
+  CloseOutlined,
+} from "@ant-design/icons";
 import ReactModal from "react-modal";
-import { Col, Divider, Row } from "antd";
-import { useDispatch } from "react-redux";
-import { RESET_DETAIL_PROFILE_STATE } from "../redux/action";
+import { Col, Divider, Modal, notification, Row } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { DELETE_POST, RESET_DETAIL_PROFILE_STATE, RESET_EDIT_POST_STATE } from "../redux/action";
 import UserCard from "components/UserCard/UserCard";
 import TypeBox from "screens/app/Home/components/TypeBox";
 import { Link } from "react-router-dom";
@@ -14,11 +21,11 @@ import { LIST_COMMENT } from "screens/app/Home/configs";
 import { getMounthAndDay } from "../../../../utils/datetime";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { I18LANGUAGE } from "configs";
+import PostEdit from "./PostEdit";
+import { REQUEST_STATE } from "configs";
 
 const customStyles = {
   overlay: {
-    animation: "appear 0.3s linear",
     zIndex: 960,
     backgroundColor: "rgba(0,0,0,0.8)",
   },
@@ -30,7 +37,24 @@ const customStyles = {
     borderRadius: "0px",
     padding: "0px",
     border: "none",
-    animation: "appear 0.1s ease-in",
+  },
+};
+const customEditPostStyles = {
+  overlay: {
+    animation: "appear 0.3s linear",
+  },
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    width: "600px",
+    borderRadius: "10px",
+    padding: "0px",
+    border: "1px solid rgba(219,219,219,1)",
+    animation: "zoominoutsinglefeatured 0.3s ease-out",
   },
 };
 function PostCard({ post }) {
@@ -41,6 +65,8 @@ function PostCard({ post }) {
   const [isFavourite, setIsFavourite] = useState(false);
   const [numLiked, setNumLiked] = useState(post.likesCount);
   const [isFocusComment, setIsFocusComment] = useState(false);
+  const [isShowEditPost, setIsShowEditPost] = useState(false);
+  const profile = useSelector((state) => state.profile);
 
   function handleLikedClick() {
     setIsLiked(!isLiked);
@@ -59,6 +85,26 @@ function PostCard({ post }) {
     dispatch(RESET_DETAIL_PROFILE_STATE());
   }
 
+  function onDeletePost(e) {
+    e.stopPropagation();
+    Modal.confirm({
+      title: t("deletePost"),
+      icon: <ExclamationCircleOutlined />,
+      content: t("thisWillPermanentlyDeleteYourPost"),
+      okText: t("Confirm"),
+      cancelText: t("Cancel"),
+      onOk: () => {
+        dispatch(DELETE_POST({ id: post.id }));
+      },
+      destroyOnClose: true,
+    });
+  }
+
+  function onEditPost(e) {
+    e.stopPropagation();
+    setIsShowEditPost(true);
+  }
+
   useEffect(() => {
     if (isShowDetailPost) {
       document.body.style.overflow = "hidden";
@@ -66,6 +112,12 @@ function PostCard({ post }) {
       document.body.style.overflow = "auto";
     }
   }, [isShowDetailPost]);
+
+  useEffect(() => {
+    if (profile.editPostState === REQUEST_STATE.SUCCESS) {
+      setIsShowEditPost(false);
+    }
+  }, [profile.editPostState, dispatch, t]);
 
   return (
     <>
@@ -75,13 +127,19 @@ function PostCard({ post }) {
       >
         <img className="postCardImg" src={post.medias[0]?.url} alt="avatar" />
         <div className="postCardOverlay flex-center">
+          <div className="postCardOverlayAction">
+            <DeleteOutlined
+              onClick={onDeletePost}
+              className="postCardOverlayActionDelete"
+            />
+            <EditOutlined onClick={onEditPost} className="postCardOverlayActionEdit" />
+          </div>
           <div className="postCardOverlayReaction flex-center">
             <HeartOutlined />
             <span style={{ marginLeft: "6px" }}>
               {post?.likesCount ? post?.likesCount : 0}
             </span>
           </div>
-
           <div
             className="postCardOverlayReaction flex-center"
             style={{ marginLeft: "20px" }}
@@ -170,16 +228,17 @@ function PostCard({ post }) {
                       {getMounthAndDay(post.updatedAt, t)}
                     </div>
                   </div>
-
-                  <div className="postCardStatus">
-                    <Link
-                      to={`/profile/aaaa`}
-                      className="postCardStatusUsername"
-                    >
-                      aaaa
-                    </Link>
-                    <div className="postCardStatusStatus">{post.content}</div>
-                  </div>
+                  {post.content && (
+                    <div className="postCardStatus">
+                      <Link
+                        to={`/profile/aaaa`}
+                        className="postCardStatusUsername"
+                      >
+                        aaaa
+                      </Link>
+                      <div className="postCardStatusStatus">{post.content}</div>
+                    </div>
+                  )}
                 </div>
                 <div className="postCardCommentType">
                   <TypeBox isFocusTextBox={isFocusComment} />
@@ -189,6 +248,28 @@ function PostCard({ post }) {
           </Row>
         </div>
       </ReactModal>
+      <ReactModal
+          isOpen={isShowEditPost}
+          onRequestClose={() => setIsShowEditPost(false)}
+          style={customEditPostStyles}
+        >
+          <div className="profile_followers">
+            <div className="profile_followers-header">
+              <div className="profile_followers-header-text">
+                {t("editPost")}
+              </div>
+              <div
+                className="profile_followers-header-close"
+                onClick={() => setIsShowEditPost(false)}
+              >
+                <CloseOutlined />
+              </div>
+            </div>
+            <div className="profileCreatePost">
+              <PostEdit post={post}/>
+            </div>
+          </div>
+        </ReactModal>
     </>
   );
 }

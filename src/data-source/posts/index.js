@@ -51,9 +51,9 @@ export const apiGetPost = async (id) => {
   }
 };
 
-export const apiUpdatePost = async (params) => {
+export const apiUpdatePost = async (id, params) => {
   try {
-    const response = await PUT("/posts/", params);
+    const response = await PUT("/posts/" + id, params);
     return {
       state: REQUEST_STATE.SUCCESS,
       data: response.data,

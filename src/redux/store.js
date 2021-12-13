@@ -39,6 +39,7 @@ const store = createStore(
 store.asyncReducers = {};
 const rootReducer = (state, action) => {
   if (action.type === logout().type) {
+    console.log('action.type: ', action.type);
     console.log("LOGOUT STORE");
     state = undefined;
   }

@@ -173,6 +173,34 @@ export function RESET_CREATE_POST_STATE(payload) {
   };
 }
 
+export function EDIT_POST(payload) {
+  return {
+    type: "EDIT_POST",
+    payload,
+  };
+}
+
+export function EDIT_POST_SUCCESS(payload) {
+  return {
+    type: "EDIT_POST_SUCCESS",
+    payload,
+  };
+}
+export function EDIT_POST_FAIL(payload) {
+  return {
+    type: "EDIT_POST_FAIL",
+    payload,
+  };
+}
+
+export function RESET_EDIT_POST_STATE(payload) {
+  return {
+    type: "RESET_EDIT_POST_STATE",
+    payload,
+  };
+}
+
+
 export function RESET_PROFILE_STATE(payload) {
   return {
     type: "RESET_PROFILE_STATE",
@@ -187,3 +215,22 @@ export function RESET_DETAIL_PROFILE_STATE(payload) {
   };
 }
 
+export function DELETE_POST(payload) {
+  return {
+    type: "DELETE_POST",
+    payload,
+  };
+}
+
+export function DELETE_POST_SUCCESS(payload) {
+  return {
+    type: "DELETE_POST_SUCCESS",
+    payload,
+  };
+}
+export function DELETE_POST_FAIL(payload) {
+  return {
+    type: "DELETE_POST_FAIL",
+    payload,
+  };
+}

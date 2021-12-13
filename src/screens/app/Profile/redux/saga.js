@@ -1,6 +1,10 @@
 import { call, put, takeLatest } from "@redux-saga/core/effects";
 import { REQUEST_STATE } from "configs";
-import { apiPostsByUsername } from "data-source/posts";
+import {
+  apiDeletePost,
+  apiPostsByUsername,
+  apiUpdatePost,
+} from "data-source/posts";
 import {
   apiDeleteFollow,
   apiFollowOtherUser,
@@ -25,6 +29,10 @@ import {
   GET_LIST_POST_BY_USERNAME_SUCCESS,
   CREATE_POST,
   CREATE_POST_SUCCESS,
+  DELETE_POST,
+  DELETE_POST_SUCCESS,
+  EDIT_POST,
+  EDIT_POST_SUCCESS,
 } from "./action";
 
 function* getListFollowers({ type, payload }) {
@@ -131,6 +139,57 @@ function* createPost({ type, payload }) {
   }
 }
 
+function* deletePost({ type, payload }) {
+  const { id } = payload;
+  try {
+    const deletePostRes = yield call(apiDeletePost, id);
+    console.log("deletePostRes: ", deletePostRes);
+    if (deletePostRes.state === REQUEST_STATE.SUCCESS) {
+      console.log("deletePostRes2: ", deletePostRes);
+      yield put(DELETE_POST_SUCCESS({ id }));
+    }
+  } catch (error) {
+    console.log("error: ", error);
+  }
+}
+
+function* editPost({ type, payload }) {
+  const { post } = payload;
+  try {
+    let newListImage = [];
+    for (let i = 0; i < post?.medias?.fileList.length; i++) {
+      console.log('post?.medias?.fileList: ', post?.medias?.fileList);
+      if (
+        post?.medias?.fileList[i].originFileObj &&
+        post?.medias?.fileList[i].thumbUrl
+      ) {
+        const imgUploadRes = yield call(
+          apiUploadMedia,
+          post?.medias?.fileList[i].originFileObj
+        );
+        if (imgUploadRes?.data?.url) {
+          newListImage.push(imgUploadRes.data.id);
+        }
+      } else {
+        newListImage.push(post?.medias?.fileList[i].id);
+        
+      }
+    }
+    console.log('newListImage: ', newListImage);
+
+    const response = yield call(apiUpdatePost, post.id, {
+      content: post.content,
+      mediaIds: newListImage,
+      config: '{"privacy":"audience.public"}',
+    });
+    if (response.state === REQUEST_STATE.SUCCESS) {
+      yield put(EDIT_POST_SUCCESS({ posts: response.data }));
+    }
+  } catch (error) {
+    console.log("error: ", error);
+  }
+}
+
 export default function* userSaga() {
   yield takeLatest(GET_LIST_FOLLOWER().type, getListFollowers);
   yield takeLatest(GET_LIST_FOLLOWING().type, getListFollowing);
@@ -139,4 +198,6 @@ export default function* userSaga() {
   yield takeLatest(DELETE_FOLLOW().type, deleteFollow);
   yield takeLatest(GET_LIST_POST_BY_USERNAME().type, getListPostByUsername);
   yield takeLatest(CREATE_POST().type, createPost);
+  yield takeLatest(DELETE_POST().type, deletePost);
+  yield takeLatest(EDIT_POST().type, editPost);
 }

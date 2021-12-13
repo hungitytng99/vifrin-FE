@@ -1,4 +1,5 @@
 import { REQUEST_STATE } from "configs";
+import { sortImagesById } from "utils/media";
 import {
   FOLLOW_SUCCESS,
   GET_LIST_FOLLOWER_SUCCESS,
@@ -18,6 +19,11 @@ import {
   CREATE_POST_SUCCESS,
   CREATE_POST,
   RESET_CREATE_POST_STATE,
+  DELETE_POST,
+  DELETE_POST_SUCCESS,
+  EDIT_POST,
+  EDIT_POST_SUCCESS,
+  RESET_EDIT_POST_STATE,
 } from "./action";
 
 const defaultState = {
@@ -32,6 +38,8 @@ const defaultState = {
   getListFollowingState: null,
   getListPostByUsernameState: null,
   createPostState: null,
+  deletePostState: null,
+  editPostState: null,
   followState: null,
   unFollowState: null,
   deleteFollowState: null,
@@ -102,12 +110,58 @@ export default function profileReducer(state = defaultState, action) {
         listPostByUsername: [action.payload, ...state.listPostByUsername],
       };
     }
+    case EDIT_POST().type: {
+      return {
+        ...state,
+        editPostState: REQUEST_STATE.REQUEST,
+      };
+    }
+    case EDIT_POST_SUCCESS().type: {
+      const { posts } = action.payload;
+      return {
+        ...state,
+        editPostState: REQUEST_STATE.SUCCESS,
+        listPostByUsername: sortImagesById(
+          state.listPostByUsername.map((post) => {
+            if (posts.id === post.id) {
+              return posts;
+            } else {
+              return post;
+            }
+          })
+        ),
+      };
+    }
+
+    case DELETE_POST().type: {
+      return {
+        ...state,
+        deletePostState: REQUEST_STATE.REQUEST,
+      };
+    }
+    case DELETE_POST_SUCCESS().type: {
+      const { id } = action.payload;
+      return {
+        ...state,
+        deletePostState: REQUEST_STATE.SUCCESS,
+        listPostByUsername: state.listPostByUsername.filter(
+          (post) => post.id !== id
+        ),
+      };
+    }
 
     case RESET_CREATE_POST_STATE().type: {
       return {
         ...state,
         createPostState: null,
-      }
+      };
+    }
+
+    case RESET_EDIT_POST_STATE().type: {
+      return {
+        ...state,
+        editPostState: null,
+      };
     }
 
     case DELETE_FOLLOW_SUCCESS().type: {
@@ -125,7 +179,7 @@ export default function profileReducer(state = defaultState, action) {
     case GET_LIST_POST_BY_USERNAME_SUCCESS().type: {
       return {
         ...state,
-        listPostByUsername: action.payload,
+        listPostByUsername: sortImagesById(action.payload),
         getListPostByUsernameState: REQUEST_STATE.SUCCESS,
       };
     }
