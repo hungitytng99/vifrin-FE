@@ -83,7 +83,7 @@ function PostCreate(props) {
               >
                 <div>
                   <PlusOutlined />
-                  <div style={{ marginTop: 8 }}>{t("upload")}</div>
+                  <div style={{ marginTop: 8 }}>{t("uploadImages")}</div>
                 </div>
               </Upload>
             </Form.Item>

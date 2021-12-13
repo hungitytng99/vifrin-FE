@@ -14,6 +14,7 @@ import { LIST_COMMENT } from "screens/app/Home/configs";
 import { getMounthAndDay } from "../../../../utils/datetime";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { I18LANGUAGE } from "configs";
 
 const customStyles = {
   overlay: {

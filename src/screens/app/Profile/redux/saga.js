@@ -119,7 +119,7 @@ function* createPost({ type, payload }) {
       }
     }
     const createPostRes = yield call(apiCreatePost, {
-      content: "Beautiful natural",
+      content: content,
       mediaIds: listImageUpload.map((img) => img.id),
       config: '{"privacy":"audience.public"}',
     });

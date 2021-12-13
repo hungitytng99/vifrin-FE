@@ -21,7 +21,6 @@ import {
   BorderInnerOutlined,
   FlagOutlined,
   PlusSquareOutlined,
-  PlusOutlined,
 } from "@ant-design/icons";
 import PostCard from "./PostCard";
 import { AVATAR_DEFAULT } from "../../../../configs";
@@ -66,7 +65,6 @@ const customAddPostStyles = {
     animation: "zoominoutsinglefeatured 0.3s ease-out",
   },
 };
-// openModal,
 ReactModal.setAppElement("#root");
 
 function Profile(props) {

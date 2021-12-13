@@ -41,5 +41,10 @@ export const MONTHNAMES = ["january", "february", "march", "april", "may", "june
 "july", "august", "september", "october", "november", "december"
 ];
 
+export const LANGUAGES = {
+  EN: 'en',
+  VI: 'vi',
+}
+
 export const AVATAR_DEFAULT = "https://vifrin.s3.ap-southeast-1.amazonaws.com/vifrin_upload_test/avatar-default.png"
 
