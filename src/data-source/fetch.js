@@ -88,7 +88,7 @@ export const DELETE = (path, params, options = {}) => {
 };
 
 export const UPLOAD = (path, files, options, onProgress = () => {}) => {
-  const _url = options.isFullPath ? path : Configs.BASE_API + path;
+  const _url = options?.isFullPath ? path : Configs.BASE_API + path;
 
   const _form = new FormData();
   _form.append("type", files.type);

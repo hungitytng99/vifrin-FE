@@ -146,6 +146,32 @@ export function GET_DETAIL_POST_BY_ID_FAIL(payload) {
   };
 }
 
+export function CREATE_POST(payload) {
+  return {
+    type: "CREATE_POST",
+    payload,
+  };
+}
+
+export function CREATE_POST_SUCCESS(payload) {
+  return {
+    type: "CREATE_POST_SUCCESS",
+    payload,
+  };
+}
+export function CREATE_POST_FAIL(payload) {
+  return {
+    type: "CREATE_POST_FAIL",
+    payload,
+  };
+}
+
+export function RESET_CREATE_POST_STATE(payload) {
+  return {
+    type: "RESET_CREATE_POST_STATE",
+    payload,
+  };
+}
 
 export function RESET_PROFILE_STATE(payload) {
   return {

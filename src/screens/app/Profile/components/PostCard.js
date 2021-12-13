@@ -11,6 +11,9 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import CommentsList from "screens/app/Home/components/CommentsList";
 import { LIST_COMMENT } from "screens/app/Home/configs";
+import { getMounthAndDay } from "../../../../utils/datetime";
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 const customStyles = {
   overlay: {
@@ -29,13 +32,13 @@ const customStyles = {
     animation: "appear 0.1s ease-in",
   },
 };
-function PostCard(props) {
+function PostCard({ post }) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [isShowDetailPost, setIsShowDetailPost] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [isFavourite, setIsFavourite] = useState(false);
-  const [numLiked, setNumLiked] = useState(1000);
+  const [numLiked, setNumLiked] = useState(post.likesCount);
   const [isFocusComment, setIsFocusComment] = useState(false);
 
   function handleLikedClick() {
@@ -69,15 +72,13 @@ function PostCard(props) {
         className="postCard flex-center"
         onClick={() => setIsShowDetailPost(true)}
       >
-        <img
-          className="postCardImg"
-          src="https://vcdn1-vnexpress.vnecdn.net/2019/07/30/anh-thien-nhien-dep-thang-7-1564483719.jpg?w=1200&h=0&q=100&dpr=1&fit=crop&s=Nl3znv-VRtPyhJYhLwwRfA"
-          alt="avatar"
-        />
+        <img className="postCardImg" src={post.medias[0]?.url} alt="avatar" />
         <div className="postCardOverlay flex-center">
           <div className="postCardOverlayReaction flex-center">
             <HeartOutlined />
-            <span style={{ marginLeft: "6px" }}>2</span>
+            <span style={{ marginLeft: "6px" }}>
+              {post?.likesCount ? post?.likesCount : 0}
+            </span>
           </div>
 
           <div
@@ -85,7 +86,9 @@ function PostCard(props) {
             style={{ marginLeft: "20px" }}
           >
             <CommentOutlined />
-            <span style={{ marginLeft: "6px" }}>2</span>
+            <span style={{ marginLeft: "6px" }}>
+              {post?.commentsCount ? post?.commentsCount : 0}
+            </span>
           </div>
         </div>
       </div>
@@ -97,11 +100,19 @@ function PostCard(props) {
         <div className="postCardDetail" style={{ height: "100%" }}>
           <Row style={{ height: "100%" }}>
             <Col lg={16} className="postCardDetailImgBox flex-center">
-              <img
-                src="https://vcdn1-vnexpress.vnecdn.net/2019/07/30/anh-thien-nhien-dep-thang-7-1564483719.jpg?w=1200&h=0&q=100&dpr=1&fit=crop&s=Nl3znv-VRtPyhJYhLwwRfA"
-                alt=""
-                className="postCardDetailImg"
-              />
+              <Carousel showThumbs={false} emulateTouch={true}>
+                {/* Lay min height of images => add to style to fix image view */}
+                {post.medias.map((item) => {
+                  return (
+                    <img
+                      key={item.id}
+                      className="feeds-post__img"
+                      src={item.url}
+                      alt="img"
+                    ></img>
+                  );
+                })}
+              </Carousel>
             </Col>
             <Col lg={8} className="postCardDetailComment">
               <div
@@ -113,11 +124,6 @@ function PostCard(props) {
               <Divider style={{ margin: "0px 0px 10px 0px" }} />
               <div className="postCardCommentBox">
                 <div className="postCardCommentList">
-                  <CommentsList listComments={LIST_COMMENT} />
-                  <CommentsList listComments={LIST_COMMENT} />
-                  <CommentsList listComments={LIST_COMMENT} />
-                  <CommentsList listComments={LIST_COMMENT} />
-                  <CommentsList listComments={LIST_COMMENT} />
                   <CommentsList listComments={LIST_COMMENT} />
                 </div>
                 <Divider style={{ margin: "10px 0px 10px 0px" }} />
@@ -160,7 +166,7 @@ function PostCard(props) {
                       {numLiked} {numLiked > 0 ? t("likes") : t("like")}
                     </div>
                     <div className="user-interactive__time-created">
-                      February 17
+                      {getMounthAndDay(post.updatedAt, t)}
                     </div>
                   </div>
 
@@ -171,7 +177,7 @@ function PostCard(props) {
                     >
                       aaaa
                     </Link>
-                    <div className="postCardStatusStatus">status</div>
+                    <div className="postCardStatusStatus">{post.content}</div>
                   </div>
                 </div>
                 <div className="postCardCommentType">

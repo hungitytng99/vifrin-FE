@@ -1,5 +1,5 @@
 import { REQUEST_STATE } from 'configs';
-import { apiCurrentUser } from 'data-source/users';
+import { apiCurrentUser, apiGetUserProfile } from 'data-source/users';
 import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -14,11 +14,12 @@ function PrivateRoute({ component: Component, location, ...rest }) {
             const accessToken = Cookies.get('token');
             console.debug('accessToken: ', accessToken);
             if (accessToken) {
-                const res = await apiCurrentUser();
-                if (res.state === REQUEST_STATE.SUCCESS) {
-                    dispatch(LOGIN_SUCCESS(res.data));
+                const curentUser = await apiCurrentUser();
+                const profileUser = await apiGetUserProfile();
+                if (curentUser.state === REQUEST_STATE.SUCCESS) {
+                    dispatch(LOGIN_SUCCESS({...profileUser.data, ...curentUser.data }));
                     setIsAuth(1);
-                } else if (res.state === REQUEST_STATE.ERROR) {
+                } else if (curentUser.state === REQUEST_STATE.ERROR) {
                     dispatch(logout());
                     setIsAuth(2);
                 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import ReactModal from "react-modal";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,6 +8,7 @@ import {
   FOLLOW,
   GET_LIST_FOLLOWER,
   GET_LIST_FOLLOWING,
+  RESET_CREATE_POST_STATE,
   UNFOLLOW,
 } from "../redux/action";
 import "./Profile.sass";
@@ -16,9 +17,16 @@ import FollowCard from "components/FollowCard/FollowCard";
 import { REQUEST_STATE } from "configs";
 import FullComponentLoading from "components/Loading/FullComponentLoading";
 import { useTranslation } from "react-i18next";
-import { Tabs } from "antd";
-import { BorderInnerOutlined, FlagOutlined } from "@ant-design/icons";
+import {
+  BorderInnerOutlined,
+  FlagOutlined,
+  PlusSquareOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import PostCard from "./PostCard";
+import { AVATAR_DEFAULT } from "../../../../configs";
+import { Tabs, Button, notification } from "antd";
+import PostCreate from "./PostCreate";
 
 const { TabPane } = Tabs;
 const customStyles = {
@@ -39,6 +47,25 @@ const customStyles = {
     animation: "zoominoutsinglefeatured 0.3s ease-out",
   },
 };
+
+const customAddPostStyles = {
+  overlay: {
+    animation: "appear 0.3s linear",
+  },
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    width: "600px",
+    borderRadius: "10px",
+    padding: "0px",
+    border: "1px solid rgba(219,219,219,1)",
+    animation: "zoominoutsinglefeatured 0.3s ease-out",
+  },
+};
 // openModal,
 ReactModal.setAppElement("#root");
 
@@ -49,6 +76,7 @@ function Profile(props) {
   const profile = useSelector((state) => state.profile);
   const [isShowListFollowers, setIsShowListFollowers] = useState(false);
   const [isShowListFollowing, setIsShowListFollowing] = useState(false);
+  const [isShowAddPost, setIsShowAddPost] = useState(false);
 
   function onClickListFollower(userId) {
     dispatch(GET_LIST_FOLLOWER({ userId }));
@@ -70,24 +98,46 @@ function Profile(props) {
     dispatch(UNFOLLOW({ userId }));
   }
 
+  useEffect(() => {
+    if (profile.createPostState === REQUEST_STATE.SUCCESS) {
+      setIsShowAddPost(false);
+      notification.success({
+        message: t("successfull!"),
+        description: t("youCreateAPostSuccessfully!"),
+      });
+      dispatch(RESET_CREATE_POST_STATE());
+    }
+  }, [profile.createPostState, dispatch, t]);
+
   return (
     <div className="profile">
       <Row>
         <Col lg={4} style={{ maxHeight: "250px" }}>
           <div className="profile__avatar flex-center">
-            <img src={user?.avatarUrl} alt="avatar" />
+            <img src={user?.avatarUrl ?? AVATAR_DEFAULT} alt="avatar" />
           </div>
         </Col>
         <Col lg={8}>
           <div className="profile__info">
             <div className="profile__info-box">
               <div className="profile__info-username">{user?.username}</div>
-              <div className="profile__info-edit">
-                <Link to="#">{t("editProfile")}</Link>
-              </div>
-              <div className="profile__info-setting">
-                <i className="profile__info-setting-icon fas fa-tools"></i>
-              </div>
+              {profile.isCurrentUser ? (
+                <>
+                  <div className="profile__info-edit">
+                    <Link to="#">{t("editProfile")}</Link>
+                  </div>
+                  <div className="profile__info-setting">
+                    <i className="profile__info-setting-icon fas fa-tools"></i>
+                  </div>
+                </>
+              ) : (
+                // check xem currentuser co theo doi khong
+                <>
+                  <Button style={{ marginLeft: "10px" }} type="ghost">
+                    {t("inbox")}
+                  </Button>
+                </>
+              )}
             </div>
             <div className="profile__info-box --mid">
               <div className="profile__info-detail">
@@ -132,6 +182,22 @@ function Profile(props) {
                 <p>{user?.bio}</p>
               </div>
             </div>
+            {profile.isCurrentUser ? (
+              <div className="profile__info-box">
+                <Button
+                  type="primary"
+                  className="flex-center"
+                  onClick={() => setIsShowAddPost(true)}
+                >
+                  <PlusSquareOutlined
+                    style={{ fontSize: "18px", marginBottom: "2px" }}
+                  />
+                  <span>{t("addPost")}</span>
+                </Button>
+              </div>
+            ) : (
+              <div></div>
+            )}
           </div>
         </Col>
       </Row>
@@ -245,6 +311,29 @@ function Profile(props) {
               <div style={{ textAlign: "center" }}>{t("nobodyFollowYou")}</div>
             )}
           </ul>
+        </div>
+      </ReactModal>
+
+      <ReactModal
+        isOpen={isShowAddPost}
+        onRequestClose={() => setIsShowAddPost(false)}
+        style={customAddPostStyles}
+      >
+        <div className="profile_followers">
+          <div className="profile_followers-header">
+            <div className="profile_followers-header-text">
+              {t("createNewPost")}
+            </div>
+            <div
+              className="profile_followers-header-close"
+              onClick={() => setIsShowAddPost(false)}
+            >
+              <CloseOutlined />
+            </div>
+          </div>
+          <div className="profileCreatePost">
+            <PostCreate />
+          </div>
         </div>
       </ReactModal>
     </div>

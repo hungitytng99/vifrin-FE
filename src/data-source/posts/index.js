@@ -1,7 +1,7 @@
 import { REQUEST_STATE } from "configs";
 import { DELETE, GET, POST, PUT } from "data-source/fetch";
 
-export const apiPostPost = async (params) => {
+export const apiCreatePost = async (params) => {
   try {
     const response = await POST("/posts/", params, {
       isFullPath: false,

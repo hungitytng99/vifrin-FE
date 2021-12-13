@@ -15,6 +15,9 @@ import {
   GET_DETAIL_POST_BY_ID_SUCCESS,
   RESET_DETAIL_PROFILE_STATE,
   CHECK_ISCURRENT_USER,
+  CREATE_POST_SUCCESS,
+  CREATE_POST,
+  RESET_CREATE_POST_STATE,
 } from "./action";
 
 const defaultState = {
@@ -28,6 +31,7 @@ const defaultState = {
   getListFollowerState: null,
   getListFollowingState: null,
   getListPostByUsernameState: null,
+  createPostState: null,
   followState: null,
   unFollowState: null,
   deleteFollowState: null,
@@ -35,11 +39,11 @@ const defaultState = {
 
 export default function profileReducer(state = defaultState, action) {
   switch (action.type) {
-    case CHECK_ISCURRENT_USER().type:  {
+    case CHECK_ISCURRENT_USER().type: {
       return {
         ...state,
         isCurrentUser: action.payload,
-      }
+      };
     }
     case GET_LIST_FOLLOWER().type: {
       return {
@@ -85,6 +89,27 @@ export default function profileReducer(state = defaultState, action) {
         followState: REQUEST_STATE.SUCCESS,
       };
     }
+    case CREATE_POST().type: {
+      return {
+        ...state,
+        createPostState: REQUEST_STATE.REQUEST,
+      };
+    }
+    case CREATE_POST_SUCCESS().type: {
+      return {
+        ...state,
+        createPostState: REQUEST_STATE.SUCCESS,
+        listPostByUsername: [action.payload, ...state.listPostByUsername],
+      };
+    }
+
+    case RESET_CREATE_POST_STATE().type: {
+      return {
+        ...state,
+        createPostState: null,
+      }
+    }
+
     case DELETE_FOLLOW_SUCCESS().type: {
       return {
         ...state,
@@ -104,7 +129,7 @@ export default function profileReducer(state = defaultState, action) {
         getListPostByUsernameState: REQUEST_STATE.SUCCESS,
       };
     }
-    
+
     case GET_DETAIL_POST_BY_ID().type: {
       return {
         ...state,
@@ -122,10 +147,10 @@ export default function profileReducer(state = defaultState, action) {
 
     case RESET_DETAIL_PROFILE_STATE().type: {
       return {
-        ...state, 
+        ...state,
         detailPost: null,
         getDetailPostState: null,
-      }
+      };
     }
 
     case RESET_PROFILE_STATE().type: {
@@ -133,7 +158,6 @@ export default function profileReducer(state = defaultState, action) {
         ...defaultState,
       };
     }
-
 
     default:
       return state;
