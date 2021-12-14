@@ -11,7 +11,8 @@ import { REQUEST_STATE } from "../../../../configs";
 
 const { TextArea } = Input;
 
-function PostEdit({ post }) {
+function PostEdit({ post, user }) {
+  console.log('user: ', user);
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const [postImages, setPostImages] = useState([...(post?.medias ?? [])]);
@@ -34,7 +35,7 @@ function PostEdit({ post }) {
   return (
     <div className="postEdit">
       <div className="postEditUser">
-        <UserCard sizeAvatar={36} hasAction={false} />
+        <UserCard user={user} sizeAvatar={36} hasAction={false} />
       </div>
       <div className="postEditPostForm">
         <Form

@@ -55,8 +55,8 @@ function Login() {
           }}
           initialValues={{
             remember: true,
-            username: "anhtrt4",
-            password: "12345",
+            username: "hung",
+            password: "123456",
           }}
           onFinish={onFinish}
           autoComplete="off"

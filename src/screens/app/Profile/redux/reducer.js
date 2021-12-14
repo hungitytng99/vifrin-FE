@@ -115,7 +115,10 @@ export default function profileReducer(state = defaultState, action) {
       return {
         ...state,
         createPostState: REQUEST_STATE.SUCCESS,
-        listPostByUsername: [action.payload, ...state.listPostByUsername],
+        listPostByUsername: sortImagesById([
+          action.payload,
+          ...state.listPostByUsername,
+        ]),
       };
     }
     case EDIT_POST().type: {
@@ -140,7 +143,6 @@ export default function profileReducer(state = defaultState, action) {
         ),
       };
     }
-
     case DELETE_POST().type: {
       return {
         ...state,
@@ -219,7 +221,7 @@ export default function profileReducer(state = defaultState, action) {
       return {
         ...state,
         uploadAvatarState: REQUEST_STATE.REQUEST,
-      }
+      };
     }
 
     case UPDATE_AVATAR_SUCCESS().type: {
@@ -231,7 +233,7 @@ export default function profileReducer(state = defaultState, action) {
           avatarUrl: avatarUrl,
         },
         uploadAvatarState: REQUEST_STATE.SUCCESS,
-      }
+      };
     }
 
     case GET_DETAIL_USER_BY_USERNAME().type: {
@@ -251,9 +253,9 @@ export default function profileReducer(state = defaultState, action) {
       return {
         ...state,
         getDetailUserState: null,
-      }
+      };
     }
-    
+
     case RESET_PROFILE_STATE().type: {
       return {
         ...defaultState,

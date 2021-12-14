@@ -11,8 +11,9 @@ import { REQUEST_STATE } from "../../../../configs";
 
 const { TextArea } = Input;
 
-function PostCreate(props) {
+function PostCreate() {
   const [form] = Form.useForm();
+  const user = useSelector((state) => state.user.profile);
   const dispatch = useDispatch();
   const [postImages, setPostImages] = useState([]);
   const { t } = useTranslation();
@@ -31,10 +32,11 @@ function PostCreate(props) {
   function handleChangeUploadImage({ fileList }) {
     setPostImages(fileList);
   }
+
   return (
     <div className="postCreate">
       <div className="postCreateUser">
-        <UserCard sizeAvatar={36} hasAction={false} />
+        <UserCard user={user} sizeAvatar={36} hasAction={false} />
       </div>
       <div className="postCreatePostForm">
         <Form

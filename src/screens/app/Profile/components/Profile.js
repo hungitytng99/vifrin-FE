@@ -27,7 +27,7 @@ import {
 } from "@ant-design/icons";
 import PostCard from "./PostCard";
 import { AVATAR_DEFAULT } from "../../../../configs";
-import { Tabs, Button, notification, Spin, Dropdown, Menu, Input } from "antd";
+import { Tabs, Button, notification, Spin, Dropdown, Menu } from "antd";
 import PostCreate from "./PostCreate";
 
 const { TabPane } = Tabs;
@@ -206,8 +206,8 @@ function Profile(props) {
               </div>
               <div className="profile__info-box --mid">
                 <div className="profile__info-detail">
-                  <span>{profile.profileUserByUsername?.postsCount}</span>
-                  {profile.profileUserByUsername?.postsCount > 1 ? (
+                  <span>{profile.listPostByUsername?.length}</span>
+                  {profile.listPostByUsername?.length > 1 ? (
                     <p>{t("posts")}</p>
                   ) : (
                     <p>{t("post")}</p>
@@ -421,7 +421,7 @@ function Profile(props) {
               </div>
             </div>
             <div className="profileCreatePost">
-              <PostCreate />
+              <PostCreate/>
             </div>
           </div>
         </ReactModal>
