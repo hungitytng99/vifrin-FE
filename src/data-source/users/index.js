@@ -207,6 +207,24 @@ export const apiGetListFollowing = async (id) => {
   }
 };
 
+export const apiGetListSuggestion = async (params) => {
+  try {
+    const response = await GET("/users/suggestions", params, {
+      isFullPath: false,
+    });
+    return {
+      state: REQUEST_STATE.SUCCESS,
+      data: response,
+    };
+  } catch (error) {
+    console.log("error", error);
+    return {
+      state: REQUEST_STATE.ERROR,
+      message: error.message,
+    };
+  }
+};
+
 // code 1001: email ton tai
 // code 1002: username da ton tai
 export const apiSignUp = async (params) => {

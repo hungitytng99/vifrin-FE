@@ -9,7 +9,6 @@ import "./Header.sass";
 import { I18LANGUAGE } from "configs";
 import { useTranslation } from "react-i18next";
 import i18n from "i18next";
-import { Tooltip } from "antd";
 
 function Header() {
   const [isSelectItem, setIsSelectItem] = useState(false);
