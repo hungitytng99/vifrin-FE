@@ -160,24 +160,25 @@ function Profile(props) {
           <Col lg={4} style={{ maxHeight: "250px" }}>
             <div className="profile__avatar flex-center">
               {profile.getDetailUserState === REQUEST_STATE.SUCCESS &&
-              (profile.isCurrentUser ? (
-                <Dropdown overlay={menu} trigger={["click"]}>
+                (profile.isCurrentUser ? (
+                  <Dropdown overlay={menu} trigger={["click"]}>
+                    <img
+                      className="profileAvatarImg"
+                      src={
+                        profile.profileUserByUsername?.avatarUrl ??
+                        AVATAR_DEFAULT
+                      }
+                      alt="avatar"
+                    />
+                  </Dropdown>
+                ) : (
                   <img
-                    className="profileAvatarImg"
                     src={
                       profile.profileUserByUsername?.avatarUrl ?? AVATAR_DEFAULT
                     }
                     alt="avatar"
                   />
-                </Dropdown>
-              ) : (
-                <img
-                  src={
-                    profile.profileUserByUsername?.avatarUrl ?? AVATAR_DEFAULT
-                  }
-                  alt="avatar"
-                />
-              ))}
+                ))}
             </div>
           </Col>
           <Col lg={8}>
@@ -421,7 +422,7 @@ function Profile(props) {
               </div>
             </div>
             <div className="profileCreatePost">
-              <PostCreate/>
+              <PostCreate />
             </div>
           </div>
         </ReactModal>

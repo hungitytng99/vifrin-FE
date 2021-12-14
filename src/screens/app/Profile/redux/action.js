@@ -278,3 +278,51 @@ export function DELETE_POST_FAIL(payload) {
     payload,
   };
 }
+
+export function GET_LIST_COMMENT_BY_POST(payload) {
+  return {
+    type: "GET_LIST_COMMENT_BY_POST",
+    payload,
+  };
+}
+
+export function GET_LIST_COMMENT_BY_POST_SUCCESS(payload) {
+  return {
+    type: "GET_LIST_COMMENT_BY_POST_SUCCESS",
+    payload,
+  };
+}
+export function GET_LIST_COMMENT_BY_POST_FAIL(payload) {
+  return {
+    type: "GET_LIST_COMMENT_BY_POST_FAIL",
+    payload,
+  };
+}
+
+
+export function RESET_LIST_COMMENT_BY_POST(payload) {
+  return {
+    type: "RESET_LIST_COMMENT_BY_POST",
+    payload,
+  };
+}
+
+export function CREATE_NEW_COMMENT(payload) {
+  return {
+    type: "CREATE_NEW_COMMENT",
+    payload,
+  };
+}
+
+export function CREATE_NEW_COMMENT_SUCCESS(payload) {
+  return {
+    type: "CREATE_NEW_COMMENT_SUCCESS",
+    payload,
+  };
+}
+export function CREATE_NEW_COMMENT_FAIL(payload) {
+  return {
+    type: "CREATE_NEW_COMMENT_FAIL",
+    payload,
+  };
+}

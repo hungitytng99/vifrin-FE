@@ -67,3 +67,6 @@ export const MONTHNAMES = [
   "november",
   "december",
 ];
+
+// Socket
+export const COMMENT_SOCKET_URL = "http://localhost:9006/vifrin";

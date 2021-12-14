@@ -56,20 +56,20 @@ function Header() {
             </li> */}
             {appRoutes.map((route, index) => {
               return (
-                <>
+                <div key={index} >
                   {route.isShowOnNav && (
-                    <li key={index} className="header-control__item">
-                      <Link to={route.path}>
+                    <li style={{marginLeft: '10px'}}>
+                      <Link to={route.path} className="header-control__item">
                         {history.location.pathname === route.path
                           ? route.activeIcon
                           : route.inActiveIcon}
                       </Link>
                     </li>
                   )}
-                </>
+                </div>
               );
             })}
-            <li className="header-control__item">
+            <li className="header-control__item" style={{marginLeft: '10px'}}>
               <div className="header__dropdown">
                 {isSelectItem ? (
                   <div

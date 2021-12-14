@@ -1,5 +1,6 @@
 import { call, put, takeLatest } from "@redux-saga/core/effects";
 import { REQUEST_STATE } from "configs";
+import { apiCreateComment, apiGetListCommentByPost } from "data-source/comment";
 import {
   apiDeletePost,
   apiPostsByUsername,
@@ -39,6 +40,10 @@ import {
   GET_DETAIL_USER_BY_USERNAME_SUCCESS,
   UPDATE_AVATAR,
   UPDATE_AVATAR_SUCCESS,
+  GET_LIST_COMMENT_BY_POST,
+  CREATE_NEW_COMMENT,
+  CREATE_NEW_COMMENT_SUCCESS,
+  GET_LIST_COMMENT_BY_POST_SUCCESS,
 } from "./action";
 
 function* getListFollowers({ type, payload }) {
@@ -220,6 +225,30 @@ function* updateAvatar({ type, payload }) {
   }
 }
 
+function* getListCommentByPost({ type, payload }) {
+  const { id } = payload;
+  try {
+    const response = yield call(apiGetListCommentByPost, id);
+    if (response.state === REQUEST_STATE.SUCCESS) {
+      yield put(GET_LIST_COMMENT_BY_POST_SUCCESS({ comments: response.data ?? [] }));
+    }
+  } catch (error) {
+    console.log("error: ", error);
+  }
+}
+
+function* createNewComment({ type, payload }) {
+  const { comment } = payload;
+  try {
+    const response = yield call(apiCreateComment, comment);
+    if (response.state === REQUEST_STATE.SUCCESS) {
+      yield put(CREATE_NEW_COMMENT_SUCCESS(response.data));
+    }
+  } catch (error) {
+    console.log("error: ", error);
+  }
+}
+
 export default function* userSaga() {
   yield takeLatest(GET_LIST_FOLLOWER().type, getListFollowers);
   yield takeLatest(GET_LIST_FOLLOWING().type, getListFollowing);
@@ -232,4 +261,6 @@ export default function* userSaga() {
   yield takeLatest(EDIT_POST().type, editPost);
   yield takeLatest(GET_DETAIL_USER_BY_USERNAME().type, getDetailUserByUsername);
   yield takeLatest(UPDATE_AVATAR().type, updateAvatar);
+  yield takeLatest(GET_LIST_COMMENT_BY_POST().type, getListCommentByPost);
+  yield takeLatest(CREATE_NEW_COMMENT().type, createNewComment);
 }

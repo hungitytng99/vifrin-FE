@@ -1,0 +1,47 @@
+.postDetail
+    position: relative
+    width: 100%
+    aspect-ratio: 1 / 1
+    &Img
+        width: 100%
+        height: 100%
+        object-fit: cover
+        &Box
+            background-color: black
+    &Comment
+        display: flex
+        flex-direction: column
+        max-height: 100%
+        &Box
+            display: flex
+            flex-direction: column
+            flex: 1
+            overflow: hidden
+            max-height: 100%
+            position: relative
+
+        &List
+            flex: 1
+            padding: 0px 10px 0px 0px
+            overflow-y: auto
+            &::-webkit-scrollbar
+                width: 6px
+            &::-webkit-scrollbar-thumb
+                background: rgba(0,0, 0,0.2 )
+                border-radius: 50px
+            &::-webkit-scrollbar-track
+                background: #e2e2e2
+    &Interactive
+        padding: 0px 10px
+    &Status
+        display: flex
+        &Username
+            font-weight: bold
+            margin-right: 5px
+            &:hover
+                text-decoration: underline
+    &No
+        &Comment
+            text-align: center
+            margin-top: 5px
+            color: #535353

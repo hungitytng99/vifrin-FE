@@ -29,6 +29,13 @@ import {
   RESET_DETAIL_USER_BY_USERNAME,
   UPDATE_AVATAR_SUCCESS,
   UPDATE_AVATAR,
+  GET_LIST_COMMENT_BY_POST,
+  GET_LIST_COMMENT_BY_POST_SUCCESS,
+  GET_LIST_COMMENT_BY_POST_FAIL,
+  RESET_LIST_COMMENT_BY_POST,
+  CREATE_NEW_COMMENT,
+  CREATE_NEW_COMMENT_SUCCESS,
+  CREATE_NEW_COMMENT_FAIL,
 } from "./action";
 
 const defaultState = {
@@ -38,7 +45,9 @@ const defaultState = {
   listFollowers: [],
   listFollowing: [],
   profileUserByUsername: null,
+  listCommentByPost: [],
 
+  getListCommentByPostState: null,
   getDetailPostState: null,
   getDetailUserState: null,
   getListFollowerState: null,
@@ -51,6 +60,7 @@ const defaultState = {
   unFollowState: null,
   deleteFollowState: null,
   uploadAvatarState: null,
+  createCommentState: null,
 };
 
 export default function profileReducer(state = defaultState, action) {
@@ -259,6 +269,52 @@ export default function profileReducer(state = defaultState, action) {
     case RESET_PROFILE_STATE().type: {
       return {
         ...defaultState,
+      };
+    }
+
+    case GET_LIST_COMMENT_BY_POST().type: {
+      return {
+        ...state,
+        getListCommentByPostState: REQUEST_STATE.REQUEST,
+      };
+    }
+    case GET_LIST_COMMENT_BY_POST_SUCCESS().type: {
+      const { comments } = action.payload;
+      return {
+        ...state,
+        getListCommentByPostState: REQUEST_STATE.SUCCESS,
+        listCommentByPost: comments,
+      };
+    }
+    case GET_LIST_COMMENT_BY_POST_FAIL().type: {
+      return {
+        ...state,
+        getListCommentByPostState: REQUEST_STATE.ERROR,
+      };
+    }
+
+    case RESET_LIST_COMMENT_BY_POST().type: {
+      return {
+        ...state,
+        listCommentByPost: [],
+      };
+    }
+    case CREATE_NEW_COMMENT().type: {
+      return {
+        ...state,
+        createCommentState: REQUEST_STATE.REQUEST,
+      };
+    }
+    case CREATE_NEW_COMMENT_SUCCESS().type: {
+      return {
+        ...state,
+        createCommentState: REQUEST_STATE.SUCCESS,
+      };
+    }
+    case CREATE_NEW_COMMENT_FAIL().type: {
+      return {
+        ...state,
+        createCommentState: REQUEST_STATE.ERROR,
       };
     }
 

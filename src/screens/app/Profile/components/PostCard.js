@@ -11,7 +11,7 @@ import {
 import ReactModal from "react-modal";
 import { Modal } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { DELETE_POST, RESET_DETAIL_PROFILE_STATE } from "../redux/action";
+import { DELETE_POST, RESET_DETAIL_PROFILE_STATE, RESET_LIST_COMMENT_BY_POST } from "../redux/action";
 import { useTranslation } from "react-i18next";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import PostEdit from "./PostEdit";
@@ -87,10 +87,11 @@ function PostCard({ post }) {
   useEffect(() => {
     if (isShowDetailPost) {
       document.body.style.overflow = "hidden";
+      dispatch(RESET_LIST_COMMENT_BY_POST());
     } else {
       document.body.style.overflow = "auto";
     }
-  }, [isShowDetailPost]);
+  }, [isShowDetailPost, dispatch]);
 
   useEffect(() => {
     if (profile.editPostState === REQUEST_STATE.SUCCESS) {
@@ -135,7 +136,7 @@ function PostCard({ post }) {
         onRequestClose={handleCloseDetailModal}
         style={customStyles}
       > 
-        <PostDetail post={post}/>
+        <PostDetail post={post} setIsShowDetailPost={setIsShowDetailPost}/>
         
       </ReactModal>
       <ReactModal

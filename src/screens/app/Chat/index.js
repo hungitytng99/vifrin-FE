@@ -46,7 +46,7 @@ function ChatPage({ match, history }) {
                   active={conversation.active}
                 >
                   <Avatar
-                    src={conversation.senderAvatar}
+                    src="https://scontent.fhan3-5.fna.fbcdn.net/v/t1.6435-9/118420684_812099626203038_8141930138392523102_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=N4Dib9wxMHAAX_1W1mg&tn=HOJgyBgBjqQeoLu6&_nc_ht=scontent.fhan3-5.fna&oh=00_AT_PlqjHYesJqjcwd5WlA4-KOvE6LHoyhXMTShayXhWBSQ&oe=61DD1E9D"
                     name={conversation.name}
                     status="available"
                   />
@@ -58,7 +58,7 @@ function ChatPage({ match, history }) {
         <ChatContainer>
           <ConversationHeader>
             <ConversationHeader.Back />
-            <Avatar src={emilyIco} name="Emily" />
+            <Avatar src="https://scontent.fhan3-5.fna.fbcdn.net/v/t1.6435-9/118420684_812099626203038_8141930138392523102_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=N4Dib9wxMHAAX_1W1mg&tn=HOJgyBgBjqQeoLu6&_nc_ht=scontent.fhan3-5.fna&oh=00_AT_PlqjHYesJqjcwd5WlA4-KOvE6LHoyhXMTShayXhWBSQ&oe=61DD1E9D" name="Emily" />
             <ConversationHeader.Content
               userName="Emily"
               info="Active 10 mins ago"

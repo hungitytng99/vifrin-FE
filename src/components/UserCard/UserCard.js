@@ -10,7 +10,6 @@ function UserCard(props) {
     onClickCardAction = () => {},
     hasAction = true,
   } = props;
-  console.log(user);
   return (
     <div className="user-card">
       <Link to={`/profile/${user?.username}`} className="user-card__avatar">

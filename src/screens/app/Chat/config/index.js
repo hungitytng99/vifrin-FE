@@ -35,7 +35,7 @@ const LIST_MESSAGE = [
     direction: "incoming",
     position: "single",
     avatar:
-      "https://scontent.fhan3-5.fna.fbcdn.net/v/t1.6435-9/118420684_812099626203038_8141930138392523102_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=Ug_BXzSdVqcAX_qzBkp&tn=HOJgyBgBjqQeoLu6&_nc_ht=scontent.fhan3-5.fna&oh=2a4fe3e754313d1c2f8b693a2ff570a8&oe=61B5919D",
+      "https://scontent.fhan3-5.fna.fbcdn.net/v/t1.6435-9/118420684_812099626203038_8141930138392523102_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=N4Dib9wxMHAAX_1W1mg&tn=HOJgyBgBjqQeoLu6&_nc_ht=scontent.fhan3-5.fna&oh=00_AT_PlqjHYesJqjcwd5WlA4-KOvE6LHoyhXMTShayXhWBSQ&oe=61DD1E9D",
   },
   {
     id: 2,
@@ -53,7 +53,7 @@ const LIST_MESSAGE = [
     direction: "incoming",
     position: "single",
     avatar:
-      "https://scontent.fhan3-5.fna.fbcdn.net/v/t1.6435-9/118420684_812099626203038_8141930138392523102_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=Ug_BXzSdVqcAX_qzBkp&tn=HOJgyBgBjqQeoLu6&_nc_ht=scontent.fhan3-5.fna&oh=2a4fe3e754313d1c2f8b693a2ff570a8&oe=61B5919D",
+      "https://scontent.fhan3-5.fna.fbcdn.net/v/t1.6435-9/118420684_812099626203038_8141930138392523102_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=N4Dib9wxMHAAX_1W1mg&tn=HOJgyBgBjqQeoLu6&_nc_ht=scontent.fhan3-5.fna&oh=00_AT_PlqjHYesJqjcwd5WlA4-KOvE6LHoyhXMTShayXhWBSQ&oe=61DD1E9D",
   },
 ];
 
