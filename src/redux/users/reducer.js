@@ -5,12 +5,18 @@ import {
   LOGIN_FAIL,
   LOGIN_SUCCESS,
   logout,
+  REGISTER,
+  REGISTER_FAIL,
+  REGISTER_SUCCESS,
   RESET_AUTH_STATE,
 } from "./action";
 
 const defaultState = {
   profile: null,
   authState: null,
+  registerResponse: {
+    state: null
+  },
 };
 
 export default function userReducer(state = defaultState, action) {
@@ -32,6 +38,24 @@ export default function userReducer(state = defaultState, action) {
       return {
         ...state,
         authState: REQUEST_STATE.ERROR,
+      };
+    }
+    case REGISTER().type: {
+      return {
+        ...state,
+        registerResponse: { state: REQUEST_STATE.REQUEST },
+      };
+    }
+    case REGISTER_SUCCESS().type: {
+      return {
+        ...state,
+        registerResponse: action.payload,
+      };
+    }
+    case REGISTER_FAIL().type: {
+      return {
+        ...state,
+        registerResponse: action.payload,
       };
     }
     case RESET_AUTH_STATE().type: {

@@ -36,6 +36,11 @@ export const AUTH_STATUS = {
 };
 
 export const I18LANGUAGE = 'i18nextLng';
+export const REMEMBER_ACCOUNT_KEY = 'rememberAccount';
+export const REGISTER_ACCOUNT_EMAIL_EXIST = 'yourEmailAlreadyExist';
+export const REGISTER_ACCOUNT_USERNAME_EXIST = 'yourUsernameAlreadyExist';
+export const REGISTER_ACCOUNT_USERNAME_SUCCESS= 'yourAccountHaveBeenCreated';
+export const REGISTER_ACCOUNT_DEFAULT_MESSAGE = 'cannotExcuteActionAtThisTime';
 
 export const MONTHNAMES = ["january", "february", "march", "april", "may", "june",
 "july", "august", "september", "october", "november", "december"

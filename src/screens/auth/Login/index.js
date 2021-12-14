@@ -6,37 +6,49 @@ import { Link, useHistory } from "react-router-dom";
 import { isEmptyValue } from "utils/checkType";
 import { LOGIN, RESET_AUTH_STATE } from "redux/users/action";
 import logo from "assets/images/logo.svg";
-import { REQUEST_STATE } from "configs";
+import { REMEMBER_ACCOUNT_KEY, REQUEST_STATE } from "configs";
+import { useTranslation } from "react-i18next";
 const queryString = require("query-string");
 
 function Login() {
-  const authState = useSelector((state) => state.user);
+  const { t } = useTranslation();
+  const user = useSelector((state) => state.user);
   const history = useHistory();
   const dispatch = useDispatch();
   const onFinish = (values) => {
-    dispatch(LOGIN(queryString.stringify(values)));
+    dispatch(
+      LOGIN({ account: queryString.stringify(values), originalAccount: values })
+    );
   };
+
+  function getInitialValue() {
+    if (user.registerResponse.data) {
+      localStorage.removeItem(REMEMBER_ACCOUNT_KEY);
+      return {
+        username: user?.registerResponse?.data?.username,
+      };
+    }
+    return JSON.parse(localStorage.getItem(REMEMBER_ACCOUNT_KEY));
+  }
 
   useEffect(() => {
     if (
       !isEmptyValue(
-        authState.profile?.access_token &&
-          authState.authState === REQUEST_STATE.SUCCESS
+        user.profile?.access_token && user.user === REQUEST_STATE.SUCCESS
       )
     ) {
       dispatch(RESET_AUTH_STATE());
       history.push("/");
     }
 
-    if (authState.authState === REQUEST_STATE.ERROR) {
+    if (user.authState === REQUEST_STATE.ERROR) {
       notification.error({
-        message: "Đăng nhập thất bại",
-        description: "Tên tài khoản hoặc mật khẩu không chính xác"
+        message: t("fail"),
+        description: t("yourUsernameOrPasswordIsInvalid"),
       });
       dispatch(RESET_AUTH_STATE());
     }
-  }, [authState, history, dispatch]);
-
+  }, [user, history, dispatch, t]);
   return (
     <div className="login" style={{ display: "flex", flexDirection: "column" }}>
       <img
@@ -44,31 +56,28 @@ function Login() {
         src={logo}
         alt="logo"
       />
-      <div className="LOGIN__form">
-        <Form
-          name="basic"
-          labelCol={{
-            span: 8,
-          }}
-          wrapperCol={{
-            span: 16,
-          }}
-          initialValues={{
-            remember: true,
-            username: "hung",
-            password: "123456",
-          }}
-          onFinish={onFinish}
-          autoComplete="off"
-        >
+      <Form
+        name="basic"
+        labelCol={{
+          span: 8,
+        }}
+        wrapperCol={{
+          span: 16,
+        }}
+        initialValues={getInitialValue()}
+        onFinish={onFinish}
+        autoComplete="off"
+        className="loginForm"
+      >
+        <div className="loginWrapper">
           <Form.Item
-            label="Username"
+            label={t("username")}
             name="username"
             style={{ marginBottom: "12px" }}
             rules={[
               {
                 required: true,
-                message: "Please input your username!",
+                message: t("pleaseEnterYourUsername"),
               },
             ]}
           >
@@ -76,55 +85,56 @@ function Login() {
           </Form.Item>
 
           <Form.Item
-            label="Password"
+            label={t("password")}
             name="password"
             style={{ marginBottom: "12px" }}
             rules={[
               {
                 required: true,
-                message: "Please input your password!",
+                message: t("pleaseEnterYourPassword"),
               },
             ]}
           >
             <Input.Password />
           </Form.Item>
-
           <Form.Item
             name="remember"
             valuePropName="checked"
-            style={{ marginBottom: "4px" }}
-            wrapperCol={{
-              offset: 9,
-              span: 10,
-            }}
-          >
-            <Checkbox>Remember me</Checkbox>
-          </Form.Item>
-          <div
             style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              marginBottom: "8px",
+              marginBottom: "4px",
+              marginLeft: "20px",
             }}
-          >
-            <span className="LOGIN__no-account"> Don't have account? </span>
-            <Link className="LOGIN__sign-up" to="/auth/register">
-              Sign up now!
-            </Link>
-          </div>
-
-          <Form.Item
             wrapperCol={{
-              offset: 10,
-              span: 16,
+              span: 24,
             }}
           >
-            <Button type="primary" htmlType="submit">
-              Login
+            <Checkbox>{t("rememberMe")}</Checkbox>
+          </Form.Item>
+          <Form.Item
+            style={{ marginLeft: "20px" }}
+            wrapperCol={{
+              span: 24,
+            }}
+          >
+            <Button style={{ width: "100%" }} type="primary" htmlType="submit">
+              {t("login")}
             </Button>
           </Form.Item>
-        </Form>
+        </div>
+      </Form>
+      <div className="loginRegister">
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <span className="login__no-account"> {t("dontHaveAccount?")} </span>
+          <Link className="login__sign-up" to="/auth/register">
+            {t("signUpNow")}
+          </Link>
+        </div>
       </div>
     </div>
   );

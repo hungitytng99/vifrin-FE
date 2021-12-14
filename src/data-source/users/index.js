@@ -1,5 +1,11 @@
 import { DELETE, GET, POST, PUT } from "data-source/fetch.js";
-import { REQUEST_STATE } from "configs/index.js";
+import {
+  REGISTER_ACCOUNT_DEFAULT_MESSAGE,
+  REGISTER_ACCOUNT_EMAIL_EXIST,
+  REGISTER_ACCOUNT_USERNAME_EXIST,
+  REGISTER_ACCOUNT_USERNAME_SUCCESS,
+  REQUEST_STATE,
+} from "configs/index.js";
 
 export const apiAddUser = async (params) => {
   try {
@@ -201,6 +207,8 @@ export const apiGetListFollowing = async (id) => {
   }
 };
 
+// code 1001: email ton tai
+// code 1002: username da ton tai
 export const apiSignUp = async (params) => {
   try {
     const response = await POST("/auth/register", params, {
@@ -209,13 +217,30 @@ export const apiSignUp = async (params) => {
     return {
       state: REQUEST_STATE.SUCCESS,
       data: response.data,
+      message: REGISTER_ACCOUNT_USERNAME_SUCCESS,
     };
   } catch (error) {
     console.log("error", error);
-    return {
-      state: REQUEST_STATE.ERROR,
-      message: error.message,
-    };
+    switch (error.code) {
+      case 1001:
+        return {
+          state: REQUEST_STATE.ERROR,
+          data: error.data,
+          message: REGISTER_ACCOUNT_EMAIL_EXIST,
+        };
+      case 1002:
+        return {
+          state: REQUEST_STATE.ERROR,
+          data: error.data,
+          message: REGISTER_ACCOUNT_USERNAME_EXIST,
+        };
+      default:
+        return {
+          state: REQUEST_STATE.ERROR,
+          data: error.data,
+          message: REGISTER_ACCOUNT_DEFAULT_MESSAGE,
+        };
+    }
   }
 };
 
