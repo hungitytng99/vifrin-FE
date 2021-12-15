@@ -38,20 +38,26 @@ export const LANGUAGES = {
   EN: "en",
   VI: "vi",
 };
-// Key store in localStorage
+// Constant
 export const I18LANGUAGE = "i18nextLng";
 export const REMEMBER_ACCOUNT_KEY = "rememberAccount";
 export const BEEN_ALERT_UPDATE_PROFILE = "isAlertUpdateProfile";
+export const SENDING_REQUEST_KEY = "sending..."; // t
+export const SENDING_ERROR_KEY = "sendingError"; // t
+export const SENDING_SUCCESS_KEY = "sendingSuccess";
+
+
+
 // Image default
 export const AVATAR_DEFAULT =
   "https://vifrin.s3.ap-southeast-1.amazonaws.com/vifrin_upload_test/avatar-default.png";
 export const IMAGE_DEFAULT =
   "https://vifrin.s3.ap-southeast-1.amazonaws.com/vifrin_upload_test/images.jpeg";
 // For language
-export const REGISTER_ACCOUNT_EMAIL_EXIST = "yourEmailAlreadyExist";
-export const REGISTER_ACCOUNT_USERNAME_EXIST = "yourUsernameAlreadyExist";
-export const REGISTER_ACCOUNT_USERNAME_SUCCESS = "yourAccountHaveBeenCreated";
-export const REGISTER_ACCOUNT_DEFAULT_MESSAGE = "cannotExcuteActionAtThisTime";
+export const REGISTER_ACCOUNT_EMAIL_EXIST = "yourEmailAlreadyExist"; // t
+export const REGISTER_ACCOUNT_USERNAME_EXIST = "yourUsernameAlreadyExist"; // t
+export const REGISTER_ACCOUNT_USERNAME_SUCCESS = "yourAccountHaveBeenCreated"; // t
+export const REGISTER_ACCOUNT_DEFAULT_MESSAGE = "cannotExcuteActionAtThisTime"; // t
 
 export const MONTHNAMES = [
   "january",
@@ -66,7 +72,7 @@ export const MONTHNAMES = [
   "october",
   "november",
   "december",
-];
+]; // t
 
 // Socket
 export const COMMENT_SOCKET_URL = "http://localhost:9006/vifrin";

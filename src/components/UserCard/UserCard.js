@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./UserCard.sass";
 import { CloseOutlined } from "@ant-design/icons";
+import { AVATAR_DEFAULT } from "configs";
 
 function UserCard(props) {
   const {
@@ -16,7 +17,7 @@ function UserCard(props) {
         <img
           className="user-card__avatar-img"
           style={{ width: `${sizeAvatar}px`, height: `${sizeAvatar}px` }}
-          src={user?.avatarUrl}
+          src={user?.avatarUrl ?? AVATAR_DEFAULT}
           alt={"aaa"}
         />
       </Link>

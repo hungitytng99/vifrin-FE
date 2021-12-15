@@ -7,6 +7,9 @@ import TimeAgo from "javascript-time-ago";
 import vi from "javascript-time-ago/locale/vi.json";
 import en from "javascript-time-ago/locale/en.json";
 import ReactTimeAgo from "react-time-ago";
+import {
+  SENDING_SUCCESS_KEY,
+} from "configs";
 
 TimeAgo.addDefaultLocale(vi);
 TimeAgo.addLocale(en);
@@ -21,11 +24,13 @@ function Comment({ comment }) {
   const [likedCount, setLikeCount] = useState(likesCount);
   // const [isViewReply, setIsViewReply] = useState(false);
   function handleLiked() {
-    setLikeState(!likeState);
-    if (!likeState) {
-      setLikeCount(likedCount + 1);
-    } else {
-      setLikeCount(likedCount - 1);
+    if (comment.status === SENDING_SUCCESS_KEY) {
+      setLikeState(!likeState);
+      if (!likeState) {
+        setLikeCount(likedCount + 1);
+      } else {
+        setLikeCount(likedCount - 1);
+      }
     }
   }
   // function handleViewReply() {
@@ -72,12 +77,21 @@ function Comment({ comment }) {
       </div>
       <div className="interactive">
         <div className="interactive__item --date">
-          <ReactTimeAgo date={updatedAt} locale="vi" />
+          {comment.status !== SENDING_SUCCESS_KEY ? (
+            t(comment.status)
+          ) : (
+            <ReactTimeAgo date={updatedAt} locale="vi" />
+          )}
         </div>
         {/* <div className="interactive__item --date">{dateCreated}</div> */}
-        <div className="interactive__item --liked">
-          {likedCount > 1 ? likedCount + " " + t('count.like') : likedCount + " " + t('count.likes')}
-        </div>
+        {comment.status === SENDING_SUCCESS_KEY && (
+          <div className="interactive__item --liked">
+            {likedCount > 1
+              ? likedCount + " " + t("count.like")
+              : likedCount + " " + t("count.likes")}
+          </div>
+        )}
+
         {/* <div className="interactive__item --reply">Reply</div> */}
       </div>
       {/* <div className="reply">

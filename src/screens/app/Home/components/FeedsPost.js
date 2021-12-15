@@ -4,7 +4,6 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a lo
 import { Carousel } from "react-responsive-carousel";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import TypeBox from "./TypeBox";
 import ControlModal from "./ControlModal";
 import { CONTROL_LIST, LIST_COMMENT } from "../configs";
 
@@ -143,9 +142,9 @@ function FeedsPost(props) {
           <CommentsList listComments={comment} />
         </div>
       </div>
-      <div className="home__type-box">
+      {/* <div className="home__type-box">
         <TypeBox />
-      </div>
+      </div> */}
     </div>
   );
 }

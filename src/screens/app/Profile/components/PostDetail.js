@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { getMounthAndDay } from "../../../../utils/datetime";
 import { Carousel } from "react-responsive-carousel";
 import UserCard from "components/UserCard/UserCard";
-import TypeBox from "screens/app/Home/components/TypeBox";
 import { Link } from "react-router-dom";
 import { Col, Divider, Row, Spin } from "antd";
 import { useTranslation } from "react-i18next";
@@ -11,20 +10,24 @@ import { useDispatch } from "react-redux";
 import { GET_LIST_COMMENT_BY_POST } from "../redux/action";
 import { useSelector } from "react-redux";
 import Comment from "components/Comment/Comment";
-import { REQUEST_STATE } from "configs";
+import { COMMENT_SOCKET_URL, REQUEST_STATE } from "configs";
 import FullComponentLoading from "components/Loading/FullComponentLoading";
-import './PostDetail.sass'
-
+import "./PostDetail.sass";
+import TypeBox from "./TypeBox";
 function PostDetail({ post, setIsShowDetailPost }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [isLiked, setIsLiked] = useState(false);
   const [isFavourite, setIsFavourite] = useState(false);
   const [numLiked, setNumLiked] = useState(post.likesCount);
-  const [isFocusComment, setIsFocusComment] = useState(false);
+  const [isFocusComment, setIsFocusComment] = useState({ focus: false });
   const comments =
     useSelector((state) => state.profile.listCommentByPost) ?? [];
   const profile = useSelector((state) => state.profile);
+  const user = useSelector((state) => state.user.profile);
+  const bottomListCommentRef = useRef(null);
+  let commentSocketTopic = [`/topic/comment/${post?.id}`];
+  let commentSocket = null;
 
   function handleLikedClick() {
     setIsLiked(!isLiked);
@@ -35,11 +38,20 @@ function PostDetail({ post, setIsShowDetailPost }) {
   }
 
   function handleCommentClick() {
-    setIsFocusComment(true);
+    setIsFocusComment({ focus: true });
   }
   function bootstrapComment(msg) {
     // console.log('clientSocket: ', global.clientSocket);
     // global.clientSocket.sendMessage("/topic/comment/1", msg);
+  }
+
+  const AlwaysScrollToBottom = () => {
+    useEffect(() => bottomListCommentRef.current.scrollIntoView());
+    return <div ref={bottomListCommentRef} />;
+  };
+
+  function scrollToBottomListComment() {
+    bottomListCommentRef.current.scrollIntoView({ behavior: "smooth" });
   }
 
   useEffect(() => {
@@ -62,7 +74,11 @@ function PostDetail({ post, setIsShowDetailPost }) {
             className="postDetailCommentHeader"
             style={{ padding: "10px 10px 0px 10px" }}
           >
-            <UserCard user={post.user} onClickCardAction={() => setIsShowDetailPost(false)}/>
+            <UserCard
+              user={post.user}
+              onClickCardAction={() => setIsShowDetailPost(false)}
+            />
+            <button onClick={scrollToBottomListComment}>CLICK</button>
           </div>
           <Divider style={{ margin: "0px 0px 10px 0px" }} />
           <div className="postDetailCommentBox">
@@ -70,10 +86,15 @@ function PostDetail({ post, setIsShowDetailPost }) {
               <FullComponentLoading />
             ) : (
               <div className="postDetailCommentList">
-                {comments.length === 0 && <div className="postDetailNoComment">{t('thisPostHasNoComment')}</div>}
+                {comments.length === 0 && (
+                  <div className="postDetailNoComment">
+                    {t("thisPostHasNoComment")}
+                  </div>
+                )}
                 {comments.map((comment, index) => {
                   return <Comment key={index} comment={comment} />;
                 })}
+                <AlwaysScrollToBottom />
               </div>
             )}
 
@@ -133,19 +154,17 @@ function PostDetail({ post, setIsShowDetailPost }) {
               )}
             </div>
             <div className="postDetailCommentType">
-              <TypeBox isFocusTextBox={isFocusComment} />
+              <TypeBox
+                user={user}
+                post={post}
+                isFocusTextBox={isFocusComment}
+                scrollToBottomListComment={scrollToBottomListComment}
+              />
             </div>
           </div>
         </Col>
       </Row>
-      {/* <SockJsClient
-          url={COMMENT_SOCKET_URL}
-          topics={[`/topic/comment/${post?.id}`]}
-          onMessage={(msg) => {
-            console.log("MESSAGE", msg);
-          }}
-          ref={(client) => (global.clientSocket = client)}
-        /> */}
+      
     </div>
   );
 }

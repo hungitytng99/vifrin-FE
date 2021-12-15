@@ -11,12 +11,16 @@ import {
 import ReactModal from "react-modal";
 import { Modal } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { DELETE_POST, RESET_DETAIL_PROFILE_STATE, RESET_LIST_COMMENT_BY_POST } from "../redux/action";
+import {
+  DELETE_POST,
+  RESET_DETAIL_PROFILE_STATE,
+  RESET_LIST_COMMENT_BY_POST,
+} from "../redux/action";
 import { useTranslation } from "react-i18next";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import PostEdit from "./PostEdit";
 import { IMAGE_DEFAULT, REQUEST_STATE } from "configs";
-import './PostDetail.sass'
+import "./PostDetail.sass";
 import PostDetail from "./PostDetail";
 
 const customStyles = {
@@ -105,15 +109,25 @@ function PostCard({ post }) {
         className="postCard flex-center"
         onClick={() => setIsShowDetailPost(true)}
       >
-        <img className="postCardImg" src={post.medias[0]?.url ?? IMAGE_DEFAULT} alt="avatar" />
+        <img
+          className="postCardImg"
+          src={post.medias[0]?.url ?? IMAGE_DEFAULT}
+          alt="avatar"
+        />
         <div className="postCardOverlay flex-center">
-          <div className="postCardOverlayAction">
-            <DeleteOutlined
-              onClick={onDeletePost}
-              className="postCardOverlayActionDelete"
-            />
-            <EditOutlined onClick={onEditPost} className="postCardOverlayActionEdit" />
-          </div>
+          {profile.isCurrentUser && (
+            <div className="postCardOverlayAction">
+              <DeleteOutlined
+                onClick={onDeletePost}
+                className="postCardOverlayActionDelete"
+              />
+              <EditOutlined
+                onClick={onEditPost}
+                className="postCardOverlayActionEdit"
+              />
+            </div>
+          )}
+
           <div className="postCardOverlayReaction flex-center">
             <HeartOutlined />
             <span style={{ marginLeft: "6px" }}>
@@ -135,32 +149,29 @@ function PostCard({ post }) {
         isOpen={isShowDetailPost}
         onRequestClose={handleCloseDetailModal}
         style={customStyles}
-      > 
-        <PostDetail post={post} setIsShowDetailPost={setIsShowDetailPost}/>
-        
+      >
+        <PostDetail post={post} setIsShowDetailPost={setIsShowDetailPost} />
       </ReactModal>
       <ReactModal
-          isOpen={isShowEditPost}
-          onRequestClose={() => setIsShowEditPost(false)}
-          style={customEditPostStyles}
-        >
-          <div className="profile_followers">
-            <div className="profile_followers-header">
-              <div className="profile_followers-header-text">
-                {t("editPost")}
-              </div>
-              <div
-                className="profile_followers-header-close"
-                onClick={() => setIsShowEditPost(false)}
-              >
-                <CloseOutlined />
-              </div>
-            </div>
-            <div className="profileCreatePost">
-              <PostEdit post={post} user={post.user}/>
+        isOpen={isShowEditPost}
+        onRequestClose={() => setIsShowEditPost(false)}
+        style={customEditPostStyles}
+      >
+        <div className="profile_followers">
+          <div className="profile_followers-header">
+            <div className="profile_followers-header-text">{t("editPost")}</div>
+            <div
+              className="profile_followers-header-close"
+              onClick={() => setIsShowEditPost(false)}
+            >
+              <CloseOutlined />
             </div>
           </div>
-        </ReactModal>
+          <div className="profileCreatePost">
+            <PostEdit post={post} user={post.user} />
+          </div>
+        </div>
+      </ReactModal>
     </>
   );
 }

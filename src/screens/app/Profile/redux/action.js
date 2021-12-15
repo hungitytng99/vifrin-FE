@@ -217,6 +217,12 @@ export function RESET_CREATE_POST_STATE(payload) {
     payload,
   };
 }
+export function RESET_CREATE_COMMENT_STATE(payload) {
+  return {
+    type: "RESET_CREATE_COMMENT_STATE",
+    payload,
+  };
+}
 
 export function EDIT_POST(payload) {
   return {
@@ -306,6 +312,14 @@ export function RESET_LIST_COMMENT_BY_POST(payload) {
     payload,
   };
 }
+
+export function ADD_COMMENT_FROM_SOCKET(payload) {
+  return {
+    type: "ADD_COMMENT_FROM_SOCKET",
+    payload,
+  };
+}
+
 
 export function CREATE_NEW_COMMENT(payload) {
   return {

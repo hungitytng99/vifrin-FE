@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from "@redux-saga/core/effects";
+import { call, put, takeEvery, takeLatest } from "@redux-saga/core/effects";
 import { REQUEST_STATE } from "configs";
 import { apiCreateComment, apiGetListCommentByPost } from "data-source/comment";
 import {
@@ -230,7 +230,9 @@ function* getListCommentByPost({ type, payload }) {
   try {
     const response = yield call(apiGetListCommentByPost, id);
     if (response.state === REQUEST_STATE.SUCCESS) {
-      yield put(GET_LIST_COMMENT_BY_POST_SUCCESS({ comments: response.data ?? [] }));
+      yield put(
+        GET_LIST_COMMENT_BY_POST_SUCCESS({ comments: response.data ?? [] })
+      );
     }
   } catch (error) {
     console.log("error: ", error);
@@ -242,7 +244,12 @@ function* createNewComment({ type, payload }) {
   try {
     const response = yield call(apiCreateComment, comment);
     if (response.state === REQUEST_STATE.SUCCESS) {
-      yield put(CREATE_NEW_COMMENT_SUCCESS(response.data));
+      yield put(
+        CREATE_NEW_COMMENT_SUCCESS({
+          comment: response.data,
+          commentId: comment.commentId,
+        })
+      );
     }
   } catch (error) {
     console.log("error: ", error);
@@ -262,5 +269,5 @@ export default function* userSaga() {
   yield takeLatest(GET_DETAIL_USER_BY_USERNAME().type, getDetailUserByUsername);
   yield takeLatest(UPDATE_AVATAR().type, updateAvatar);
   yield takeLatest(GET_LIST_COMMENT_BY_POST().type, getListCommentByPost);
-  yield takeLatest(CREATE_NEW_COMMENT().type, createNewComment);
+  yield takeEvery(CREATE_NEW_COMMENT().type, createNewComment);
 }

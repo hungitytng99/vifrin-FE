@@ -1,4 +1,9 @@
-import { REQUEST_STATE } from "configs";
+import {
+  REQUEST_STATE,
+  SENDING_ERROR_KEY,
+  SENDING_REQUEST_KEY,
+  SENDING_SUCCESS_KEY,
+} from "configs";
 import { sortImagesById } from "utils/media";
 import {
   FOLLOW_SUCCESS,
@@ -36,9 +41,12 @@ import {
   CREATE_NEW_COMMENT,
   CREATE_NEW_COMMENT_SUCCESS,
   CREATE_NEW_COMMENT_FAIL,
+  ADD_COMMENT_FROM_SOCKET,
+  RESET_CREATE_COMMENT_STATE,
 } from "./action";
 
 const defaultState = {
+  comment: {},
   isCurrentUser: false,
   listPostByUsername: [],
   detailPost: {},
@@ -283,7 +291,10 @@ export default function profileReducer(state = defaultState, action) {
       return {
         ...state,
         getListCommentByPostState: REQUEST_STATE.SUCCESS,
-        listCommentByPost: comments,
+        listCommentByPost: comments.map((comment) => ({
+          ...comment,
+          status: SENDING_SUCCESS_KEY,
+        })),
       };
     }
     case GET_LIST_COMMENT_BY_POST_FAIL().type: {
@@ -300,21 +311,61 @@ export default function profileReducer(state = defaultState, action) {
       };
     }
     case CREATE_NEW_COMMENT().type: {
+      console.log("NEW COMMENT:: ", action.payload);
+      const { comment } = action.payload;
+      // create comment request
+      const requestComment = {
+        ...comment,
+        likesCount: 0,
+        status: SENDING_REQUEST_KEY,
+      };
       return {
         ...state,
-        createCommentState: REQUEST_STATE.REQUEST,
+        comment: {
+          ...comment,
+          status: SENDING_REQUEST_KEY,
+        },
+        listCommentByPost: [...state.listCommentByPost, requestComment],
       };
     }
-    case CREATE_NEW_COMMENT_SUCCESS().type: {
+    case ADD_COMMENT_FROM_SOCKET().type: {
+      const { comment } = action.payload;
       return {
         ...state,
-        createCommentState: REQUEST_STATE.SUCCESS,
+        listCommentByPost: [...state.listCommentByPost, comment],
+      };
+    }
+
+    case CREATE_NEW_COMMENT_SUCCESS().type: {
+      const { comment, commentId } = action.payload;
+      console.log("newComment: ", comment);
+      return {
+        ...state,
+        comment: {
+          ...comment,
+          status: SENDING_SUCCESS_KEY,
+        },
+        listCommentByPost: state.listCommentByPost.map((cmt) => {
+          if (cmt.commentId === commentId) {
+            return { ...comment, status: SENDING_SUCCESS_KEY };
+          }
+          return cmt;
+        }),
       };
     }
     case CREATE_NEW_COMMENT_FAIL().type: {
       return {
         ...state,
-        createCommentState: REQUEST_STATE.ERROR,
+        comment: {
+          status: SENDING_ERROR_KEY,
+        },
+      };
+    }
+
+    case RESET_CREATE_COMMENT_STATE().type: {
+      return {
+        ...state,
+        comment: {},
       };
     }
 
