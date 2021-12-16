@@ -9,7 +9,7 @@ const homeRoute = {
   index: uuidv4(),
   path: "/",
   exact: true,
-  isPrivate: true,
+  isPrivate: false,
   isShowOnNav: true,
   activeIcon: <HomeFilled />,
   inActiveIcon: <HomeOutlined />,
