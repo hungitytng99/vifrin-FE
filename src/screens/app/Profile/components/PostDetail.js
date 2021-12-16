@@ -78,7 +78,6 @@ function PostDetail({ post, setIsShowDetailPost }) {
               user={post.user}
               onClickCardAction={() => setIsShowDetailPost(false)}
             />
-            <button onClick={scrollToBottomListComment}>CLICK</button>
           </div>
           <Divider style={{ margin: "0px 0px 10px 0px" }} />
           <div className="postDetailCommentBox">

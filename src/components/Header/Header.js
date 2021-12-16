@@ -97,7 +97,7 @@ function Header() {
                         >
                           <Link
                             className="header__dropdown-link"
-                            to={"/profile/" + user.username}
+                            to={"/profile/" + user?.username}
                           >
                             <i className="header__dropdown-item-icon fas fa-user"></i>
                             <div className="header__dropdown-item-text">

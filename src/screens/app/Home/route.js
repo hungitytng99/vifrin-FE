@@ -8,7 +8,7 @@ const homeRoute = {
   index: 1,
   path: "/",
   exact: true,
-  isPrivate: true,
+  isPrivate: false,
   isShowOnNav: true,
   activeIcon: <HomeFilled />,
   inActiveIcon: <HomeOutlined />,
