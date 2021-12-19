@@ -311,7 +311,7 @@ function Profile(props) {
               }
               key="2"
             >
-              Tab 2
+              {t('youDontSaveAnyPosts')}
             </TabPane>
           </Tabs>
         </Row>

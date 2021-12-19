@@ -109,11 +109,19 @@ function PostCard({ post }) {
         className="postCard flex-center"
         onClick={() => setIsShowDetailPost(true)}
       >
-        <img
-          className="postCardImg"
-          src={post.medias[0]?.url ?? IMAGE_DEFAULT}
-          alt="avatar"
-        />
+        {post.medias[0]?.mime.includes("image") ? (
+          <img
+            className="postCardImg"
+            src={post.medias[0]?.url ?? IMAGE_DEFAULT}
+            alt="avatar"
+          />
+        ) : (
+          <video
+            className="postCardImg"
+            src={post.medias[0]?.url}
+          ></video>
+        )}
+
         <div className="postCardOverlay flex-center">
           {profile.isCurrentUser && (
             <div className="postCardOverlayAction">

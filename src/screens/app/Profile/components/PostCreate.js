@@ -120,7 +120,7 @@ function PostCreate() {
               ]}
             >
               <Upload
-                accept="image/*"
+                accept="image/*,video/*"
                 onPreview={handlePreviewProductImage}
                 listType="picture-card"
                 customRequest={({ onSuccess }) => onSuccess("ok")}
