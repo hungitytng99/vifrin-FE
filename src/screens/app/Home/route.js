@@ -1,11 +1,12 @@
 import React, { lazy } from "react";
 import { initModules } from "router";
 import { HomeOutlined, HomeFilled } from "@ant-design/icons";
+import { v4 as uuidv4 } from 'uuid';
 
 export const homeModule = { key: "homepage", path: "Home" };
 
 const homeRoute = {
-  index: 1,
+  index: uuidv4(),
   path: "/",
   exact: true,
   isPrivate: true,

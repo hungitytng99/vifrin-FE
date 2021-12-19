@@ -1,11 +1,12 @@
 import React, { lazy } from "react";
 import { initModules } from "router";
 import { RocketFilled, RocketOutlined } from "@ant-design/icons";
+import { v4 as uuidv4 } from 'uuid';
 
 export const exploreModule = { key: "profile", path: "Profile" };
 
 const exploreRoute = {
-  index: 3,
+  index: uuidv4(),
   path: "/profile/:username",
   label: "Profile",
   exact: true,

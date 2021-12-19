@@ -55,7 +55,7 @@ function PostDetail({ post, setIsShowDetailPost }) {
     <div className="postDetail" style={{ height: "100%" }}>
       <Row style={{ height: "100%" }}>
         <Col lg={16} className="postDetailImgBox flex-center">
-          <Carousel   showThumbs={false} emulateTouch={true}>
+          <Carousel showThumbs={false} emulateTouch={true}>
             {/* Lay min height of images => add to style to fix image view */}
             {post.medias.map((media) => {
               if (media?.mime.includes("image"))
@@ -65,7 +65,12 @@ function PostDetail({ post, setIsShowDetailPost }) {
                   </div>
                 );
               else
-                return <video src={media?.url} controls height="100%"></video>;
+                return (
+                  <div>
+                    <video src={media?.url} controls height="100%"></video>
+                    <div style={{height: '20px'}}></div>
+                  </div>
+                );
             })}
           </Carousel>
         </Col>
