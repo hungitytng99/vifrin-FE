@@ -50,7 +50,7 @@ export const SENDING_SUCCESS_KEY = "sendingSuccess";
 
 // Image default
 export const AVATAR_DEFAULT =
-  "https://vifrin.s3.ap-southeast-1.amazonaws.com/vifrin_upload_test/avatar-default.png";
+  "http://res.cloudinary.com/da4oquz0i/image/upload/v1639910699/zrqjbwkmtvypudv9kctr.png";
 export const IMAGE_DEFAULT =
   "https://vifrin.s3.ap-southeast-1.amazonaws.com/vifrin_upload_test/images.jpeg";
 // For language

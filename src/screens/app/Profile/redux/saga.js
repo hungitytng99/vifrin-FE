@@ -141,6 +141,7 @@ function* createPost({ type, payload }) {
       content: content,
       mediaIds: listImageUpload.map((img) => img.id),
       config: '{"privacy":"audience.public"}',
+      ...payload,
     });
     if (createPostRes.state === REQUEST_STATE.SUCCESS) {
       yield put(CREATE_POST_SUCCESS(createPostRes.data));

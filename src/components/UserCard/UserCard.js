@@ -10,6 +10,7 @@ function UserCard(props) {
     sizeAvatar = 32,
     onClickCardAction = () => {},
     hasAction = true,
+    destination = '',
   } = props;
   return (
     <div className="user-card">
@@ -31,6 +32,7 @@ function UserCard(props) {
           </a>
         </div>
         <div className="user-card__info-description">{user?.fullName}</div>
+        <Link to={`/location/${destination?.id}`} className="user-card__info-description --link">{destination?.name}</Link>
       </div>
       {hasAction && (
         <button

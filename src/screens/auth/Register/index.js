@@ -5,7 +5,7 @@ import { Link, useHistory } from "react-router-dom";
 import { isEmptyValue } from "utils/checkType";
 import { LOGIN, REGISTER, RESET_AUTH_STATE } from "redux/users/action";
 import logo from "assets/images/logo.svg";
-import { REMEMBER_ACCOUNT_KEY, REQUEST_STATE } from "configs";
+import { AVATAR_DEFAULT, REMEMBER_ACCOUNT_KEY, REQUEST_STATE } from "configs";
 import { useTranslation } from "react-i18next";
 import "./Register.sass";
 import Password from "antd/lib/input/Password";
@@ -19,30 +19,25 @@ function Login() {
   const dispatch = useDispatch();
   const onFinish = (values) => {
     console.log("values: ", values);
-    dispatch(REGISTER({ account: values }));
+    dispatch(REGISTER({ account: { ...values, avatarUrl: AVATAR_DEFAULT } }));
   };
 
   useEffect(() => {
-    if(registerState.state === REQUEST_STATE.ERROR) {
-      notification.error(
-        {
-          message: t('fail'),
-          description: t(registerState.message)
-        }
-      );
+    if (registerState.state === REQUEST_STATE.ERROR) {
+      notification.error({
+        message: t("fail"),
+        description: t(registerState.message),
+      });
       dispatch(RESET_AUTH_STATE());
-    } 
-
-    if(registerState.state === REQUEST_STATE.SUCCESS) {
-      notification.success(
-        {
-          message: t('success'),
-          description: t(registerState.message)
-        }
-      );
-      history.push('/auth/login');
     }
 
+    if (registerState.state === REQUEST_STATE.SUCCESS) {
+      notification.success({
+        message: t("success"),
+        description: t(registerState.message),
+      });
+      history.push("/auth/login");
+    }
   }, [registerState, history, dispatch, t]);
   return (
     <div
@@ -146,14 +141,14 @@ function Login() {
           <div className="registerPolicy">
             {t("bySigningUp,youAgreeToOur")}{" "}
             <a
-              href="/auth/register"
+              href="/auth/login"
               style={{ fontWeight: "bold", color: "#979797" }}
             >
               {t("termsDataPolicy")}
             </a>{" "}
             {t("and")}{" "}
             <a
-              href="/auth/register"
+              href="/auth/login"
               style={{ fontWeight: "bold", color: "#979797" }}
             >
               {t("cookiesPolicy")}
@@ -189,7 +184,7 @@ function Login() {
           }}
         >
           <span style={{ marginRight: "4px" }}>{t("alreadyHaveAccount?")}</span>
-          <Link className="register__sign-up" to="/auth/register">
+          <Link className="register__sign-up" to="/auth/login">
             {t("signInNow")}
           </Link>
         </div>

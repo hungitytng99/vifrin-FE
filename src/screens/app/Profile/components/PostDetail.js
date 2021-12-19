@@ -3,14 +3,13 @@ import { getMounthAndDay } from "../../../../utils/datetime";
 import { Carousel } from "react-responsive-carousel";
 import UserCard from "components/UserCard/UserCard";
 import { Link } from "react-router-dom";
-import { Col, Divider, Row, Spin } from "antd";
+import { Col, Divider, Row } from "antd";
 import { useTranslation } from "react-i18next";
-import SockJsClient from "react-stomp";
 import { useDispatch } from "react-redux";
 import { GET_LIST_COMMENT_BY_POST } from "../redux/action";
 import { useSelector } from "react-redux";
 import Comment from "components/Comment/Comment";
-import { COMMENT_SOCKET_URL, REQUEST_STATE } from "configs";
+import { REQUEST_STATE } from "configs";
 import FullComponentLoading from "components/Loading/FullComponentLoading";
 import "./PostDetail.sass";
 import TypeBox from "./TypeBox";
@@ -26,8 +25,6 @@ function PostDetail({ post, setIsShowDetailPost }) {
   const profile = useSelector((state) => state.profile);
   const user = useSelector((state) => state.user.profile);
   const bottomListCommentRef = useRef(null);
-  let commentSocketTopic = [`/topic/comment/${post?.id}`];
-  let commentSocket = null;
 
   function handleLikedClick() {
     setIsLiked(!isLiked);
@@ -39,10 +36,6 @@ function PostDetail({ post, setIsShowDetailPost }) {
 
   function handleCommentClick() {
     setIsFocusComment({ focus: true });
-  }
-  function bootstrapComment(msg) {
-    // console.log('clientSocket: ', global.clientSocket);
-    // global.clientSocket.sendMessage("/topic/comment/1", msg);
   }
 
   const AlwaysScrollToBottom = () => {
@@ -77,8 +70,8 @@ function PostDetail({ post, setIsShowDetailPost }) {
             <UserCard
               user={post.user}
               onClickCardAction={() => setIsShowDetailPost(false)}
+              destination={post?.destination}
             />
-            <button onClick={scrollToBottomListComment}>CLICK</button>
           </div>
           <Divider style={{ margin: "0px 0px 10px 0px" }} />
           <div className="postDetailCommentBox">
@@ -164,7 +157,6 @@ function PostDetail({ post, setIsShowDetailPost }) {
           </div>
         </Col>
       </Row>
-      
     </div>
   );
 }
