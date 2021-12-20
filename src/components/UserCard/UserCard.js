@@ -32,7 +32,8 @@ function UserCard(props) {
           >
             {user?.username}
           </a>
-          <span>{" "}{t("at")}{" "}</span>
+          {destination?.name && <span> {t("at")} </span>}
+
           <Link
             to={`/location/${destination?.id}`}
             className="user-card__info-username --link"

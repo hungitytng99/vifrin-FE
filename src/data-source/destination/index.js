@@ -38,7 +38,7 @@ export const apiSearchDestination = async (params) => {
     const response = await GET("/destinations/search", params);
     return {
       state: REQUEST_STATE.SUCCESS,
-      data: response.data,
+      data: response,
     };
   } catch (error) {
     console.log("error", error);

@@ -37,7 +37,8 @@ function PostCreate() {
   async function handleSearchDestination(value) {
     if (value) {
       const resultSearch = await apiSearchDestination({ key: value });
-      const listDestination = resultSearch.data.map((result) => ({
+      console.log('resultSearch: ', resultSearch);
+      const listDestination = resultSearch?.data?.map((result) => ({
         value: result.id,
         text: result.name,
       }));
@@ -55,6 +56,10 @@ function PostCreate() {
     setPostImages(fileList);
   }
 
+  useEffect(() => {
+    console.log('destinationOptions: ', destinationOptions);
+  }, [destinationOptions])
+  
   return (
     <div className="postCreate">
       <div className="postCreateUser">
@@ -96,7 +101,7 @@ function PostCreate() {
                 onChange={handleChangeDestination}
                 notFoundContent={null}
               >
-                {destinationOptions.map((destination) => (
+                {destinationOptions?.map((destination) => (
                   <Option key={destination.value}>{destination.text}</Option>
                 ))}
               </Select>

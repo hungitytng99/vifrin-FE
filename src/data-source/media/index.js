@@ -3,7 +3,7 @@ import { UPLOAD } from "../fetch";
 
 export const apiUploadMedia = async (file) => {
   try {
-    const response = await UPLOAD("http://localhost:9009/medias/upload", file, {
+    const response = await UPLOAD("http://20.210.201.100:9009/medias/upload", file, {
       isFullPath: true,
     });
     return {

@@ -10,13 +10,17 @@ import { useSelector } from "react-redux";
 import Cookies from "js-cookie";
 import { BEEN_ALERT_UPDATE_PROFILE } from "configs";
 import { isEmptyValue } from "utils/checkType";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { GET_LIST_SUGGEST_FOLLOWER } from "./redux/action";
 
 function HomePage() {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+
   // var inFifteenMinutes = new Date(new Date().getTime() + 1 * 60 * 1000);
   function handleCloseAlertUpdateProfile() {
-    console.log("Close alert");
     Cookies.set(BEEN_ALERT_UPDATE_PROFILE, true, {
       expires: 3,
     });
@@ -36,6 +40,16 @@ function HomePage() {
     }
     return false;
   }
+
+  useEffect(() => {
+    dispatch(
+      GET_LIST_SUGGEST_FOLLOWER({
+        params: {
+          size: 6,
+        },
+      })
+    );
+  }, [dispatch]);
 
   return (
     <div className="app-container">
@@ -77,7 +91,12 @@ function HomePage() {
             </Col>
             <Col xl={4} lg={4} md={0} sm={0} xs={0}>
               <div className="home-follows">
-                <FollowPane />
+                <FollowPane
+                  currentUser={{
+                    ...user?.profile,
+                    description: user?.profile?.fullName,
+                  }}
+                />
               </div>
             </Col>
           </Row>

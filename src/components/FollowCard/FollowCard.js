@@ -4,12 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import "./FollowCard.sass";
 
-FollowCard.defaultProps = {
-  user: {},
-  control: "Follow",
-  sizeAvatar: 32,
-};
-
 function FollowCard(props) {
   const {
     user,
@@ -19,12 +13,13 @@ function FollowCard(props) {
     onClickHeaderAction = () => {},
     onClickCardAction = () => {},
     onClick = () => {},
+    isShowAction = true,
   } = props;
   const [isShowFollow, setIsShowFollow] = useState(true);
-  const [isShowUnFollow, setIsShowUnFollow] = useState(true);
+  const [isShowUnFollow, setIsShowUnFollow] = useState(isShowAction);
 
   return (
-    <div onClick={onClick}  className="follow-card">
+    <div onClick={onClick} className="follow-card">
       <Link to={`/profile/${user.username}`} className="follow-card__avatar">
         <img
           className="follow-card__avatar-img"
@@ -67,9 +62,11 @@ function FollowCard(props) {
           {cardActionText}
         </button>
       ) : (
-        <button className="follow-card__btn-unfollow -delete" disabled>
-          Đã xóa
-        </button>
+        isShowUnFollow && (
+          <button className="follow-card__btn-unfollow -delete" disabled>
+            Đã xóa
+          </button>
+        )
       )}
     </div>
   );

@@ -1,7 +1,7 @@
 // config for dev;
 export const Configs = {
   // BASE_API: "http://13.213.10.119:3000/api",
-  BASE_API: "http://localhost:9191",
+  BASE_API: "http://20.210.201.100:9191",
   ENV: "development",
 
   CURRENT_PAGE: 1,
@@ -75,4 +75,4 @@ export const MONTHNAMES = [
 ]; // t
 
 // Socket
-export const COMMENT_SOCKET_URL = "http://localhost:9006/vifrin";
+export const COMMENT_SOCKET_URL = "http://20.210.201.100:9006/vifrin";

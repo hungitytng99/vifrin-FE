@@ -214,7 +214,7 @@ export const apiGetListSuggestion = async (params) => {
     });
     return {
       state: REQUEST_STATE.SUCCESS,
-      data: response,
+      data: response.data,
     };
   } catch (error) {
     console.log("error", error);
