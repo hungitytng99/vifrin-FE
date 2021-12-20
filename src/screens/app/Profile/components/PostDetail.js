@@ -13,6 +13,7 @@ import { REQUEST_STATE } from "configs";
 import FullComponentLoading from "components/Loading/FullComponentLoading";
 import "./PostDetail.sass";
 import TypeBox from "./TypeBox";
+
 function PostDetail({ post, setIsShowDetailPost }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();

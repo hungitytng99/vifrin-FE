@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "./UserCard.sass";
 import { CloseOutlined } from "@ant-design/icons";
 import { AVATAR_DEFAULT } from "configs";
+import { useTranslation } from "react-i18next";
 
 function UserCard(props) {
   const {
@@ -10,8 +11,9 @@ function UserCard(props) {
     sizeAvatar = 32,
     onClickCardAction = () => {},
     hasAction = true,
-    destination = '',
+    destination = "",
   } = props;
+  const { t } = useTranslation();
   return (
     <div className="user-card">
       <Link to={`/profile/${user?.username}`} className="user-card__avatar">
@@ -30,9 +32,15 @@ function UserCard(props) {
           >
             {user?.username}
           </a>
+          <span>{" "}{t("at")}{" "}</span>
+          <Link
+            to={`/location/${destination?.id}`}
+            className="user-card__info-username --link"
+          >
+            {destination?.name}
+          </Link>
         </div>
         <div className="user-card__info-description">{user?.fullName}</div>
-        <Link to={`/location/${destination?.id}`} className="user-card__info-description --link">{destination?.name}</Link>
       </div>
       {hasAction && (
         <button

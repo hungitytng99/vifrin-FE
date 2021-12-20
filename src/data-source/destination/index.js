@@ -17,7 +17,7 @@ export const apiCreateDestination = async (params) => {
   }
 };
 
-export const apiGetDestination = async (id) => {
+export const apiGetDetailDestination = async (id) => {
   try {
     const response = await GET("/destinations/" + id);
     return {

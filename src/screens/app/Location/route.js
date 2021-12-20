@@ -2,7 +2,7 @@ import React, { lazy } from "react";
 import { initModules } from "router";
 import { RocketFilled, RocketOutlined } from "@ant-design/icons";
 import { v4 as uuidv4 } from 'uuid';
-export const exploreModule = { key: "location", path: "Destination" };
+export const exploreModule = { key: "location", path: "Location" };
 
 const exploreRoute = {
   index: uuidv4(),

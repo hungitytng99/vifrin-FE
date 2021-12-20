@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { Form, Input, Button, Checkbox, notification } from "antd";
-import "./Login.sass";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { isEmptyValue } from "utils/checkType";
@@ -8,6 +7,8 @@ import { LOGIN, RESET_AUTH_STATE } from "redux/users/action";
 import logo from "assets/images/logo.svg";
 import { REMEMBER_ACCOUNT_KEY, REQUEST_STATE } from "configs";
 import { useTranslation } from "react-i18next";
+import "./Login.sass";
+
 const queryString = require("query-string");
 
 function Login() {

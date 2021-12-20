@@ -161,8 +161,12 @@ function Profile(props) {
             <div className="profile__avatar flex-center">
               {profile.getDetailUserState === REQUEST_STATE.SUCCESS &&
                 (profile.isCurrentUser ? (
-                  <Dropdown overlay={menu} trigger={["click"]}>
+                  <Dropdown
+                    overlay={menu}
+                    trigger={["click"]}
+                  >
                     <img
+                      onClick={() => console.log("CLICK")}
                       className="profileAvatarImg"
                       src={
                         profile.profileUserByUsername?.avatarUrl ??
@@ -173,6 +177,7 @@ function Profile(props) {
                   </Dropdown>
                 ) : (
                   <img
+                    onClick={() => console.log("CLICK HERE")}
                     src={
                       profile.profileUserByUsername?.avatarUrl ?? AVATAR_DEFAULT
                     }
@@ -311,7 +316,7 @@ function Profile(props) {
               }
               key="2"
             >
-              {t('youDontSaveAnyPosts')}
+              {t("youDontSaveAnyPosts")}
             </TabPane>
           </Tabs>
         </Row>

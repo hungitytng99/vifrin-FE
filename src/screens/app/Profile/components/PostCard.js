@@ -19,7 +19,7 @@ import {
 import { useTranslation } from "react-i18next";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import PostEdit from "./PostEdit";
-import { IMAGE_DEFAULT, REQUEST_STATE } from "configs";
+import { REQUEST_STATE } from "configs";
 import "./PostDetail.sass";
 import PostDetail from "./PostDetail";
 
@@ -112,7 +112,7 @@ function PostCard({ post }) {
         {post.medias[0]?.mime.includes("image") ? (
           <img
             className="postCardImg"
-            src={post.medias[0]?.url ?? IMAGE_DEFAULT}
+            src={post.medias[0]?.url}
             alt="avatar"
           />
         ) : (

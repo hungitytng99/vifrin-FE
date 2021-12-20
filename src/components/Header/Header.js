@@ -40,20 +40,6 @@ function Header() {
         </div>
         <div className="header-control">
           <ul className="header-control__list">
-            {/* <li
-              onClick={(e) => {
-                e.preventDefault();
-                const lng =
-                  localStorage.getItem(I18LANGUAGE) === "vi" ? "en" : "vi";
-                localStorage.setItem(I18LANGUAGE, lng);
-                i18n.changeLanguage(lng);
-              }}
-              className="headerChangeLanguage flex-center"
-            >
-              <Tooltip title={t("changeLanguage")}>
-                <span>{t("languageKey")}</span>
-              </Tooltip>
-            </li> */}
             {appRoutes.map((route, index) => {
               return (
                 <div key={index} >
@@ -97,7 +83,7 @@ function Header() {
                         >
                           <Link
                             className="header__dropdown-link"
-                            to={"/profile/" + user.username}
+                            to={"/profile/" + user?.username}
                           >
                             <i className="header__dropdown-item-icon fas fa-user"></i>
                             <div className="header__dropdown-item-text">

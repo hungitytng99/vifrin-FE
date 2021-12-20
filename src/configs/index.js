@@ -51,8 +51,8 @@ export const SENDING_SUCCESS_KEY = "sendingSuccess";
 // Image default
 export const AVATAR_DEFAULT =
   "http://res.cloudinary.com/da4oquz0i/image/upload/v1639910699/zrqjbwkmtvypudv9kctr.png";
-export const IMAGE_DEFAULT =
-  "https://vifrin.s3.ap-southeast-1.amazonaws.com/vifrin_upload_test/images.jpeg";
+export const IMAGE_LOCATION_DEFAULT =
+  "https://res.cloudinary.com/da4oquz0i/image/upload/v1639929197/ij77a9rewdpggmq1wbnv.png";
 // For language
 export const REGISTER_ACCOUNT_EMAIL_EXIST = "yourEmailAlreadyExist"; // t
 export const REGISTER_ACCOUNT_USERNAME_EXIST = "yourUsernameAlreadyExist"; // t
