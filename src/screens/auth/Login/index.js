@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { isEmptyValue } from "utils/checkType";
 import { LOGIN, RESET_AUTH_STATE } from "redux/users/action";
-import logo from "assets/images/logo.svg";
+import logo from "assets/images/logo.png";
 import { REMEMBER_ACCOUNT_KEY, REQUEST_STATE } from "configs";
 import { useTranslation } from "react-i18next";
 import "./Login.sass";
@@ -53,7 +53,7 @@ function Login() {
   return (
     <div className="login" style={{ display: "flex", flexDirection: "column" }}>
       <img
-        style={{ width: "250px", height: "70px", marginBottom: "15px" }}
+        style={{ height: "100px", marginBottom: "15px" }}
         src={logo}
         alt="logo"
       />
