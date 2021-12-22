@@ -1,0 +1,85 @@
+.profile
+    padding-top: 30px
+    &__avatar
+        width: 250px
+        height: 250px
+        overflow: hidden
+        border-radius: 50%
+
+        & img
+            width: 100%
+
+    &__info
+        display: flex
+        flex-direction: column
+
+        &-box
+            display: flex
+            align-items: center
+            &.--mid
+                margin: 15px 0px
+
+        &-username
+            font-size: 2.8rem
+
+        &-edit
+            & a
+                border: 1px solid var(--grey-11)
+                padding: 7px
+                border-radius: 4px
+                font-size: 1.4rem
+                font-weight: 550
+                margin: 0px 15px
+
+        &-setting
+            font-size: 1.8rem
+            &:hover
+                cursor: pointer
+
+        &-detail
+            display: flex
+            font-size: 1.6rem
+            margin-right: 25px
+            & span
+                font-weight: bold
+                padding-right: 3px
+            &.--hover
+                cursor: pointer
+    &_followers
+        &-header
+            display: flex
+            align-items: center
+            justify-content: space-between
+            height: 40px
+            border-bottom: 1px solid #d3d3d3
+            &-text 
+                flex: 1
+                text-align: center
+                font-weight: bold
+                font-size: 16px
+                padding-left: 20px
+            &-close
+                font-size: 24px
+                color: #777
+                margin: 0px 6px 10px 0px
+                &:hover
+                    cursor: pointer
+        &-list
+            padding: 10px 15px 0px 15px
+            max-height: 350px
+            min-height: 200px
+            overflow-y: auto
+            position: relative
+    &CardPost
+        padding: 10px 0px 0px 10px
+    &AddPost
+        &Input
+            &:focus 
+                border: none
+                border-right-width: 0px !important
+                box-shadow: none
+    &Avatar
+        &Img 
+            &:hover 
+                cursor: pointer
+    

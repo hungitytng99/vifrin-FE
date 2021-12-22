@@ -41,7 +41,13 @@
   "profile": {
     "uppercase": {
       "posts": "Posts"
-    }
+    },
+    "username": "Username",
+    "name": "Name",
+    "phoneNumber": "Phone Number",
+    "email": "Email",
+    "gender": "Gender",
+    "bio": "Bio"
   },
   "register": "register",
   "rememberMe": "rememberMe",
@@ -67,5 +73,10 @@
   "youEditPostSuccessfully!": "youEditPostSuccessfully!",
   "youHaveNotCreatedPostsYet": "youHaveNotCreatedPostsYet",
   "youMustUploadAtLeast1Image": "You must upload at least 1 image",
-  "yourUsernameOrPasswordIsInvalid": "yourUsernameOrPasswordIsInvalid"
+  "userInfo": "User Info",
+  "editUserInfo": "Edit user info",
+  "getUserInfo": "Get user info",
+  "cannotGetUserInfo": "Cannot get user info",
+  "editProfileError": "Error editing user info",
+  "editProfileSuccess": "Edit user info successful"
 }
