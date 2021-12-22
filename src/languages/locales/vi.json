@@ -41,7 +41,13 @@
   "profile": {
     "uppercase": {
       "posts": "Bài viết"
-    }
+    },
+    "username": "Tên đăng nhập",
+    "name": "Tên hiển thị",
+    "phoneNumber": "Số điện thoại",
+    "email": "Email",
+    "gender": "Giới tính",
+    "bio": "Bio"
   },
   "register": "register",
   "rememberMe": "rememberMe",
@@ -67,5 +73,11 @@
   "youEditPostSuccessfully!": "youEditPostSuccessfully!",
   "youHaveNotCreatedPostsYet": "youHaveNotCreatedPostsYet",
   "youMustUploadAtLeast1Image": "Bạn phải tải lên ít nhất 1 hình ảnh",
-  "yourUsernameOrPasswordIsInvalid": "yourUsernameOrPasswordIsInvalid"
+  "yourUsernameOrPasswordIsInvalid": "yourUsernameOrPasswordIsInvalid",
+  "userInfo": "Thông tin",
+  "editUserInfo": "Thay đổi thông tin",
+  "getUserInfo": "Lấy thông tin",
+  "cannotGetUserInfo": "Không thể lấy thông tin người dùng",
+  "editProfileError": "Có lỗi khi thay đổi thông tin người dùng",
+  "editProfileSuccess": "Thay đổi thông tin thành công"
 }

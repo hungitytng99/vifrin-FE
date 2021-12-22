@@ -85,6 +85,7 @@ const openNotification = (Title = "", Content = "") => {
 };
 
 function EditProfileForm() {
+    const { t } = useTranslation();
   const [form] = Form.useForm();
   const user = useSelector((state) => state.user.profile);
   const [loading, setLoading] = useState(false);
@@ -97,11 +98,11 @@ function EditProfileForm() {
           if (res.state === "SUCCESS") {
             fillForm(res.data);
           } else {
-            openNotification("Get user info", res.message);
+            openNotification(t("getUserInfo"), res.message);
           }
         })
         .catch((error) => {
-          openNotification("Get user info", "Cannot get user info");
+          openNotification(t("getUserInfo"), t("cannotGetUserInfo"));
           console.log("error", error);
         })
         .finally(() => {
@@ -126,13 +127,13 @@ function EditProfileForm() {
     apiUpdateUserProfile(values)
       .then((res) => {
         if (res.state === "SUCCESS") {
-          openNotification("Get user info", "Edit user info successful");
+          openNotification(t("editUserInfo"), t("editProfileSuccess"));
         } else {
-          openNotification("Get user info", res.message);
+          openNotification(t("editUserInfo"), res.message);
         }
       })
       .catch((error) => {
-        openNotification("Get user info", "Error editing user info");
+        openNotification(t("editUserInfo"), t("editProfileError"));
         console.log("error", error);
       })
       .finally(() => {
@@ -148,10 +149,10 @@ function EditProfileForm() {
       onFinish={onFinish}
       validateMessages={validateMessages}
     >
-      <Form.Item name={"username"} label="Username" preserve={true}>
+      <Form.Item name={"username"} label={t("profile.username")} preserve={true}>
         <Input disabled={true} />
       </Form.Item>
-      <Form.Item name={"fullName"} label="Name" rules={[{ required: true }]}>
+      <Form.Item name={"fullName"} label={t("profile.name")} rules={[{ required: true }]}>
         <Input />
       </Form.Item>
       <Form.Item
@@ -164,16 +165,16 @@ function EditProfileForm() {
       {/* <Form.Item name={['user', 'age']} label="Age" rules={[{ type: 'number', min: 0, max: 99 }]}>
               <InputNumber />
             </Form.Item> */}
-      <Form.Item name={"phoneNumber"} label="Phone Number">
+      <Form.Item name={"phoneNumber"} label={t("profile.phoneNumber")}>
         <Input />
       </Form.Item>
-      <Form.Item name={"gender"} label="Gender">
+      <Form.Item name={"gender"} label={t("profile.gender")}>
         <Select style={{ width: 80, margin: "0 8px" }} onChange={() => null}>
           <Option value="MALE">Male</Option>
           <Option value="FEMAIL">Female</Option>
         </Select>
       </Form.Item>
-      <Form.Item name={"bio"} label="Bio">
+      <Form.Item name={"bio"} label={t("profile.bio")}>
         <Input.TextArea />
       </Form.Item>
       <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
@@ -183,7 +184,7 @@ function EditProfileForm() {
           disabled={loading}
           loading={loading}
         >
-          Submit
+          {t("Confirm")}
         </Button>
       </Form.Item>
     </Form>

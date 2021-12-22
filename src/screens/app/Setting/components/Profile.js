@@ -2,10 +2,11 @@ import React, { useEffect, useState, useRef } from "react";
 import ReactModal from "react-modal";
 import "./Profile.sass";
 import { useTranslation } from "react-i18next";
-import { Tabs, Button, notification, Form, Input, InputNumber, Menu, Row, Col, Select } from "antd";
+import { Typography, Menu, Row, Col, Select } from "antd";
 import { PieChartOutlined, DesktopOutlined, ContainerOutlined } from '@ant-design/icons';
 import EditProfileForm from './EditProfileForm';
 
+const { Title } = Typography;
 
 const MenuItems = [
   {
@@ -48,6 +49,7 @@ function Profile(props) {
           </Menu>
         </Col>
         <Col span={16}>
+          <Title level={2}>{t("userInfo")}</Title>
           <EditProfileForm />
         </Col>
       </Row>
