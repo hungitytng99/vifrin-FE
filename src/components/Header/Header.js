@@ -101,7 +101,7 @@ function Header() {
                         </li>
 
                         <li className="header__dropdown-item">
-                          <Link className="header__dropdown-link" to="#">
+                          <Link className="header__dropdown-link" to="/setting">
                             <i className="header__dropdown-item-icon fas fa-cogs"></i>
                             <div className="header__dropdown-item-text">
                               Settings
