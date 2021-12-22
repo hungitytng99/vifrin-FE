@@ -1,12 +1,11 @@
 import React, { lazy } from "react";
 import { initModules } from "router";
 import { MessageFilled, MessageOutlined } from "@ant-design/icons";
-import { v4 as uuidv4 } from 'uuid';
 
 export const chatModule = { key: "chat", path: "Chat" };
 
-const cahtRoute = {
-  index: uuidv4(),
+const chatRoute = {
+  index: 2,
   path: "/direct/inbox",
   label: "Messenger",
   exact: true,
@@ -20,4 +19,4 @@ const cahtRoute = {
   }),
 };
 
-export default cahtRoute;
+export default chatRoute;
