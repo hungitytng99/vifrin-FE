@@ -40,6 +40,7 @@ function TypeBox(props) {
         content: inputVal,
         user,
         commentId: uuidv4(),
+        star: 0,
       };
       dispatch(CREATE_NEW_COMMENT({ comment: params }));
       scrollToBottomListComment();
@@ -52,7 +53,7 @@ function TypeBox(props) {
     if (profile.comment?.status === SENDING_SUCCESS_KEY) {
       console.log("profile.comment: ", profile.comment);
       commentSocketTopic.forEach((topic) => {
-        if (commentSocket) {
+        if (commentSocket.client.connected) {
           commentSocket.sendMessage(
             topic,
             JSON.stringify(SOCKET_CREATE_COMMENT(profile.comment))

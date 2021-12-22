@@ -243,7 +243,10 @@ function* getListCommentByPost({ type, payload }) {
 function* createNewComment({ type, payload }) {
   const { comment } = payload;
   try {
-    const response = yield call(apiCreateComment, comment);
+    const commentParams = {...comment};
+    delete commentParams.user;
+    delete commentParams.commentId;
+    const response = yield call(apiCreateComment, commentParams);
     if (response.state === REQUEST_STATE.SUCCESS) {
       yield put(
         CREATE_NEW_COMMENT_SUCCESS({
