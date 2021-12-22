@@ -195,7 +195,7 @@ function Profile(props) {
                 {profile.isCurrentUser ? (
                   <>
                     <div className="profile__info-edit">
-                      <Link to="#">{t("editProfile")}</Link>
+                      <Link to="/setting">{t("editProfile")}</Link>
                     </div>
                     <div className="profile__info-setting">
                       <i className="profile__info-setting-icon fas fa-tools"></i>
