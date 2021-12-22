@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import SearchInput from "../SearchInput/SearchInput";
-import logo from "assets/images/logo.svg";
+import logo from "assets/images/lg-2.png";
 import { appRoutes } from "router";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "redux/users/action";
