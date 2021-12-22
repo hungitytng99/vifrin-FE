@@ -10,52 +10,15 @@ import {
   InputNumber,
   Menu,
   Row,
-  Col,
+  DatePicker,
   Select,
 } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { apiUpdateUserProfile, apiGetUserProfile } from "data-source/users";
+import moment from "moment";
 
 const { Option } = Select;
 
-const { TabPane } = Tabs;
-const customStyles = {
-  overlay: {
-    animation: "appear 0.3s linear",
-  },
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-    width: "400px",
-    borderRadius: "10px",
-    padding: "0px",
-    border: "1px solid rgba(219,219,219,1)",
-    animation: "zoominoutsinglefeatured 0.3s ease-out",
-  },
-};
-
-const customAddPostStyles = {
-  overlay: {
-    animation: "appear 0.3s linear",
-  },
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-    width: "600px",
-    borderRadius: "10px",
-    padding: "0px",
-    border: "1px solid rgba(219,219,219,1)",
-    animation: "zoominoutsinglefeatured 0.3s ease-out",
-  },
-};
 ReactModal.setAppElement("#root");
 
 const layout = {
@@ -84,8 +47,10 @@ const openNotification = (Title = "", Content = "") => {
   });
 };
 
+const dateFormat = "YYYY-MM-DD";
+
 function EditProfileForm() {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
   const [form] = Form.useForm();
   const user = useSelector((state) => state.user.profile);
   const [loading, setLoading] = useState(false);
@@ -119,12 +84,18 @@ function EditProfileForm() {
       username: user.username || "",
       phoneNumber: data.phoneNumber,
       gender: data?.gender,
+      dateOfBirth: moment(data?.dateOfBirth),
     });
   };
 
   const onFinish = (values) => {
+    const params = {
+      ...values,
+      dateOfBirth: values["dateOfBirth"].format("YYYY-MM-DD"),
+    };
+
     setLoading(true);
-    apiUpdateUserProfile(values)
+    apiUpdateUserProfile(params)
       .then((res) => {
         if (res.state === "SUCCESS") {
           openNotification(t("editUserInfo"), t("editProfileSuccess"));
@@ -149,10 +120,18 @@ function EditProfileForm() {
       onFinish={onFinish}
       validateMessages={validateMessages}
     >
-      <Form.Item name={"username"} label={t("profile.username")} preserve={true}>
+      <Form.Item
+        name={"username"}
+        label={t("profile.username")}
+        preserve={true}
+      >
         <Input disabled={true} />
       </Form.Item>
-      <Form.Item name={"fullName"} label={t("profile.name")} rules={[{ required: true }]}>
+      <Form.Item
+        name={"fullName"}
+        label={t("profile.name")}
+        rules={[{ required: true }]}
+      >
         <Input />
       </Form.Item>
       <Form.Item
@@ -161,6 +140,9 @@ function EditProfileForm() {
         rules={[{ required: true, type: "email" }]}
       >
         <Input />
+      </Form.Item>
+      <Form.Item name={"dateOfBirth"} label="Date of birth">
+        <DatePicker format={dateFormat} />
       </Form.Item>
       {/* <Form.Item name={['user', 'age']} label="Age" rules={[{ type: 'number', min: 0, max: 99 }]}>
               <InputNumber />
@@ -171,7 +153,7 @@ function EditProfileForm() {
       <Form.Item name={"gender"} label={t("profile.gender")}>
         <Select style={{ width: 80, margin: "0 8px" }} onChange={() => null}>
           <Option value="MALE">Male</Option>
-          <Option value="FEMAIL">Female</Option>
+          <Option value="FEMALE">Female</Option>
         </Select>
       </Form.Item>
       <Form.Item name={"bio"} label={t("profile.bio")}>
