@@ -17,7 +17,6 @@ import {
   RESET_LIST_COMMENT_BY_POST,
 } from "../redux/action";
 import { useTranslation } from "react-i18next";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
 import PostEdit from "./PostEdit";
 import { REQUEST_STATE } from "configs";
 import "./PostDetail.sass";

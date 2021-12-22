@@ -3,7 +3,7 @@ import { UPLOAD } from "../fetch";
 
 export const apiUploadMedia = async (file) => {
   try {
-    const response = await UPLOAD(process.env.REACT_APP_MEDIA_SERVICE, file, {
+    const response = await UPLOAD(`${process.env.REACT_APP_MEDIA_SERVICE}/medias/upload`, file, {
       isFullPath: true,
     });
     return {

@@ -10,6 +10,8 @@ import { Carousel } from "react-responsive-carousel";
 import locationDefaultImg from "assets/images/image_location_default.jpeg";
 
 import "./LocationPage.sass";
+import { REQUEST_STATE } from "configs";
+import FullComponentLoading from "components/Loading/FullComponentLoading";
 
 function LocationPage({ match, history }) {
   const dispatch = useDispatch();
@@ -22,6 +24,9 @@ function LocationPage({ match, history }) {
 
   return (
     <div className="my-container locationPage">
+      {location.getDetailLocationState === REQUEST_STATE.REQUEST && (
+        <FullComponentLoading bgColor="rgba(255,255,255,1)" />
+      )}
       <Row className="locationPageInfo">
         <Col span={8} style={{ paddingRight: "15px" }}>
           <div style={{ width: "100%" }}>
@@ -29,8 +34,8 @@ function LocationPage({ match, history }) {
               {location.detailLocation?.medias?.map((media) => {
                 if (media?.mime.includes("image"))
                   return (
-                    <div className="flex-center">
-                      <img key={media.id} src={media?.url} alt="img"></img>
+                    <div style={{ width: '100%', height: '180px' }} className="flex-center">
+                      <img style={{ width: '100%', objectFit: 'cover' }} key={media.id} src={media?.url} alt="img"></img>
                     </div>
                   );
                 else

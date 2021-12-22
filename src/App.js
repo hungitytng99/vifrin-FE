@@ -5,6 +5,7 @@ import FullComponentLoading from "./components/Loading/FullComponentLoading";
 import AppRoute from "./screens/app/AppRoute";
 import AuthRoute from "./screens/auth/AuthRoute";
 import './App.sass'
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 function App() {
   return (

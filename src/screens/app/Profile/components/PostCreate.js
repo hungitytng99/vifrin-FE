@@ -37,12 +37,14 @@ function PostCreate() {
   async function handleSearchDestination(value) {
     if (value) {
       const resultSearch = await apiSearchDestination({ key: value });
-      console.log('resultSearch: ', resultSearch);
-      const listDestination = resultSearch?.data?.map((result) => ({
-        value: result.id,
-        text: result.name,
-      }));
-      setDestinationOptions(listDestination);
+      console.log("resultSearch: ", resultSearch);
+      if (resultSearch.data !== "") {
+        const listDestination = resultSearch?.data?.map((result) => ({
+          value: result.id,
+          text: result.name,
+        }));
+        setDestinationOptions(listDestination);
+      }
     } else {
       setDestinationOptions([]);
     }
@@ -56,10 +58,6 @@ function PostCreate() {
     setPostImages(fileList);
   }
 
-  useEffect(() => {
-    console.log('destinationOptions: ', destinationOptions);
-  }, [destinationOptions])
-  
   return (
     <div className="postCreate">
       <div className="postCreateUser">
@@ -86,8 +84,22 @@ function PostCreate() {
               />
             </Form.Item>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', width: "100%", marginBottom: "10px" }}>
-            <EnvironmentOutlined style={{width: "5%", fontSize: '20px', marginRight: '6px', color: "#777"}} />
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              width: "100%",
+              marginBottom: "10px",
+            }}
+          >
+            <EnvironmentOutlined
+              style={{
+                width: "5%",
+                fontSize: "20px",
+                marginRight: "6px",
+                color: "#777",
+              }}
+            />
             <Form.Item style={{ width: "95%" }} name="destinationId">
               <Select
                 showSearch
