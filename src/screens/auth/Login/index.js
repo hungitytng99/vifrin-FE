@@ -60,10 +60,10 @@ function Login() {
       <Form
         name="basic"
         labelCol={{
-          span: 8,
+          span: 10,
         }}
         wrapperCol={{
-          span: 16,
+          span: 14,
         }}
         initialValues={getInitialValue()}
         onFinish={onFinish}

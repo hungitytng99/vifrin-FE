@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { getMounthAndDay } from "../../../../utils/datetime";
 import { Carousel } from "react-responsive-carousel";
 import UserCard from "components/UserCard/UserCard";
@@ -6,7 +6,9 @@ import { Link } from "react-router-dom";
 import { Col, Divider, Row } from "antd";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { GET_LIST_COMMENT_BY_POST } from "../redux/action";
+import {
+  GET_LIST_COMMENT_BY_POST, LIKE_A_POST,
+} from "../redux/action";
 import { useSelector } from "react-redux";
 import Comment from "components/Comment/Comment";
 import { REQUEST_STATE } from "configs";
@@ -14,7 +16,7 @@ import FullComponentLoading from "components/Loading/FullComponentLoading";
 import "./PostDetail.sass";
 import TypeBox from "./TypeBox";
 
-function PostDetail({ post, setIsShowDetailPost }) {
+function PostDetail({ post, isShowDetailPost, setIsShowDetailPost }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [isLiked, setIsLiked] = useState(false);
@@ -27,9 +29,13 @@ function PostDetail({ post, setIsShowDetailPost }) {
   const user = useSelector((state) => state.user.profile);
   const bottomListCommentRef = useRef(null);
 
+
   function handleLikedClick() {
     setIsLiked(!isLiked);
     isLiked ? setNumLiked(numLiked - 1) : setNumLiked(numLiked + 1);
+    dispatch(LIKE_A_POST({
+      postId: post.id,
+    }))
   }
   function handleFavouriteClick() {
     setIsFavourite(!isFavourite);
@@ -47,7 +53,6 @@ function PostDetail({ post, setIsShowDetailPost }) {
   function scrollToBottomListComment() {
     bottomListCommentRef.current.scrollIntoView({ behavior: "smooth" });
   }
-
   useEffect(() => {
     dispatch(GET_LIST_COMMENT_BY_POST({ id: post.id }));
   }, [dispatch, post.id]);
@@ -69,7 +74,7 @@ function PostDetail({ post, setIsShowDetailPost }) {
                 return (
                   <div>
                     <video src={media?.url} controls height="100%"></video>
-                    <div style={{height: '20px'}}></div>
+                    <div style={{ height: "20px" }}></div>
                   </div>
                 );
             })}
@@ -103,7 +108,6 @@ function PostDetail({ post, setIsShowDetailPost }) {
                 <AlwaysScrollToBottom />
               </div>
             )}
-
             <Divider style={{ margin: "10px 0px 10px 0px" }} />
             <div className="postDetailInteractive">
               <div className="post-interactive">
@@ -165,11 +169,13 @@ function PostDetail({ post, setIsShowDetailPost }) {
                 post={post}
                 isFocusTextBox={isFocusComment}
                 scrollToBottomListComment={scrollToBottomListComment}
+                isShowDetailPost={isShowDetailPost}
               />
             </div>
           </div>
         </Col>
       </Row>
+      
     </div>
   );
 }

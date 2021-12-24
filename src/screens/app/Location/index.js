@@ -72,6 +72,9 @@ function LocationPage({ match, history }) {
           <div className="locationPageScore flex-center">
             {location.detailLocation?.averageScore}
           </div>
+          <div className="locationPageCheckInCount">
+            {"Đã có "}{location.detailLocation?.checkInsCount}{" người checkin tại địa điểm này"}
+          </div>
         </Col>
       </Row>
       <Divider />

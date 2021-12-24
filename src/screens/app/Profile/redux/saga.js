@@ -1,6 +1,7 @@
 import { call, put, takeEvery, takeLatest } from "@redux-saga/core/effects";
 import { REQUEST_STATE } from "configs";
 import { apiCreateComment, apiGetListCommentByPost } from "data-source/comment";
+import { apiAddLike, apiGetLike } from "data-source/like";
 import {
   apiDeletePost,
   apiPostsByUsername,
@@ -44,6 +45,7 @@ import {
   CREATE_NEW_COMMENT,
   CREATE_NEW_COMMENT_SUCCESS,
   GET_LIST_COMMENT_BY_POST_SUCCESS,
+  LIKE_A_POST,
 } from "./action";
 
 function* getListFollowers({ type, payload }) {
@@ -243,7 +245,7 @@ function* getListCommentByPost({ type, payload }) {
 function* createNewComment({ type, payload }) {
   const { comment } = payload;
   try {
-    const commentParams = {...comment};
+    const commentParams = { ...comment };
     delete commentParams.user;
     delete commentParams.commentId;
     const response = yield call(apiCreateComment, commentParams);
@@ -255,6 +257,24 @@ function* createNewComment({ type, payload }) {
         })
       );
     }
+  } catch (error) {
+    console.log("error: ", error);
+  }
+}
+
+function* likeAPost({ type, payload }) {
+  const { postId } = payload;
+  try {
+    const response = yield call(apiAddLike, { postId });
+  } catch (error) {
+    console.log("error: ", error);
+  }
+}
+
+function* getLikesOfPosts({ type, payload }) {
+  const { postId } = payload;
+  try {
+    const response = yield call(apiGetLike, postId);
   } catch (error) {
     console.log("error: ", error);
   }
@@ -273,5 +293,5 @@ export default function* userSaga() {
   yield takeLatest(GET_DETAIL_USER_BY_USERNAME().type, getDetailUserByUsername);
   yield takeLatest(UPDATE_AVATAR().type, updateAvatar);
   yield takeLatest(GET_LIST_COMMENT_BY_POST().type, getListCommentByPost);
-  yield takeEvery(CREATE_NEW_COMMENT().type, createNewComment);
+  yield takeEvery(LIKE_A_POST().type, likeAPost);
 }

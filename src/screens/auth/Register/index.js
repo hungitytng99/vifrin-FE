@@ -1,16 +1,12 @@
 import React, { useEffect } from "react";
-import { Form, Input, Button, Checkbox, notification, Spin } from "antd";
+import { Form, Input, Button, notification, Spin } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
-import { isEmptyValue } from "utils/checkType";
-import { LOGIN, REGISTER, RESET_AUTH_STATE } from "redux/users/action";
-import logo from "assets/images/logo.svg";
-import { AVATAR_DEFAULT, REMEMBER_ACCOUNT_KEY, REQUEST_STATE } from "configs";
+import { REGISTER, RESET_AUTH_STATE } from "redux/users/action";
+import logo from "assets/images/lg-2.png";
+import { AVATAR_DEFAULT, REQUEST_STATE } from "configs";
 import { useTranslation } from "react-i18next";
 import "./Register.sass";
-import Password from "antd/lib/input/Password";
-
-const queryString = require("query-string");
 
 function Login() {
   const { t } = useTranslation();

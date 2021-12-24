@@ -340,3 +340,24 @@ export function CREATE_NEW_COMMENT_FAIL(payload) {
     payload,
   };
 }
+
+export function LIKE_A_POST(payload) {
+  return {
+    type: "LIKE_A_POST",
+    payload,
+  };
+}
+
+export function GET_LIKES_OF_POST(payload) {
+  return {
+    type: "GET_LIKES_OF_POST",
+    payload,
+  };
+}
+
+export function GET_LIKES_OF_POST_SUCCESS(payload) {
+  return {
+    type: "GET_LIKES_OF_POST_SUCCESS",
+    payload,
+  };
+}

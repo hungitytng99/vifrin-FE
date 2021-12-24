@@ -109,16 +109,9 @@ function PostCard({ post }) {
         onClick={() => setIsShowDetailPost(true)}
       >
         {post.medias[0]?.mime.includes("image") ? (
-          <img
-            className="postCardImg"
-            src={post.medias[0]?.url}
-            alt="avatar"
-          />
+          <img className="postCardImg" src={post.medias[0]?.url} alt="avatar" />
         ) : (
-          <video
-            className="postCardImg"
-            src={post.medias[0]?.url}
-          ></video>
+          <video className="postCardImg" src={post.medias[0]?.url}></video>
         )}
 
         <div className="postCardOverlay flex-center">
@@ -157,7 +150,11 @@ function PostCard({ post }) {
         onRequestClose={handleCloseDetailModal}
         style={customStyles}
       >
-        <PostDetail post={post} setIsShowDetailPost={setIsShowDetailPost} />
+        <PostDetail
+          post={post}
+          isShowDetailPost={isShowDetailPost}
+          setIsShowDetailPost={setIsShowDetailPost}
+        />
       </ReactModal>
       <ReactModal
         isOpen={isShowEditPost}
