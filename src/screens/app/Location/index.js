@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import { Divider } from "antd";
 import { Carousel } from "react-responsive-carousel";
 import locationDefaultImg from "assets/images/image_location_default.jpeg";
+import Comment from "components/Comment/Comment";
 
 import "./LocationPage.sass";
 import { REQUEST_STATE } from "configs";
@@ -16,7 +17,8 @@ import FullComponentLoading from "components/Loading/FullComponentLoading";
 function LocationPage({ match, history }) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const location = useSelector((state) => state.location);
+  const location = useSelector((state) => state?.location);
+  console.log("location: ", location);
 
   useEffect(() => {
     dispatch(GET_DETAIL_LOCATION({ id: match.params.id }));
@@ -87,13 +89,36 @@ function LocationPage({ match, history }) {
           </div>
         </Col>
       </Row>
-      <Divider style={{margin: '10px'}}/>
-      <Row>
-        <Col span={8}></Col>
+      <Divider style={{ margin: "10px" }} />
+      <Row style={{ fontSize: "14px" }}>
+        <Col span={8}>
+          {location.detailLocation?.listComment && (
+            <div>
+              Tổng số bình luận: {location.detailLocation?.listComment.length}
+            </div>
+          )}
+        </Col>
         <Col span={16}>
           <div className="locationPageComment">
-            <div className="locationPageCommentHeader">
-              Danh sách bình luận người dùng
+            <div
+              className="locationPageCommentHeader"
+              style={{ fontSize: "14px" }}
+            >
+              Những người đã đánh giá địa điểm này
+            </div>
+            <div className="locationPageCommentList">
+              {location.detailLocation?.listComment &&
+                location.detailLocation?.listComment.map((comment, index) => {
+                  console.log("comment: ", comment);
+                  return (
+                    <Comment
+                      key={index}
+                      comment={comment}
+                      hasRate={true}
+                      rate={comment?.star}
+                    />
+                  );
+                })}
             </div>
           </div>
         </Col>

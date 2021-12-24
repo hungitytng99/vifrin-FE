@@ -7,22 +7,21 @@ import TimeAgo from "javascript-time-ago";
 import vi from "javascript-time-ago/locale/vi.json";
 import en from "javascript-time-ago/locale/en.json";
 import ReactTimeAgo from "react-time-ago";
-import {
-  SENDING_SUCCESS_KEY,
-} from "configs";
+import { SENDING_SUCCESS_KEY } from "configs";
+import { Rate } from "antd";
 
 TimeAgo.addDefaultLocale(vi);
 TimeAgo.addLocale(en);
 // 1. xu ly noi dung text qua dai ( chi gioi han ki tu hien thi).(chua lam)
 // 2. xu ly comment cua comment
 // 3.
-function Comment({ comment }) {
-  const { content, likesCount, postId, updatedAt, user } = comment;
+function Comment({ comment, hasRate = false, rate = 5 }) {
+  const { content, likesCount, updatedAt, user } = comment;
   const { t } = useTranslation();
-  // const replyed = reply.length;
+  console.log("hasRate: ", hasRate);
+  console.log("rate: ", rate);
   const [likeState, setLikeState] = useState(false);
   const [likedCount, setLikeCount] = useState(likesCount);
-  // const [isViewReply, setIsViewReply] = useState(false);
   function handleLiked() {
     if (comment.status === SENDING_SUCCESS_KEY) {
       setLikeState(!likeState);
@@ -52,6 +51,11 @@ function Comment({ comment }) {
             to={`/profile/${user?.username}`}
           >
             {user?.username}
+            {hasRate && (
+              <span style={{ marginLeft: "6px" }}>
+                <Rate defaultValue={rate} style={{ fontSize: "14px" }} />
+              </span>
+            )}
           </Link>
           <ShowMoreText
             lines={2}

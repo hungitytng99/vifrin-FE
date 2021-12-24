@@ -58,3 +58,21 @@ export const apiGetListCommentByPost = async (id, params) => {
     };
   }
 };
+
+export const apiGetListCommentByDestination = async (id, params) => {
+  try {
+    const response = await GET("/comments/by-destination/" + id, params, {
+      isFullPath: false,
+    });
+    return {
+      state: REQUEST_STATE.SUCCESS,
+      data: response.data,
+    };
+  } catch (error) {
+    console.log("error", error);
+    return {
+      state: REQUEST_STATE.ERROR,
+      message: error.message,
+    };
+  }
+};
