@@ -16,7 +16,7 @@ function Feeds() {
       dataLength={post.length}
       next={getPost}
       hasMore={true}
-      loader={<h4>Loading...</h4>}
+      loader={<h4 className="flex-center" style={{ padding: '10px'}}>Bạn đã xem hết tin trong ngày</h4>}
     >
       {post.map((i, index) => {
         return (
