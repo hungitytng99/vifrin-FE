@@ -82,7 +82,7 @@ function SearchInput() {
                 {users?.length > 0 &&
                   users?.map((user) => (
                     <Menu.Item key={user.value}>
-                      <Link to={`/profile/${user.value}`}>
+                      <Link to={`/profile/${user.text}`}>
                         <span>{user?.text}</span>
                       </Link>
                     </Menu.Item>

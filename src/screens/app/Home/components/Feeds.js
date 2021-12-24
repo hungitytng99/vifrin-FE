@@ -7,8 +7,6 @@ import { POSTS } from "../configs";
 function Feeds() {
   const [post, setPost] = useState(POSTS);
 
-  
-
   function getPost() {}
 
   return (

@@ -34,8 +34,16 @@ function LocationPage({ match, history }) {
               {location.detailLocation?.medias?.map((media) => {
                 if (media?.mime.includes("image"))
                   return (
-                    <div style={{ width: '100%', height: '180px' }} className="flex-center">
-                      <img style={{ width: '100%', objectFit: 'cover' }} key={media.id} src={media?.url} alt="img"></img>
+                    <div
+                      style={{ width: "100%", height: "180px" }}
+                      className="flex-center"
+                    >
+                      <img
+                        style={{ width: "100%", objectFit: "cover" }}
+                        key={media.id}
+                        src={media?.url}
+                        alt="img"
+                      ></img>
                     </div>
                   );
                 else
@@ -73,13 +81,22 @@ function LocationPage({ match, history }) {
             {location.detailLocation?.averageScore}
           </div>
           <div className="locationPageCheckInCount">
-            {"Đã có "}{location.detailLocation?.checkInsCount}{" người checkin tại địa điểm này"}
+            {"Đã có "}
+            {location.detailLocation?.checkInsCount}
+            {" người checkin tại địa điểm này"}
           </div>
         </Col>
       </Row>
-      <Divider />
+      <Divider style={{margin: '10px'}}/>
       <Row>
-        
+        <Col span={8}></Col>
+        <Col span={16}>
+          <div className="locationPageComment">
+            <div className="locationPageCommentHeader">
+              Danh sách bình luận người dùng
+            </div>
+          </div>
+        </Col>
       </Row>
     </div>
   );
