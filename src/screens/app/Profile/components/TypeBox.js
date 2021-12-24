@@ -13,7 +13,6 @@ import { COMMENT_SOCKET_URL, SENDING_SUCCESS_KEY } from "configs";
 import { SOCKET_CREATE_COMMENT } from "configs/socket";
 import SockJsClient from "react-stomp";
 
-
 const { TextArea } = Input;
 let commentSocket = null;
 function TypeBox(props) {
@@ -23,6 +22,7 @@ function TypeBox(props) {
     user,
     scrollToBottomListComment = () => {},
     isShowDetailPost,
+    type = "",
   } = props;
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -50,7 +50,6 @@ function TypeBox(props) {
   }
 
   useEffect(() => {
-    console.log('commentSocket: ', commentSocket);
     // Khi tạo bình luận thành công => bootstrap bình luận đấy cho tất cả các client đang kết nối
     if (profile.comment?.status === SENDING_SUCCESS_KEY) {
       commentSocketTopic.forEach((topic) => {
@@ -74,7 +73,7 @@ function TypeBox(props) {
   useEffect(() => {
     if (!isShowDetailPost) {
       console.log("DISCONNECTED HERE");
-      console.log('commentSocket: ', commentSocket);
+      console.log("commentSocket: ", commentSocket);
 
       if (commentSocket?.client?.connected) {
         // console.log('commentSocket: ', commentSocket);

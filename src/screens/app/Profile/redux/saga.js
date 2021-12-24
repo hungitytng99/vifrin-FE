@@ -294,4 +294,6 @@ export default function* userSaga() {
   yield takeLatest(UPDATE_AVATAR().type, updateAvatar);
   yield takeLatest(GET_LIST_COMMENT_BY_POST().type, getListCommentByPost);
   yield takeEvery(LIKE_A_POST().type, likeAPost);
+  yield takeEvery(CREATE_NEW_COMMENT().type, createNewComment);
+
 }
