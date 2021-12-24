@@ -13,6 +13,7 @@ import Comment from "components/Comment/Comment";
 import "./LocationPage.sass";
 import { REQUEST_STATE } from "configs";
 import FullComponentLoading from "components/Loading/FullComponentLoading";
+import TypeBox from "../Profile/components/TypeBox";
 
 function LocationPage({ match, history }) {
   const dispatch = useDispatch();
@@ -119,6 +120,10 @@ function LocationPage({ match, history }) {
                     />
                   );
                 })}
+
+              <div style={{ marginTop: "10px" }}>
+                <TypeBox type="destination"/>
+              </div>
             </div>
           </div>
         </Col>

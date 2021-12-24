@@ -63,7 +63,7 @@ function TypeBox(props) {
       });
       dispatch(RESET_CREATE_COMMENT_STATE());
     }
-  }, [profile.comment, dispatch, inputVal, user, commentSocketTopic, post.id]);
+  }, [profile.comment, dispatch, inputVal, user, commentSocketTopic, post?.id]);
 
   useEffect(() => {
     if (isFocusTextBox) {
@@ -89,9 +89,6 @@ function TypeBox(props) {
           className="type-box__emoji far fa-grin"
           onClick={() => setDisplayEmoji(!displayEmoji)}
         ></i>
-        {/* <div className="emoji__box-pane">
-              {displayEmoji && <Picker onEmojiClick={onEmojiClick} disableSearchBar={true} />}
-            </div> */}
       </div>
       <TextArea
         ref={inputRef}

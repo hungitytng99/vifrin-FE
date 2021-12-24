@@ -53,7 +53,7 @@ function Comment({ comment, hasRate = false, rate = 5 }) {
             {user?.username}
             {hasRate && (
               <span style={{ marginLeft: "6px" }}>
-                <Rate defaultValue={rate} style={{ fontSize: "14px" }} />
+                <Rate allowClear={false} disabled defaultValue={rate} style={{ fontSize: "14px" }} />
               </span>
             )}
           </Link>
