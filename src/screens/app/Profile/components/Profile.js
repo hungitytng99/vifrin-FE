@@ -294,9 +294,9 @@ function Profile(props) {
                   profile.getListPostByUsernameState ===
                     REQUEST_STATE.SUCCESS &&
                   (profile.isCurrentUser ? (
-                    <div>{t("youHaveNotCreatedPostsYet")}</div>
+                    <div style={{paddingLeft: '15px'}}>{t("youHaveNotCreatedPostsYet")}</div>
                   ) : (
-                    <div>{t("thisPersonHavenotCreatedPost")}</div>
+                    <div style={{paddingLeft: '15px'}}>{t("thisPersonHavenotCreatedPost")}</div>
                   ))}
                 {profile.listPostByUsername.map((post) => {
                   return (

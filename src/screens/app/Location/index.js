@@ -9,11 +9,12 @@ import { Divider } from "antd";
 import { Carousel } from "react-responsive-carousel";
 import locationDefaultImg from "assets/images/image_location_default.jpeg";
 import Comment from "components/Comment/Comment";
-
 import "./LocationPage.sass";
 import { REQUEST_STATE } from "configs";
 import FullComponentLoading from "components/Loading/FullComponentLoading";
 import TypeBox from "../Profile/components/TypeBox";
+import { isEmptyValue } from "utils/checkType";
+import { CREATE_NEW_COMMENT_SUCCESS } from "../Profile/redux/action";
 
 function LocationPage({ match, history }) {
   const dispatch = useDispatch();
@@ -84,9 +85,8 @@ function LocationPage({ match, history }) {
             {location.detailLocation?.averageScore}
           </div>
           <div className="locationPageCheckInCount">
-            {"Đã có "}
-            {location.detailLocation?.checkInsCount}
-            {" người checkin tại địa điểm này"}
+            {t("location.haved")} {location.detailLocation?.checkInsCount}{" "}
+            {t("peopleCheckInAtThisPlace")}
           </div>
         </Col>
       </Row>
@@ -95,22 +95,36 @@ function LocationPage({ match, history }) {
         <Col span={8}>
           {location.detailLocation?.listComment && (
             <div>
-              Tổng số bình luận: {location.detailLocation?.listComment.length}
+              {t("totalComments")}:{" "}
+              {location.detailLocation?.listComment.length}
             </div>
+          )}
+          {isEmptyValue(location.detailLocation?.listComment) ? (
+            <div>{t("totalComments")}: 0</div>
+          ) : (
+            <></>
           )}
         </Col>
         <Col span={16}>
           <div className="locationPageComment">
-            <div
+            
+            <div className="locationPageCommentList">
+              <div>
+                <TypeBox
+                  type="destination"
+                  post={location?.detailLocation}
+                  hasRate={true}
+                  page="destination"
+                />
+              </div>
+              <div
               className="locationPageCommentHeader"
               style={{ fontSize: "14px" }}
             >
-              Những người đã đánh giá địa điểm này
+              {t("profile.listPeopleRate")}
             </div>
-            <div className="locationPageCommentList">
               {location.detailLocation?.listComment &&
                 location.detailLocation?.listComment.map((comment, index) => {
-                  console.log("comment: ", comment);
                   return (
                     <Comment
                       key={index}
@@ -120,10 +134,14 @@ function LocationPage({ match, history }) {
                     />
                   );
                 })}
-
-              <div style={{ marginTop: "10px" }}>
-                <TypeBox type="destination"/>
-              </div>
+              {isEmptyValue(location.detailLocation?.listComment) && (
+                <div
+                  className="flex-center"
+                  style={{ color: "#777", marginTop: "6px" }}
+                >
+                  {t("location.noPeopleRate")}
+                </div>
+              )}
             </div>
           </div>
         </Col>

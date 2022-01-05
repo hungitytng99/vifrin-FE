@@ -45,8 +45,10 @@ export const BEEN_ALERT_UPDATE_PROFILE = "isAlertUpdateProfile";
 export const SENDING_REQUEST_KEY = "sending..."; // t
 export const SENDING_ERROR_KEY = "sendingError"; // t
 export const SENDING_SUCCESS_KEY = "sendingSuccess";
-
-
+export const CommentPage = {
+  DESTINATION: "destination",
+  PROFILE: "profile",
+};
 
 // Image default
 export const AVATAR_DEFAULT =

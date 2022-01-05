@@ -244,6 +244,7 @@ function* getListCommentByPost({ type, payload }) {
 
 function* createNewComment({ type, payload }) {
   const { comment } = payload;
+  console.log('comment: ', comment);
   try {
     const commentParams = { ...comment };
     delete commentParams.user;

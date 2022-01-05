@@ -17,9 +17,8 @@ TimeAgo.addLocale(en);
 // 3.
 function Comment({ comment, hasRate = false, rate = 5 }) {
   const { content, likesCount, updatedAt, user } = comment;
+  console.log('comment: ', comment);
   const { t } = useTranslation();
-  console.log("hasRate: ", hasRate);
-  console.log("rate: ", rate);
   const [likeState, setLikeState] = useState(false);
   const [likedCount, setLikeCount] = useState(likesCount);
   function handleLiked() {
@@ -32,9 +31,6 @@ function Comment({ comment, hasRate = false, rate = 5 }) {
       }
     }
   }
-  // function handleViewReply() {
-  //     setIsViewReply(!isViewReply);
-  // }
   return (
     <div className="comment-item">
       <div className="comment-box">
@@ -81,13 +77,12 @@ function Comment({ comment, hasRate = false, rate = 5 }) {
       </div>
       <div className="interactive">
         <div className="interactive__item --date">
-          {comment.status !== SENDING_SUCCESS_KEY ? (
+          {comment?.status !== SENDING_SUCCESS_KEY ? (
             t(comment.status)
           ) : (
             <ReactTimeAgo date={updatedAt} locale="vi" />
           )}
         </div>
-        {/* <div className="interactive__item --date">{dateCreated}</div> */}
         {comment.status === SENDING_SUCCESS_KEY && (
           <div className="interactive__item --liked">
             {likedCount > 1
@@ -95,15 +90,7 @@ function Comment({ comment, hasRate = false, rate = 5 }) {
               : likedCount + " " + t("count.likes")}
           </div>
         )}
-
-        {/* <div className="interactive__item --reply">Reply</div> */}
       </div>
-      {/* <div className="reply">
-                {replyed > 0 ? <div className="reply__view" onClick={handleViewReply}>{isViewReply ? "Hide replies" : "View replies"} ({replyed})</div> : ""}
-                <div className="reply__comment">
-                    {isViewReply ? <CommentsList key={reply.user} listComments={reply} /> : ""}
-                </div>
-            </div> */}
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Input } from "antd";
+import { Input, Rate } from "antd";
 import "./TypeBox.sass";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,6 +23,8 @@ function TypeBox(props) {
     scrollToBottomListComment = () => {},
     isShowDetailPost,
     type = "",
+    hasRate = false,
+    page = "post",
   } = props;
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -34,24 +36,42 @@ function TypeBox(props) {
     [post]
   );
   const profile = useSelector((state) => state.profile);
+  const [rate, setRate] = useState(5);
   function onCreateComment() {
     if (inputVal !== "") {
-      const params = {
-        postId: post.id,
-        content: inputVal,
-        user,
-        commentId: uuidv4(),
-        star: 0,
-      };
-      dispatch(CREATE_NEW_COMMENT({ comment: params }));
-      scrollToBottomListComment();
-      setInputVal("");
+      if (type === "destination") {
+        const params = {
+          destinationId: post.id,
+          content: inputVal,
+          user,
+          commentId: uuidv4(),
+          star: rate,
+        };
+        dispatch(CREATE_NEW_COMMENT({ comment: params }));
+        scrollToBottomListComment();
+        setInputVal("");
+      } else {
+        const params = {
+          postId: post.id,
+          content: inputVal,
+          user,
+          commentId: uuidv4(),
+          star: 0,
+        };
+        dispatch(CREATE_NEW_COMMENT({ comment: params }));
+        scrollToBottomListComment();
+        setInputVal("");
+      }
     }
+  }
+
+  function handleChangeRate(values) {
+    setRate(values);
   }
 
   useEffect(() => {
     // Khi tạo bình luận thành công => bootstrap bình luận đấy cho tất cả các client đang kết nối
-    if (profile.comment?.status === SENDING_SUCCESS_KEY) {
+    if (profile?.comment?.status === SENDING_SUCCESS_KEY) {
       commentSocketTopic.forEach((topic) => {
         if (commentSocket.client.connected) {
           commentSocket.sendMessage(
@@ -62,7 +82,14 @@ function TypeBox(props) {
       });
       dispatch(RESET_CREATE_COMMENT_STATE());
     }
-  }, [profile.comment, dispatch, inputVal, user, commentSocketTopic, post?.id]);
+  }, [
+    profile?.comment,
+    dispatch,
+    inputVal,
+    user,
+    commentSocketTopic,
+    post?.id,
+  ]);
 
   useEffect(() => {
     if (isFocusTextBox) {
@@ -72,9 +99,6 @@ function TypeBox(props) {
 
   useEffect(() => {
     if (!isShowDetailPost) {
-      console.log("DISCONNECTED HERE");
-      console.log("commentSocket: ", commentSocket);
-
       if (commentSocket?.client?.connected) {
         // console.log('commentSocket: ', commentSocket);
       }
@@ -82,42 +106,56 @@ function TypeBox(props) {
   }, [isShowDetailPost]);
 
   return (
-    <div className="type-box">
-      <div className="emoji__box">
-        <i
-          className="type-box__emoji far fa-grin"
-          onClick={() => setDisplayEmoji(!displayEmoji)}
-        ></i>
+    <>
+      {hasRate && (
+        <div style={{ paddingLeft: "15px", fontSize: "14px" }}>
+          <span>Đánh giá: </span>
+
+          <Rate
+            style={{ fontSize: "16px" }}
+            allowClear={false}
+            defaultValue={5}
+            onChange={handleChangeRate}
+          />
+        </div>
+      )}
+      <div className="type-box">
+        <div className="emoji__box">
+          <i
+            className="type-box__emoji far fa-grin"
+            onClick={() => setDisplayEmoji(!displayEmoji)}
+          ></i>
+        </div>
+        <TextArea
+          ref={inputRef}
+          autoSize={{
+            minRows: 1,
+            maxRows: 4,
+          }}
+          placeholder={t("enterYourCommentHere")}
+          className="typeBoxInput"
+          value={inputVal}
+          onChange={(e) => setInputVal(e.target.value)}
+        />
+        <button onClick={onCreateComment} className="type-box__btn-post">
+          {t("profile.post")}
+        </button>
+        <SockJsClient
+          url={COMMENT_SOCKET_URL}
+          topics={commentSocketTopic}
+          onMessage={(msg) => {
+            console.debug("MESSAGE", msg);
+            if (user.username !== msg.data.user.username) {
+              dispatch(ADD_COMMENT_FROM_SOCKET({ comment: msg.data }));
+            }
+          }}
+          ref={(client) => {
+            commentSocket = client;
+          }}
+          autoReconnect={false}
+        />
       </div>
-      <TextArea
-        ref={inputRef}
-        autoSize={{
-          minRows: 1,
-          maxRows: 4,
-        }}
-        placeholder={t("enterYourCommentHere")}
-        className="typeBoxInput"
-        value={inputVal}
-        onChange={(e) => setInputVal(e.target.value)}
-      />
-      <button onClick={onCreateComment} className="type-box__btn-post">
-        Post
-      </button>
-      <SockJsClient
-        url={COMMENT_SOCKET_URL}
-        topics={commentSocketTopic}
-        onMessage={(msg) => {
-          console.debug("MESSAGE", msg);
-          if (user.username !== msg.data.user.username) {
-            dispatch(ADD_COMMENT_FROM_SOCKET({ comment: msg.data }));
-          }
-        }}
-        ref={(client) => {
-          commentSocket = client;
-        }}
-        autoReconnect={false}
-      />
-    </div>
+    </>
   );
 }
 export default TypeBox;
