@@ -18,6 +18,7 @@ function FollowPane({ currentUser = {} }) {
           sizeAvatar={60}
           isShowAction={false}
           isShowBoxShadowStyle={true}
+          isCurrentUser={true}
         />
       </div>
       <div className="follow-pane__text">

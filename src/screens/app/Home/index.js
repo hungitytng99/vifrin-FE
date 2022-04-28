@@ -51,55 +51,50 @@ function HomePage() {
   }, [dispatch]);
 
   return (
-    <div className="app-container">
-      <div className="home-header">
-        <Header />
-      </div>
-      <div className="content">
-        <div className="my-container">
-          <Row>
-            <Col xl={8} lg={8} md={12} sm={12} xs={12}>
-              {shouldShowAlertUpdateProfile() && (
-                <div
-                  className="homeAlertUpdateProfile"
-                  style={{ marginTop: "25px" }}
-                >
-                  <Alert
-                    message={t("updateYourProfileForTheBestExperience")}
-                    type="warning"
-                    showIcon
-                    action={
-                      <Button type="primary" size="small">
-                        <Link to="/setting">{t("updateNow")}</Link>
-                      </Button>
-                    }
-                    closable
-                    afterClose={handleCloseAlertUpdateProfile}
-                  />
-                </div>
-              )}
-
-              <div className="home-feeds">
-                <div className="home-daily-post">
-                  <DailyPane />
-                </div>
-                <div className="home-new-feed">
-                  <Feeds />
-                </div>
-              </div>
-            </Col>
-            <Col xl={4} lg={4} md={0} sm={0} xs={0}>
-              <div className="home-follows">
-                <FollowPane
-                  currentUser={{
-                    ...user?.profile,
-                    description: user?.profile?.fullName,
-                  }}
+    <div className="app-container content">
+      <div className="my-container">
+        <Row>
+          <Col xl={8} lg={8} md={12} sm={12} xs={12}>
+            {shouldShowAlertUpdateProfile() && (
+              <div
+                className="homeAlertUpdateProfile"
+                style={{ marginTop: "25px" }}
+              >
+                <Alert
+                  message={t("updateYourProfileForTheBestExperience")}
+                  type="warning"
+                  showIcon
+                  action={
+                    <Button type="primary" size="small">
+                      <Link to="/setting">{t("updateNow")}</Link>
+                    </Button>
+                  }
+                  closable
+                  afterClose={handleCloseAlertUpdateProfile}
                 />
               </div>
-            </Col>
-          </Row>
-        </div>
+            )}
+
+            <div className="home-feeds">
+              <div className="home-daily-post">
+                <DailyPane />
+              </div>
+              <div className="home-new-feed">
+                <Feeds />
+              </div>
+            </div>
+          </Col>
+          <Col xl={4} lg={4} md={0} sm={0} xs={0}>
+            <div className="home-follows">
+              <FollowPane
+                currentUser={{
+                  ...user?.profile,
+                  description: user?.profile?.fullName,
+                }}
+              />
+            </div>
+          </Col>
+        </Row>
       </div>
     </div>
   );

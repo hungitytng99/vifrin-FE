@@ -1,4 +1,5 @@
 import { AVATAR_DEFAULT } from "configs";
+import { t } from "i18next";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -15,6 +16,7 @@ function FollowCard(props) {
     onClick = () => { },
     isShowAction = true,
     isShowBoxShadowStyle = false,
+    isCurrentUser = false,
   } = props;
   const [isShowFollow, setIsShowFollow] = useState(true);
   const [isShowUnFollow, setIsShowUnFollow] = useState(isShowAction);
@@ -43,7 +45,7 @@ function FollowCard(props) {
             to={`/profile/${user.username}`}
             className="follow-card__info-username"
           >
-            {user.username}
+            {user.username} {isCurrentUser ? `(${t('home.you')})` : ""}
           </Link>
           {!user.following && isShowFollow && (
             <button

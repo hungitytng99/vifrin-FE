@@ -66,8 +66,12 @@ function PostDetail({ post, isShowDetailPost, setIsShowDetailPost }) {
             {post.medias.map((media) => {
               if (media?.mime.includes("image"))
                 return (
-                  <div className="flex-center">
-                    <img key={media.id} src={media?.url} alt="img"></img>
+                  <div className="flex-center" style={{
+                    maxHeight: "880px"
+                  }}>
+                    <img key={media.id} src={media?.url} alt="img" style={{
+                      maxHeight: "100%"
+                    }}></img>
                   </div>
                 );
               else
@@ -175,7 +179,7 @@ function PostDetail({ post, isShowDetailPost, setIsShowDetailPost }) {
           </div>
         </Col>
       </Row>
-      
+
     </div>
   );
 }

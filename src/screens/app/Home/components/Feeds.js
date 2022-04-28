@@ -9,6 +9,8 @@ import { Spin } from "antd";
 import { REQUEST_STATE } from "configs";
 import FullComponentLoading from "components/Loading/FullComponentLoading";
 import { t } from "i18next";
+import map from 'assets/images/map.png';
+
 
 function Feeds() {
   const dispatch = useDispatch();
@@ -51,7 +53,24 @@ function Feeds() {
           </div>
         }
         endMessage={
-          <div style={{ textAlign: "center", marginTop: "10px" }}>{t('yayYouHaveSeenItAll')}</div>
+          <div style={{
+            textAlign: "center",
+            margin: "15px 0px",
+            fontWeight: "600",
+            fontSize: "15px",
+            color: "#333"
+          }}>
+            <img 
+            src={map} 
+            alt="map"
+            style={{
+              width: '30px',
+              marginRight: "6px",
+            }}
+            
+            />
+            {t('yayYouHaveSeenItAll')}
+          </div>
         }
       >
         {listPost?.map((i, index) => {

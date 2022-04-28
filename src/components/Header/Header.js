@@ -10,6 +10,7 @@ import { I18LANGUAGE } from "configs";
 import { useTranslation } from "react-i18next";
 import i18n from "i18next";
 import { changeLanguage } from "helper/language";
+import Cookies from "js-cookie";
 
 function Header() {
   const [isSelectItem, setIsSelectItem] = useState(false);
@@ -18,8 +19,8 @@ function Header() {
   let history = useHistory();
   const user = useSelector((state) => state.user.profile);
   const handleLogout = () => {
-    dispatch(logout());
-    history.push("/login");
+    Cookies.remove("token");
+    window.location.reload(false);
   };
   function handleClickUserActionDropdown(visible) {
     setIsSelectItem(visible);
