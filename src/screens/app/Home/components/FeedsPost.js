@@ -93,12 +93,20 @@ function FeedsPost(props) {
         {/* Lay min height of images => add to style to fix image view */}
         {post?.medias.map((media) => {
           return (
-            <ImageLoading
-              key={media?.id}
-              className="feeds-post__img"
-              src={media?.url}
-              alt="img"
-            ></ImageLoading>
+            <div
+              className="flex-center"
+              style={{
+                height: "100%",
+              }}
+            >
+              <ImageLoading
+                key={media?.id}
+                className="feeds-post__img"
+                src={media?.url}
+                alt="img"
+              ></ImageLoading>
+            </div>
+
           );
         })}
       </Carousel>

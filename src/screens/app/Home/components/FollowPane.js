@@ -13,7 +13,12 @@ function FollowPane({ currentUser = {} }) {
   return (
     <div className="follow-pane">
       <div className="follow-pane__user">
-        <FollowCard user={currentUser} sizeAvatar={60} isShowAction={false} />
+        <FollowCard
+          user={currentUser}
+          sizeAvatar={60}
+          isShowAction={false}
+          isShowBoxShadowStyle={true}
+        />
       </div>
       <div className="follow-pane__text">
         <div className="follow-pane__text-suggestion">
@@ -40,6 +45,7 @@ function FollowPane({ currentUser = {} }) {
         })}
       </div>
       <div className="follow-pane__footer">
+        © {new Date().getFullYear()} Vifrin from Trần Mạnh Hùng
         {/* <Footer category={FooterCategory.FOOTER_CATEGORY_LIST_1} /> */}
       </div>
     </div>

@@ -9,6 +9,7 @@ import "./Header.sass";
 import { I18LANGUAGE } from "configs";
 import { useTranslation } from "react-i18next";
 import i18n from "i18next";
+import { changeLanguage } from "helper/language";
 
 function Header() {
   const [isSelectItem, setIsSelectItem] = useState(false);
@@ -31,9 +32,19 @@ function Header() {
     <header className="header flex-center">
       <div className="header__container">
         <Link to={"/"} className="header-logo">
-          <div className="b4E__text" >
-            <div>VIFRIN</div>
-            <div>VIFRIN</div>
+          <div className="b4E__text">
+            <div
+              style={{
+                fontSize: "30px"
+              }}
+            >
+              VIFRIN
+            </div>
+            <div
+              style={{
+                fontSize: "30px"
+              }}
+            >VIFRIN</div>
           </div>
         </Link>
         <div className="header-search">
@@ -118,8 +129,7 @@ function Header() {
                                 localStorage.getItem(I18LANGUAGE) === "vi"
                                   ? "en"
                                   : "vi";
-                              localStorage.setItem(I18LANGUAGE, lng);
-                              i18n.changeLanguage(lng);
+                              changeLanguage(lng);
                               setIsSelectItem(false);
                             }}
                             to="#"

@@ -57,7 +57,7 @@ function SearchInput() {
 
   return (
     <div style={{
-      marginTop: "8px",
+      marginTop: "10px",
     }}>
       <Dropdown
         visible={isFocusSearch}
@@ -77,7 +77,6 @@ function SearchInput() {
             )}
             {users?.length > 0 && (
               <>
-                {/* 0333380504 */}
                 <div className="searchInputResultTitle">{t("users")}</div>
                 {users?.length > 0 &&
                   users?.map((user) => (
@@ -110,10 +109,17 @@ function SearchInput() {
         <Input
           value={searchParams}
           placeholder={t("searchWithVifrin")}
-          prefix={<SearchOutlined />}
+          prefix={<SearchOutlined style={{
+            fontSize: "20px",
+            marginRight: "4px",
+          }}/>}
           onChange={handleSearchDestination}
           onBlur={() => { }}
           allowClear={true}
+          size="large"
+          style={{
+            borderRadius: "6px",
+          }}
         />
       </Dropdown>
     </div>

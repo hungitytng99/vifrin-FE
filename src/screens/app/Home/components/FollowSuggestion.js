@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { FOLLOW } from "screens/app/Profile/redux/action";
 import { HOMEPAGE_FOLLOW } from "../redux/action";
 import "./FollowSuggestion.sass";
 
@@ -18,25 +17,25 @@ function FollowSuggestion(props) {
     dispatch(HOMEPAGE_FOLLOW({ userId: user.id }));
   }
   return (
-    <div className="follow-card">
-      <Link to={`/profile/${user.username}`} className="follow-card__avatar">
+    <div className="follow-suggestion-card">
+      <Link to={`/profile/${user.username}`} className="follow-suggestion-card__avatar">
         <img
-          className="follow-card__avatar-img"
+          className="follow-suggestion-card__avatar-img"
           style={{ width: `${sizeAvatar}px`, height: `${sizeAvatar}px` }}
           src={user?.avatarUrl ?? AVATAR_DEFAULT}
           alt={user?.username}
         />
       </Link>
-      <div className="follow-card__info">
-        <div className="follow-card__info-box">
+      <div className="follow-suggestion-card__info">
+        <div className="follow-suggestion-card__info-box">
           <Link
             to={`/profile/${user.username}`}
-            className="follow-card__info-username"
+            className="follow-suggestion-card__info-username"
           >
             {user.username}
           </Link>
         </div>
-        <div className="follow-card__info-description">{user.fullName}</div>
+        <div className="follow-suggestion-card__info-description">{user.fullName}</div>
       </div>
 
       {isShowFollow ? (
@@ -45,12 +44,12 @@ function FollowSuggestion(props) {
             setIsShowFollow(false);
             onClickFollow(user.userId);
           }}
-          className="follow-card__btn-follow"
+          className="follow-suggestion-card__btn-follow"
         >
           {t("follow")}
         </button>
       ) : (
-        <button className="follow-card__btn-followed" disabled>
+        <button className="follow-suggestion-card__btn-followed" disabled>
           {t("followed")}
         </button>
       )}

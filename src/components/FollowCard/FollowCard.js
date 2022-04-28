@@ -10,16 +10,25 @@ function FollowCard(props) {
     headerActionText,
     cardActionText,
     sizeAvatar = 32,
-    onClickHeaderAction = () => {},
-    onClickCardAction = () => {},
-    onClick = () => {},
+    onClickHeaderAction = () => { },
+    onClickCardAction = () => { },
+    onClick = () => { },
     isShowAction = true,
+    isShowBoxShadowStyle = false,
   } = props;
   const [isShowFollow, setIsShowFollow] = useState(true);
   const [isShowUnFollow, setIsShowUnFollow] = useState(isShowAction);
 
   return (
-    <div onClick={onClick} className="follow-card">
+    <div
+      onClick={onClick}
+      className="follow-card"
+      style={isShowBoxShadowStyle ? {
+        padding: '8px',
+        borderRadius: '10px',
+        boxShadow: 'rgba(0, 0, 0, 0.08) 0px 6px 16px -8px, rgba(0, 0, 0, 0.05) 0px 9px 28px 0px, rgba(0, 0, 0, 0.03) 0px 12px 48px 16px'
+      } : {}}
+    >
       <Link to={`/profile/${user.username}`} className="follow-card__avatar">
         <img
           className="follow-card__avatar-img"

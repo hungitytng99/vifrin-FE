@@ -62,7 +62,7 @@ function HomePage() {
               {shouldShowAlertUpdateProfile() && (
                 <div
                   className="homeAlertUpdateProfile"
-                  style={{ marginTop: "30px" }}
+                  style={{ marginTop: "25px" }}
                 >
                   <Alert
                     message={t("updateYourProfileForTheBestExperience")}

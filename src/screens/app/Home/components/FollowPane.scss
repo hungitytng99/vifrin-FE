@@ -1,24 +1,26 @@
-.follow-pane{
+.follow-pane {
     display: flex;
     flex-direction: column;
     margin-top: 30px;
     &__text {
-      
         display: flex;
         justify-content: space-between;
-        padding:10px 0px 10px 0px;
-        &-suggestion{
+        padding: 10px 0px 10px 0px;
+        &-suggestion {
             font-size: 1.5rem;
             color: var(--grey-9);
             font-weight: 600;
         }
-        &-all{
-            color : var(--grey-3);
+        &-all {
+            color: rgb(25, 118, 210);
             font-size: 1.3rem;
             font-weight: 500;
         }
     }
-    &__footer{
-        color: var(--grey-11);
+    &__footer {
+        color: var(--grey-10);
+        text-align: center;
+        text-transform: uppercase;
+        margin-top: 10px;
     }
 }
