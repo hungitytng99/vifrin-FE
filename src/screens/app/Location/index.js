@@ -28,7 +28,7 @@ function LocationPage({ match, history }) {
 
   return (
     <div className="my-container locationPage">
-      {location.getDetailLocationState === REQUEST_STATE.REQUEST && (
+      {location?.getDetailLocationState === REQUEST_STATE.REQUEST && (
         <FullComponentLoading bgColor="rgba(255,255,255,1)" />
       )}
       <Row className="locationPageInfo">

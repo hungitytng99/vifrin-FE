@@ -3,15 +3,10 @@ import { Link } from "react-router-dom";
 import "./Comment.scss";
 import ShowMoreText from "react-show-more-text";
 import { useTranslation } from "react-i18next";
-import TimeAgo from "javascript-time-ago";
-import vi from "javascript-time-ago/locale/vi.json";
-import en from "javascript-time-ago/locale/en.json";
 import ReactTimeAgo from "react-time-ago";
-import { SENDING_SUCCESS_KEY } from "configs";
+import { AVATAR_DEFAULT, I18LANGUAGE, SENDING_SUCCESS_KEY } from "configs";
 import { Rate } from "antd";
 
-TimeAgo.addDefaultLocale(vi);
-TimeAgo.addLocale(en);
 // 1. xu ly noi dung text qua dai ( chi gioi han ki tu hien thi).(chua lam)
 // 2. xu ly comment cua comment
 // 3.
@@ -20,7 +15,7 @@ function Comment({ comment, hasRate = false, rate = 5 }) {
   console.log('comment: ', comment);
   const { t } = useTranslation();
   const [likeState, setLikeState] = useState(false);
-  const [likedCount, setLikeCount] = useState(likesCount);
+  const [likedCount, setLikeCount] = useState(likesCount ?? 0);
   function handleLiked() {
     if (comment.status === SENDING_SUCCESS_KEY) {
       setLikeState(!likeState);
@@ -37,8 +32,8 @@ function Comment({ comment, hasRate = false, rate = 5 }) {
         <Link to={`/profile/${user?.username}`}>
           <img
             className="comment-box__avatar"
-            src={user?.avatarUrl}
-            alt={`avatar ${user.username}`}
+            src={user?.avatarUrl ?? AVATAR_DEFAULT}
+            alt={`avatar ${user?.username}`}
           ></img>
         </Link>
         <div className="comment-box__content">
@@ -80,7 +75,7 @@ function Comment({ comment, hasRate = false, rate = 5 }) {
           {comment?.status !== SENDING_SUCCESS_KEY ? (
             t(comment.status)
           ) : (
-            <ReactTimeAgo date={updatedAt} locale="vi" />
+            <ReactTimeAgo date={updatedAt} locale={localStorage.getItem(I18LANGUAGE)} />
           )}
         </div>
         {comment.status === SENDING_SUCCESS_KEY && (

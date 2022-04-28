@@ -13,12 +13,12 @@ import { isEmptyValue } from "utils/checkType";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { GET_LIST_SUGGEST_FOLLOWER } from "./redux/action";
+import { Link } from "react-router-dom";
 
 function HomePage() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-
   // var inFifteenMinutes = new Date(new Date().getTime() + 1 * 60 * 1000);
   function handleCloseAlertUpdateProfile() {
     Cookies.set(BEEN_ALERT_UPDATE_PROFILE, true, {
@@ -30,7 +30,6 @@ function HomePage() {
     if (!Cookies.get(BEEN_ALERT_UPDATE_PROFILE)) {
       if (
         isEmptyValue(user?.profile?.bio) ||
-        isEmptyValue(user?.profile?.country) ||
         isEmptyValue(user?.profile?.phoneNumber) ||
         isEmptyValue(user?.profile?.gender) ||
         isEmptyValue(user?.profile?.dateOfBirth)
@@ -63,7 +62,7 @@ function HomePage() {
               {shouldShowAlertUpdateProfile() && (
                 <div
                   className="homeAlertUpdateProfile"
-                  style={{ marginTop: "15px" }}
+                  style={{ marginTop: "30px" }}
                 >
                   <Alert
                     message={t("updateYourProfileForTheBestExperience")}
@@ -71,7 +70,7 @@ function HomePage() {
                     showIcon
                     action={
                       <Button type="primary" size="small">
-                        {t("updateNow")}
+                        <Link to="/setting">{t("updateNow")}</Link>
                       </Button>
                     }
                     closable

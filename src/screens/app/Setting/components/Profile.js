@@ -14,11 +14,11 @@ const MenuItems = [
     title: 'User Info',
     icon: <PieChartOutlined />
   },
-  {
-    id: 2,
-    title: 'Options 2',
-    icon: <DesktopOutlined />
-  },
+  // {
+  //   id: 2,
+  //   title: 'Options 2',
+  //   icon: <DesktopOutlined />
+  // },
 ]
 
 function Profile(props) {

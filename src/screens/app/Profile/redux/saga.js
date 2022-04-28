@@ -244,20 +244,21 @@ function* getListCommentByPost({ type, payload }) {
 
 function* createNewComment({ type, payload }) {
   const { comment } = payload;
-  console.log('comment: ', comment);
+  console.log("comment: ", comment);
   try {
     const commentParams = { ...comment };
     delete commentParams.user;
     delete commentParams.commentId;
     const response = yield call(apiCreateComment, commentParams);
-    if (response.state === REQUEST_STATE.SUCCESS) {
-      yield put(
-        CREATE_NEW_COMMENT_SUCCESS({
-          comment: response.data,
-          commentId: comment.commentId,
-        })
-      );
-    }
+    console.log("response: ", response);
+    // if (response.state === REQUEST_STATE.SUCCESS) {
+    yield put(
+      CREATE_NEW_COMMENT_SUCCESS({
+        comment: response.data ?? comment,
+        commentId: comment.commentId,
+      })
+    );
+    // }
   } catch (error) {
     console.log("error: ", error);
   }
@@ -296,5 +297,4 @@ export default function* userSaga() {
   yield takeLatest(GET_LIST_COMMENT_BY_POST().type, getListCommentByPost);
   yield takeEvery(LIKE_A_POST().type, likeAPost);
   yield takeEvery(CREATE_NEW_COMMENT().type, createNewComment);
-
 }

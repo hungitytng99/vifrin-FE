@@ -1,19 +1,8 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import ReactModal from "react-modal";
 import { useTranslation } from "react-i18next";
-import {
-  Tabs,
-  Button,
-  notification,
-  Form,
-  Input,
-  InputNumber,
-  Menu,
-  Row,
-  DatePicker,
-  Select,
-} from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { Button, notification, Form, Input, DatePicker, Select } from "antd";
+import { useSelector } from "react-redux";
 import { apiUpdateUserProfile, apiGetUserProfile } from "data-source/users";
 import moment from "moment";
 
@@ -54,7 +43,17 @@ function EditProfileForm() {
   const [form] = Form.useForm();
   const user = useSelector((state) => state.user.profile);
   const [loading, setLoading] = useState(false);
-
+  const fillForm = (data = {}) => {
+    form.setFieldsValue({
+      bio: data?.bio,
+      email: data?.email,
+      fullName: data?.fullName,
+      username: user.username || "",
+      phoneNumber: data.phoneNumber,
+      gender: data?.gender,
+      dateOfBirth: moment(data?.dateOfBirth),
+    });
+  };
   useEffect(() => {
     if (user.username) {
       setLoading(true);
@@ -74,19 +73,7 @@ function EditProfileForm() {
           setLoading(false);
         });
     }
-  }, [user]);
-
-  const fillForm = (data = {}) => {
-    form.setFieldsValue({
-      bio: data?.bio,
-      email: data?.email,
-      fullName: data?.fullName,
-      username: user.username || "",
-      phoneNumber: data.phoneNumber,
-      gender: data?.gender,
-      dateOfBirth: moment(data?.dateOfBirth),
-    });
-  };
+  }, [user, t]);
 
   const onFinish = (values) => {
     const params = {

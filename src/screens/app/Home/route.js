@@ -1,6 +1,7 @@
 import React, { lazy } from "react";
 import { initModules } from "router";
 import { HomeOutlined, HomeFilled } from "@ant-design/icons";
+import { profileModule } from "../Profile/route";
 
 export const homeModule = { key: "homepage", path: "Home" };
 
@@ -13,7 +14,7 @@ const homeRoute = {
   activeIcon: <HomeFilled />,
   inActiveIcon: <HomeOutlined />,
   component: lazy(async () => {
-    await initModules([homeModule], "app");
+    await initModules([homeModule, profileModule], "app");
     return import(".");
   }),
 };

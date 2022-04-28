@@ -24,7 +24,6 @@ function TypeBox(props) {
     isShowDetailPost,
     type = "",
     hasRate = false,
-    page = "post",
   } = props;
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -57,6 +56,7 @@ function TypeBox(props) {
           user,
           commentId: uuidv4(),
           star: 0,
+          updatedAt: new Date(),
         };
         dispatch(CREATE_NEW_COMMENT({ comment: params }));
         scrollToBottomListComment();
@@ -109,8 +109,7 @@ function TypeBox(props) {
     <>
       {hasRate && (
         <div style={{ paddingLeft: "15px", fontSize: "14px" }}>
-          <span>Đánh giá: </span>
-
+          <span>{t('rate')}: </span>
           <Rate
             style={{ fontSize: "16px" }}
             allowClear={false}
@@ -145,7 +144,7 @@ function TypeBox(props) {
           topics={commentSocketTopic}
           onMessage={(msg) => {
             console.debug("MESSAGE", msg);
-            if (user.username !== msg.data.user.username) {
+            if (user?.username !== msg.data?.user?.username) {
               dispatch(ADD_COMMENT_FROM_SOCKET({ comment: msg.data }));
             }
           }}

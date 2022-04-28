@@ -3,7 +3,7 @@ import { initModules } from "router";
 import { RocketFilled, RocketOutlined } from "@ant-design/icons";
 import { v4 as uuidv4 } from 'uuid';
 
-export const exploreModule = { key: "profile", path: "Profile" };
+export const profileModule = { key: "profile", path: "Profile" };
 
 const exploreRoute = {
   index: uuidv4(),
@@ -15,7 +15,7 @@ const exploreRoute = {
   activeIcon: <RocketFilled />,
   inActiveIcon: <RocketOutlined />,
   component: lazy(async () => {
-    await initModules([exploreModule], "app");
+    await initModules([profileModule], "app");
     return import(".");
   }),
 };

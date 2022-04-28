@@ -336,23 +336,23 @@ export default function profileReducer(state = defaultState, action) {
       };
     }
 
-    // case CREATE_NEW_COMMENT_SUCCESS().type: {
-    //   const { comment, commentId } = action.payload;
-    //   console.log("newComment: ", comment);
-    //   return {
-    //     ...state,
-    //     comment: {
-    //       ...comment,
-    //       status: SENDING_SUCCESS_KEY,
-    //     },
-    //     listCommentByPost: state.listCommentByPost.map((cmt) => {
-    //       if (cmt.commentId === commentId) {
-    //         return { ...comment, status: SENDING_SUCCESS_KEY };
-    //       }
-    //       return cmt;
-    //     }),
-    //   };
-    // }
+    case CREATE_NEW_COMMENT_SUCCESS().type: {
+      const { comment, commentId } = action.payload;
+      console.log("newComment: ", comment);
+      return {
+        ...state,
+        comment: {
+          ...comment,
+          status: SENDING_SUCCESS_KEY,
+        },
+        listCommentByPost: state.listCommentByPost.map((cmt) => {
+          if (cmt.commentId === commentId) {
+            return { ...comment, status: SENDING_SUCCESS_KEY };
+          }
+          return cmt;
+        }),
+      };
+    }
     case CREATE_NEW_COMMENT_FAIL().type: {
       return {
         ...state,

@@ -1,7 +1,7 @@
 {
   "april": "Tháng 4",
   "august": "Tháng 8",
-  "changeLanguage": "changeLanguage",
+  "changeLanguage": "Đổi ngôn ngữ",
   "december": "Tháng 12",
   "february": "Tháng 2",
   "january": "Tháng 1",
@@ -12,6 +12,8 @@
   "may": "Tháng 5",
   "november": "Tháng 11",
   "october": "Tháng 10",
+  "rememberMe": "Nhớ mật khẩu",
   "september": "Tháng 9",
-  "upload": "Tải lên"
+  "upload": "Tải lên",
+  "wellcomeTo": "wellcomeTo"
 }

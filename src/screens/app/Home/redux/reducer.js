@@ -1,5 +1,6 @@
 import { REQUEST_STATE } from "configs";
-import { GET_LIST_SUGGEST_FOLLOWER, GET_LIST_SUGGEST_FOLLOWER_FAIL, GET_LIST_SUGGEST_FOLLOWER_SUCCESS, HOMEPAGE_GET_FEED, HOMEPAGE_GET_FEED_FAIL, HOMEPAGE_GET_FEED_SUCCESS } from "./action";
+import { isEmptyValue } from "utils/checkType";
+import { GET_LIST_SUGGEST_FOLLOWER, GET_LIST_SUGGEST_FOLLOWER_FAIL, GET_LIST_SUGGEST_FOLLOWER_SUCCESS, HOMEPAGE_GET_FEED, HOMEPAGE_GET_FEED_FAIL, HOMEPAGE_GET_FEED_SUCCESS, HOMEPAGE_GET_TOTAL_FEED_SUCCESS } from "./action";
 
 const defaultState = {
   listSuggestionUser: [],
@@ -33,11 +34,12 @@ export default function homeReducer(state = defaultState, action) {
     }
 
     case HOMEPAGE_GET_FEED_SUCCESS().type: {
-      const { listPost } = action.payload;
+      const { listPost, total } = action.payload;
       return {
         ...state,
-        listPostsInFeed: listPost ?? [],
+        listPostsInFeed: isEmptyValue(listPost) ? [] : listPost,
         getListPostsInFeedState: REQUEST_STATE.SUCCESS,
+        total: total,
       };
     }
     case HOMEPAGE_GET_FEED().type: {
@@ -49,6 +51,7 @@ export default function homeReducer(state = defaultState, action) {
     case HOMEPAGE_GET_FEED_FAIL().type: {
       return {
         ...state,
+        listPostsInFeed: [],
         getListPostsInFeedState: REQUEST_STATE.ERROR,
       }
     }

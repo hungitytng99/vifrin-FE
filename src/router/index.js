@@ -1,3 +1,4 @@
+import { delay } from "helper/timer";
 import store from "redux/store";
 import { compareByIndex } from "utils/compare";
 
@@ -34,4 +35,8 @@ export const initModules = async (modules = [], container = "app") => {
       store.injectSaga(item.key, saga.default);
     }),
   ]);
+  
+   // To ensure that modules in injected
+   await delay(300);
+
 };

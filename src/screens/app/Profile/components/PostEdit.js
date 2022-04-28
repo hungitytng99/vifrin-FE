@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { PlusOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { CREATE_POST, EDIT_POST } from "../redux/action";
-import { REQUEST_STATE } from "../../../../configs";
+import { REQUEST_STATE } from "configs";
 
 const { TextArea } = Input;
 

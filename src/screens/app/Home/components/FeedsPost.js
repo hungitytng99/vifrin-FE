@@ -1,47 +1,41 @@
-import CommentsList from "./CommentsList";
-import "./FeedsPost.scss";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import ControlModal from "./ControlModal";
-import { CONTROL_LIST, LIST_COMMENT } from "../configs";
+import ReactTimeAgo from "react-time-ago";
+import { useTranslation } from "react-i18next";
+import ImageLoading from "components/ImageLoading/ImageLoading";
+import { AVATAR_DEFAULT } from "configs";
+import ReactModal from "react-modal";
+import PostDetail from "screens/app/Profile/components/PostDetail";
+import "./FeedsPost.sass";
 
-FeedsPost.defaultProps = {
-  user: "ngoctrinh89",
-  linkToUserPage: "#",
-  avatar:
-    "https://instagram.fhan3-3.fna.fbcdn.net/v/t51.2885-19/s150x150/160337107_782315219389156_6483106785446804796_n.jpg?tp=1&_nc_ht=instagram.fhan3-3.fna.fbcdn.net&_nc_ohc=pPrb2pG2YKIAX-a8k_3&ccb=7-4&oh=1fc3bbb55f7bc2b5733ab16278f8e383&oe=607F08FC&_nc_sid=4f375e",
-  location: "Địa Trung Hải-Sun Premier Village Primavera",
-  img_list: [
-    "https://sc04.alicdn.com/kf/Hdc3bc028391c4b918f12c262f5b15921w.jpg",
-  ],
-  liked: 70211,
-  status:
-    "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.",
-  comment: LIST_COMMENT,
-  dateCreated: "February 17",
-  isLikedProps: false,
-  isFavouriteProps: false,
+
+const customStyles = {
+  overlay: {
+    zIndex: 1000,
+    backgroundColor: "rgba(0,0,0,0.8)",
+  },
+  content: {
+    top: "3%",
+    left: "10%",
+    right: "10%",
+    bottom: "3%",
+    borderRadius: "0px",
+    padding: "0px",
+    border: "none",
+  },
 };
+
 function FeedsPost(props) {
-  const {
-    user,
-    linkToUserPage,
-    avatar,
-    location,
-    img_list,
-    liked,
-    status,
-    comment,
-    dateCreated,
-    isLikedProps,
-    isFavouriteProps,
-  } = props.post;
-  const [isLiked, setIsLiked] = useState(isLikedProps);
-  const [isFavourite, setIsFavourite] = useState(isFavouriteProps);
+  const { post } = props;
+  const { t } = useTranslation();
+  const [isLiked, setIsLiked] = useState(post?.likesCount);
+  const [isFavourite, setIsFavourite] = useState(false);
   const [isOpenControl, setIsOpenControl] = useState(false);
-  const [numLiked, setNumLiked] = useState(liked);
+  const [isShowDetailPost, setIsShowDetailPost] = useState(false);
+  const [numLiked, setNumLiked] = useState(0);
   function handleLikedClick() {
     setIsLiked(!isLiked);
     isLiked ? setNumLiked(numLiked - 1) : setNumLiked(numLiked + 1);
@@ -57,27 +51,39 @@ function FeedsPost(props) {
     document.body.style.overflow = "auto";
     setIsOpenControl(false);
   }
+  function handleCloseDetailModal() {
+    setIsShowDetailPost(false);
+    // dispatch(RESET_DETAIL_PROFILE_STATE());
+  }
+
   return (
     <div className="feeds-post">
-      <ControlModal
+      {/* <ControlModal
         modalIsOpen={isOpenControl}
         openModal={openControlModal}
         closeModal={closeControlModal}
         itemsList={CONTROL_LIST}
-      />
+      /> */}
       <div className="post__user">
-        <Link to={linkToUserPage}>
+        <Link to={`/profile/${post?.user?.username}`}>
           <img
             className="post__user-avatar"
-            src={avatar}
+            src={post?.user?.avatarUrl ?? AVATAR_DEFAULT}
             alt="avatar-user"
           ></img>
         </Link>
         <div className="post__user-box">
           <div className="post__user-username">
-            <Link to={linkToUserPage}>{user}</Link>
+            <Link to={`/profile/${post?.user?.username}`}>
+              {post?.user?.username}
+            </Link>
           </div>
-          <div className="post__user-location">{location}</div>
+          <Link
+            className="post__user-location"
+            to={`/location/${post?.destination?.id}`}
+          >
+            {post?.destination?.name}
+          </Link>
         </div>
         <div className="post__user-control" onClick={openControlModal}>
           <i className="post__user-control --icon fas fa-ellipsis-h"></i>
@@ -85,14 +91,14 @@ function FeedsPost(props) {
       </div>
       <Carousel showThumbs={false} emulateTouch={true}>
         {/* Lay min height of images => add to style to fix image view */}
-        {img_list.map((item) => {
+        {post?.medias.map((media) => {
           return (
-            <img
-              key={item}
+            <ImageLoading
+              key={media?.id}
               className="feeds-post__img"
-              src={item}
+              src={media?.url}
               alt="img"
-            ></img>
+            ></ImageLoading>
           );
         })}
       </Carousel>
@@ -128,23 +134,44 @@ function FeedsPost(props) {
           </div>
         </div>
         <div className="user-interactive">
-          <div className="user-interactive__liked">{numLiked} likes</div>
-          <div className="user-interactive__time-created">{dateCreated}</div>
+          <div className="user-interactive__liked">
+            <span>
+              {numLiked} {t("likes")}
+            </span>
+          </div>
+          <ReactTimeAgo
+            className="user-interactive__time-created"
+            date={post?.updatedAt}
+            locale="vi"
+          />
         </div>
 
         <div className="post-status">
-          <Link to={linkToUserPage} className="post-status__username">
-            {user}
+          <Link
+            to={`/profile/${post?.user?.username}`}
+            className="post-status__username"
+          >
+            {post?.user?.username}
           </Link>
-          <div className="post-status__status">{status}</div>
+          <div className="post-status__status">{post?.content}</div>
         </div>
-        <div className="post__comments-list">
-          <CommentsList listComments={comment} />
+        <div className="feedPostShowDetailPost" onClick={() => setIsShowDetailPost(true)}>
+          {post?.commentsCount > 0
+            ? t("show") + " " + post?.commentsCount + " " + t("comments")
+            : t("showDetailPost")}
         </div>
       </div>
-      {/* <div className="home__type-box">
-        <TypeBox />
-      </div> */}
+      <ReactModal
+        isOpen={isShowDetailPost}
+        onRequestClose={handleCloseDetailModal}
+        style={customStyles}
+      >
+        <PostDetail
+          post={post}
+          isShowDetailPost={isShowDetailPost}
+          setIsShowDetailPost={setIsShowDetailPost}
+        />
+      </ReactModal>
     </div>
   );
 }

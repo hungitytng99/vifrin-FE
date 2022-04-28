@@ -30,11 +30,12 @@ function Header() {
   return (
     <header className="header flex-center">
       <div className="header__container">
-        <div className="header-logo">
-          <Link to={"/"}>
-            <img className="header-logo__img" src={logo} alt="logo" />
-          </Link>
-        </div>
+        <Link to={"/"} className="header-logo">
+          <div className="b4E__text" >
+            <div>VIFRIN</div>
+            <div>VIFRIN</div>
+          </div>
+        </Link>
         <div className="header-search">
           <SearchInput />
         </div>
@@ -44,7 +45,7 @@ function Header() {
               return (
                 <div key={index} >
                   {route.isShowOnNav && (
-                    <li style={{marginLeft: '10px'}}>
+                    <li style={{ marginLeft: '10px' }}>
                       <Link to={route.path} className="header-control__item">
                         {history.location.pathname === route.path
                           ? route.activeIcon
@@ -55,7 +56,7 @@ function Header() {
                 </div>
               );
             })}
-            <li className="header-control__item" style={{marginLeft: '10px'}}>
+            <li className="header-control__item" style={{ marginLeft: '10px' }}>
               <div className="header__dropdown">
                 {isSelectItem ? (
                   <div

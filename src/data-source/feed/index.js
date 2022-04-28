@@ -6,7 +6,7 @@ export const apiGetFeed = async (params) => {
     const response = await GET("/feed", params);
     return {
       state: REQUEST_STATE.SUCCESS,
-      data: response.data,
+      data: response,
     };
   } catch (error) {
     console.log("error", error);

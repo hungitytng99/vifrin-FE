@@ -16,7 +16,7 @@ import {
 import "./Profile.sass";
 import { CloseOutlined } from "@ant-design/icons";
 import FollowCard from "components/FollowCard/FollowCard";
-import { REQUEST_STATE } from "configs";
+import { AVATAR_DEFAULT, REQUEST_STATE } from "configs";
 import FullComponentLoading from "components/Loading/FullComponentLoading";
 import { useTranslation } from "react-i18next";
 import {
@@ -26,7 +26,6 @@ import {
   FileImageOutlined,
 } from "@ant-design/icons";
 import PostCard from "./PostCard";
-import { AVATAR_DEFAULT } from "../../../../configs";
 import { Tabs, Button, notification, Spin, Dropdown, Menu } from "antd";
 import PostCreate from "./PostCreate";
 

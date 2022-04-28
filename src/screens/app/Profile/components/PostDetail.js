@@ -24,7 +24,7 @@ function PostDetail({ post, isShowDetailPost, setIsShowDetailPost }) {
   const [numLiked, setNumLiked] = useState(post.likesCount);
   const [isFocusComment, setIsFocusComment] = useState({ focus: false });
   const comments =
-    useSelector((state) => state.profile.listCommentByPost) ?? [];
+    useSelector((state) => state.profile?.listCommentByPost) ?? [];
   const profile = useSelector((state) => state.profile);
   const user = useSelector((state) => state.user.profile);
   const bottomListCommentRef = useRef(null);
@@ -93,7 +93,7 @@ function PostDetail({ post, isShowDetailPost, setIsShowDetailPost }) {
           </div>
           <Divider style={{ margin: "0px 0px 10px 0px" }} />
           <div className="postDetailCommentBox">
-            {profile.getListCommentByPostState === REQUEST_STATE.REQUEST ? (
+            {profile?.getListCommentByPostState === REQUEST_STATE.REQUEST ? (
               <FullComponentLoading />
             ) : (
               <div className="postDetailCommentList">

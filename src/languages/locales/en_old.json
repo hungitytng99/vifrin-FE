@@ -1,5 +1,14 @@
 {
-  "changeLanguage": "changeLanguage",
+  "changeLanguage": "Change language",
   "languageKey": "en",
-  "upload": "Upload"
+  "profile": {
+    "bio": "Bio",
+    "gender": "Gender",
+    "name": "Name",
+    "phoneNumber": "Phone number",
+    "username": "Username"
+  },
+  "rememberMe": "Remember me",
+  "upload": "Upload",
+  "wellcomeTo": "wellcomeTo"
 }

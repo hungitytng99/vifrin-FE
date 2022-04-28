@@ -1,36 +1,32 @@
-import React, { useEffect } from "react";
-import { Form, Input, Button, Checkbox, notification } from "antd";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
-import { isEmptyValue } from "utils/checkType";
+import { Divider, notification, Spin } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { REQUEST_STATE } from 'configs';
 import { LOGIN, RESET_AUTH_STATE } from "redux/users/action";
-import logo from "assets/images/logo.png";
-import { REMEMBER_ACCOUNT_KEY, REQUEST_STATE } from "configs";
-import { useTranslation } from "react-i18next";
-import "./Login.sass";
+import { useTranslation } from 'react-i18next';
+import { isEmptyValue } from 'utils/checkType';
+import './Login.sass';
 
 const queryString = require("query-string");
 
-function Login() {
+const Login = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const history = useHistory();
-  const dispatch = useDispatch();
-  const onFinish = (values) => {
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
+
+  const onSubmit = (data) => {
     dispatch(
-      LOGIN({ account: queryString.stringify(values), originalAccount: values })
+      LOGIN({ account: queryString.stringify(data), originalAccount: data })
     );
   };
-
-  function getInitialValue() {
-    if (user.registerResponse.data) {
-      localStorage.removeItem(REMEMBER_ACCOUNT_KEY);
-      return {
-        username: user?.registerResponse?.data?.username,
-      };
-    }
-    return JSON.parse(localStorage.getItem(REMEMBER_ACCOUNT_KEY));
-  }
 
   useEffect(() => {
     if (
@@ -50,95 +46,61 @@ function Login() {
       dispatch(RESET_AUTH_STATE());
     }
   }, [user, history, dispatch, t]);
-  return (
-    <div className="login" style={{ display: "flex", flexDirection: "column" }}>
-      <img
-        style={{ height: "100px", marginBottom: "15px" }}
-        src={logo}
-        alt="logo"
-      />
-      <Form
-        name="basic"
-        labelCol={{
-          span: 10,
-        }}
-        wrapperCol={{
-          span: 14,
-        }}
-        initialValues={getInitialValue()}
-        onFinish={onFinish}
-        autoComplete="off"
-        className="loginForm"
-      >
-        <div className="loginWrapper">
-          <Form.Item
-            label={t("username")}
-            name="username"
-            style={{ marginBottom: "12px" }}
-            rules={[
-              {
-                required: true,
-                message: t("pleaseEnterYourUsername"),
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
 
-          <Form.Item
-            label={t("password")}
-            name="password"
-            style={{ marginBottom: "12px" }}
-            rules={[
-              {
-                required: true,
-                message: t("pleaseEnterYourPassword"),
-              },
-            ]}
-          >
-            <Input.Password />
-          </Form.Item>
-          <Form.Item
-            name="remember"
-            valuePropName="checked"
-            style={{
-              marginBottom: "4px",
-              marginLeft: "20px",
-            }}
-            wrapperCol={{
-              span: 24,
-            }}
-          >
-            <Checkbox>{t("rememberMe")}</Checkbox>
-          </Form.Item>
-          <Form.Item
-            style={{ marginLeft: "20px" }}
-            wrapperCol={{
-              span: 24,
-            }}
-          >
-            <Button style={{ width: "100%" }} type="primary" htmlType="submit">
-              {t("login")}
-            </Button>
-          </Form.Item>
-        </div>
-      </Form>
-      <div className="loginRegister">
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <span className="login__no-account"> {t("dontHaveAccount?")} </span>
-          <Link className="login__sign-up" to="/auth/register">
-            {t("signUpNow")}
-          </Link>
-        </div>
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="auth__form">
+      <div className="auth__header is-flex-col al-center ju-center">
+        <div className="auth__header--label">{t("login")}</div>
       </div>
-    </div>
+      <div className="auth__body is-flex-col">
+        <div className="auth__label required">{t("username")}</div>
+        <div className="input-effect">
+          <input
+            {...register('username', {
+              required: true,
+            })}
+            className="effect effect__email"
+            type="text"
+            placeholder={t('enterYourAccount')}
+            autoComplete="false"
+          />
+          <span className="focus-border">
+            <i></i>
+          </span>
+        </div>
+        {errors.username?.type === 'required' && (
+          <div className="auth__error">{t("pleaseEnterYourUsername")}</div>
+        )}
+        <div className="auth__label required">{t("password")}</div>
+        <div className="input-effect">
+          <input
+            {...register('password', { required: true })}
+            className="effect effect__pw"
+            type="password"
+            placeholder={t("enterYourPassword")}
+            autoComplete="false"
+          />
+          <span className="focus-border">
+            <i></i>
+          </span>
+        </div>
+        {errors.password?.type === 'required' && (
+          <div className="auth__error">{t("pleaseEnterYourPassword")}</div>
+        )}
+        <button className="auth__box is-flex al-center ju-center" style={{ fontWeight: 'bold' }}>
+          {user?.authState === REQUEST_STATE.REQUEST ? <Spin /> : t("login")}
+        </button>
+      </div>
+      <div style={{
+        marginTop: '10px',
+      }}>
+        <span className="login__no-account"> {t("dontHaveAccount?")} </span>
+        <Link className="login__sign-up" to="/auth/register">
+          {t("signUpNow")}
+        </Link>
+      </div>
+    </form>
   );
-}
+};
 
 export default Login;

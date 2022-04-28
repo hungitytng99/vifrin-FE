@@ -57,3 +57,17 @@ export function HOMEPAGE_GET_FEED_FAIL(payload) {
     payload,
   };
 }
+
+export function HOMEPAGE_GET_TOTAL_FEED(payload) {
+  return {
+    type: "HOMEPAGE_GET_TOTAL_FEED",
+    payload,
+  };
+}
+
+export function HOMEPAGE_GET_TOTAL_FEED_SUCCESS(payload) {
+  return {
+    type: "HOMEPAGE_GET_TOTAL_FEED_SUCCESS",
+    payload,
+  };
+}

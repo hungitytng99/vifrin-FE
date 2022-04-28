@@ -4,7 +4,7 @@ import "./SearchInput.sass";
 import { apiSearchUserAndDestination } from "data-source/search";
 import { SearchOutlined } from "@ant-design/icons";
 import { Col, Dropdown, Input, Row, Select, Menu } from "antd";
-import { IMAGE_LOCATION_DEFAULT } from "configs";
+import { AVATAR_DEFAULT, IMAGE_LOCATION_DEFAULT } from "configs";
 import { Link } from "react-router-dom";
 
 const { Option } = Select;
@@ -18,12 +18,10 @@ function SearchInput() {
 
   async function handleSearchDestination(e) {
     setSearchParams(() => e.target.value);
-    console.log("e.target.value: ", e.target.value);
     if (e.target.value) {
       const resultSearch = await apiSearchUserAndDestination({
         key: e.target.value,
       });
-      console.log("resultSearch: ", resultSearch);
       if (resultSearch.data !== "") {
         const listDestinations = resultSearch?.data?.destinations?.map(
           (result) => ({
@@ -36,7 +34,7 @@ function SearchInput() {
           value: result.id,
           text: result.username,
           fullName: result.fullName,
-          avatar: result.avatar,
+          avatarUrl: result.avatarUrl,
         }));
         setUsers(listUsers?.slice(0, 5) ?? []);
         setDestinationOptions(listDestinations?.slice(0, 4) ?? []);
@@ -50,15 +48,17 @@ function SearchInput() {
   }
 
   useEffect(() => {
-    if(searchParams === '') {
+    if (searchParams === "") {
       setIsFocusSearch(false);
     } else {
       setIsFocusSearch(true);
     }
-  }, [searchParams])
+  }, [searchParams]);
 
   return (
-    <>
+    <div style={{
+      marginTop: "8px",
+    }}>
       <Dropdown
         visible={isFocusSearch}
         overlay={
@@ -75,15 +75,24 @@ function SearchInput() {
                 ))}
               </>
             )}
-
             {users?.length > 0 && (
               <>
+                {/* 0333380504 */}
                 <div className="searchInputResultTitle">{t("users")}</div>
                 {users?.length > 0 &&
                   users?.map((user) => (
                     <Menu.Item key={user.value}>
                       <Link to={`/profile/${user.text}`}>
-                        <span>{user?.text}</span>
+                        <Col span={24}>
+                          <div style={{ width: '50px', height: '50px' }}>
+                            <img
+                              style={{ width: "100%", height: "100%", borderRadius: "50%" }}
+                              src={user?.avatarUrl ?? AVATAR_DEFAULT}
+                              alt="result"
+                            />
+                            <span style={{ marginLeft: '6px' }}>{user?.text}</span>
+                          </div>
+                        </Col>
                       </Link>
                     </Menu.Item>
                   ))}
@@ -103,57 +112,11 @@ function SearchInput() {
           placeholder={t("searchWithVifrin")}
           prefix={<SearchOutlined />}
           onChange={handleSearchDestination}
-          onBlur={() => {
-            // setSearchParams("");
-            // setUsers([]);
-            // setDestinationOptions([]);
-            // setIsFocusSearch(false);
-          }}
+          onBlur={() => { }}
           allowClear={true}
         />
       </Dropdown>
-      {/* <Select
-        className="search"
-        showSearch
-        value={searchParams}
-        placeholder={t("searchOnVifrin")}
-        style={{ fontSize: "14px" }}
-        defaultActiveFirstOption={false}
-        showArrow={false}
-        filterOption={false}
-        onSearch={handleSearchDestination}
-        onChange={handleChangeDestination}
-        notFoundContent={null}
-        suffixIcon={<SearchOutlined />}
-      >
-        {destinationOptions?.length > 0 && (
-          <>
-            <div className="searchInputResultTitle">{t("destination")}</div>
-            {destinationOptions?.map((destination) => (
-              <Option key={destination.value}>
-                <Link to={`/location/${destination.value}`}>
-                  <span>{destination?.text}</span>
-                </Link>
-              </Option>
-            ))}
-          </>
-        )}
-        {users?.length > 0 && (
-          <>
-            <div className="searchInputResultTitle">{t("users")}</div>
-            {users?.map((user) => (
-              <Link to={`/profile/${user.value}`}>
-                <Option key={user.value}>{user.username}</Option>
-              </Link>
-            ))}
-          </>
-        )}
-      </Select> */}
-      {/* <div className="search">
-        <i className="search__icon fas fa-search"></i>
-        <input className="search__input" type="text" placeholder="Search" />
-      </div> */}
-    </>
+    </div>
   );
 }
 export default SearchInput;

@@ -7,9 +7,9 @@ import { useTranslation } from "react-i18next";
 import { PlusOutlined, EnvironmentOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { CREATE_POST } from "../redux/action";
-import { REQUEST_STATE } from "../../../../configs";
 import { Select } from "antd";
 import { apiSearchDestination } from "data-source/destination";
+import { REQUEST_STATE } from "configs";
 
 const { TextArea } = Input;
 const { Option } = Select;
