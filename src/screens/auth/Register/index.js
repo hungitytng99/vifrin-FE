@@ -1,16 +1,13 @@
-import { Divider, notification, Spin } from 'antd';
-import React, { useEffect, useState } from 'react';
+import { notification, Spin } from 'antd';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { AVATAR_DEFAULT, REQUEST_STATE } from 'configs';
-import { LOGIN, REGISTER, RESET_AUTH_STATE } from "redux/users/action";
+import { REGISTER, RESET_AUTH_STATE } from "redux/users/action";
 import { useTranslation } from 'react-i18next';
-import { isEmptyValue } from 'utils/checkType';
 import './Register.sass';
 import './animated.css'
-
-const queryString = require("query-string");
 
 const Login = () => {
   const {

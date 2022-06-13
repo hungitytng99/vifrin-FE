@@ -211,12 +211,12 @@ function Profile(props) {
               </div>
               <div className="profile__info-box --mid">
                 <div className="profile__info-detail">
-                  <span>{profile.listPostByUsername?.length}</span>
                   {profile.listPostByUsername?.length > 1 ? (
-                    <p>{t("posts")}</p>
+                    <div>{t("posts")}</div>
                   ) : (
-                    <p>{t("post")}</p>
+                    <div>{t("post")}</div>
                   )}
+                  <span>{profile.listPostByUsername?.length}</span>
                 </div>
                 <div
                   className="profile__info-detail  --hover"
@@ -224,12 +224,25 @@ function Profile(props) {
                     onClickListFollower(profile.profileUserByUsername.id)
                   }
                 >
-                  <span>{profile.profileUserByUsername?.followersCount}</span>
                   {profile.profileUserByUsername?.followersCount > 1 ? (
-                    <p>{t("followers")}</p>
+                    <div>{t("profile.contributions")}</div>
                   ) : (
-                    <p>{t("follower")}</p>
+                    <div>{t("profile.contributions")}</div>
                   )}
+                  <span>100</span>
+                </div>
+                <div
+                  className="profile__info-detail  --hover"
+                  onClick={() =>
+                    onClickListFollower(profile.profileUserByUsername.id)
+                  }
+                >
+                  {profile.profileUserByUsername?.followersCount > 1 ? (
+                    <div>{t("followers")}</div>
+                  ) : (
+                    <div>{t("follower")}</div>
+                  )}
+                  <span>{profile.profileUserByUsername?.followersCount}</span>
                 </div>
 
                 <div
@@ -238,12 +251,12 @@ function Profile(props) {
                     onClickListFollowing(profile.profileUserByUsername.id)
                   }
                 >
-                  <span>{profile.profileUserByUsername?.followingsCount}</span>
                   {profile.profileUserByUsername?.followingsCount > 1 ? (
-                    <p>{t("followings")}</p>
+                    <div>{t("followings")}</div>
                   ) : (
-                    <p>{t("following")}</p>
+                    <div>{t("following")}</div>
                   )}
+                  <span>{profile.profileUserByUsername?.followingsCount}</span>
                 </div>
               </div>
               <div className="profile__info-box">
@@ -291,11 +304,11 @@ function Profile(props) {
                   REQUEST_STATE.REQUEST && <Spin />}
                 {profile.listPostByUsername.length === 0 &&
                   profile.getListPostByUsernameState ===
-                    REQUEST_STATE.SUCCESS &&
+                  REQUEST_STATE.SUCCESS &&
                   (profile.isCurrentUser ? (
-                    <div style={{paddingLeft: '15px'}}>{t("youHaveNotCreatedPostsYet")}</div>
+                    <div style={{ paddingLeft: '15px' }}>{t("youHaveNotCreatedPostsYet")}</div>
                   ) : (
-                    <div style={{paddingLeft: '15px'}}>{t("thisPersonHavenotCreatedPost")}</div>
+                    <div style={{ paddingLeft: '15px' }}>{t("thisPersonHavenotCreatedPost")}</div>
                   ))}
                 {profile.listPostByUsername.map((post) => {
                   return (

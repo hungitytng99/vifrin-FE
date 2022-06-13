@@ -12,7 +12,7 @@ import Comment from "components/Comment/Comment";
 import "./LocationPage.sass";
 import { REQUEST_STATE } from "configs";
 import FullComponentLoading from "components/Loading/FullComponentLoading";
-import TypeBox from "../Profile/components/TypeBox";
+import TypeBox from "../Profile/pages/TypeBox";
 import { isEmptyValue } from "utils/checkType";
 import { CREATE_NEW_COMMENT_SUCCESS } from "../Profile/redux/action";
 

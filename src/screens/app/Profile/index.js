@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Profile from "./components/Profile";
+import Profile from "./pages/Profile";
 import { useDispatch, useSelector } from "react-redux";
 import {
   CHECK_ISCURRENT_USER,

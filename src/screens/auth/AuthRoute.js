@@ -1,6 +1,5 @@
 import React, { Suspense } from "react";
 import { Switch } from "react-router-dom";
-import { Spin } from "antd";
 import { authRoutes } from "router";
 import PrivateRoute from "router/PrivateRoute";
 import PublicRoute from "router/PublicRoute";

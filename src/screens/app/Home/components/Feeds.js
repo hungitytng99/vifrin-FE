@@ -10,6 +10,7 @@ import { REQUEST_STATE } from "configs";
 import FullComponentLoading from "components/Loading/FullComponentLoading";
 import { t } from "i18next";
 import map from 'assets/images/map.png';
+import icSmile from 'assets/images/ic_smile.png';
 
 
 function Feeds() {
@@ -61,10 +62,10 @@ function Feeds() {
             color: "#333"
           }}>
             <img 
-            src={map} 
+            src={icSmile} 
             alt="map"
             style={{
-              width: '30px',
+              width: '15px',
               marginRight: "6px",
             }}
             

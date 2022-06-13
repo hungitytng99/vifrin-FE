@@ -38,11 +38,13 @@
 
         &-detail
             display: flex
+            flex-direction: column
             font-size: 1.6rem
             margin-right: 25px
             & span
                 font-weight: bold
                 padding-right: 3px
+                font-size: 18px
             &.--hover
                 cursor: pointer
     &_followers
@@ -52,7 +54,7 @@
             justify-content: space-between
             height: 40px
             border-bottom: 1px solid #d3d3d3
-            &-text 
+            &-text
                 flex: 1
                 text-align: center
                 font-weight: bold
@@ -74,12 +76,11 @@
         padding: 10px 0px 0px 10px
     &AddPost
         &Input
-            &:focus 
+            &:focus
                 border: none
                 border-right-width: 0px !important
                 box-shadow: none
     &Avatar
-        &Img 
-            &:hover 
+        &Img
+            &:hover
                 cursor: pointer
-    

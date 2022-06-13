@@ -1,5 +1,5 @@
-import { Divider, notification, Spin } from 'antd';
-import React, { useEffect, useState } from 'react';
+import { notification, Spin } from 'antd';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';

@@ -4,15 +4,25 @@ import { Form, Input, Button, Upload, Spin } from "antd";
 import UserCard from "../../../../components/UserCard/UserCard";
 import { getBase64 } from "../../../../utils/media";
 import { useTranslation } from "react-i18next";
-import { PlusOutlined, EnvironmentOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { CREATE_POST } from "../redux/action";
 import { Select } from "antd";
 import { apiSearchDestination } from "data-source/destination";
 import { REQUEST_STATE } from "configs";
+import location from 'assets/images/login/location.png';
+import icPlus from 'assets/images/ic_plus.png';
+import icPicture from 'assets/images/ic_picture.png';
+import icLocationRed from 'assets/images/ic_location_red.png';
+
 
 const { TextArea } = Input;
 const { Option } = Select;
+
+const LIST_SELECTED_CONTENTS = {
+  IMAGES: "IMAGES",
+  LOCATION: "LOCATION",
+}
 
 function PostCreate() {
   const [form] = Form.useForm();
@@ -23,9 +33,10 @@ function PostCreate() {
   const profile = useSelector((state) => state.profile);
   const [destinationOptions, setDestinationOptions] = useState([]);
   const [destinationSearchParams, setDestinationSearchParams] = useState("");
+  const [listSelectedContent, setListSelectedContent] = useState([LIST_SELECTED_CONTENTS.IMAGES]);
+  const [currentSelectedDestination, setCurrentSelectedDestination] = useState("");
 
   function onAddPost(value) {
-    console.log(value);
     dispatch(CREATE_POST(value));
   }
   async function handlePreviewProductImage(file) {
@@ -37,7 +48,6 @@ function PostCreate() {
   async function handleSearchDestination(value) {
     if (value) {
       const resultSearch = await apiSearchDestination({ key: value });
-      console.log("resultSearch: ", resultSearch);
       if (resultSearch.data !== "") {
         const listDestination = resultSearch?.data?.map((result) => ({
           value: result.id,
@@ -51,17 +61,39 @@ function PostCreate() {
   }
 
   function handleChangeDestination(value) {
-    setDestinationSearchParams(() => value);
+    setDestinationSearchParams(value);
+    let destination = destinationOptions.find(destination => destination.value.toString() === value.toString());
+    setCurrentSelectedDestination({
+      id: destination.value,
+      name: destination.text,
+    });
+    handleSelectLocation();
   }
 
   function handleChangeUploadImage({ fileList }) {
     setPostImages(fileList);
   }
 
+  function handleSelectPictures() {
+    if (listSelectedContent.includes(LIST_SELECTED_CONTENTS.IMAGES)) {
+      setListSelectedContent(listSelectedContent.filter(content => content !== LIST_SELECTED_CONTENTS.IMAGES));
+    } else {
+      setListSelectedContent([...listSelectedContent, LIST_SELECTED_CONTENTS.IMAGES]);
+    }
+  }
+
+  function handleSelectLocation() {
+    if (listSelectedContent.includes(LIST_SELECTED_CONTENTS.LOCATION)) {
+      setListSelectedContent(listSelectedContent.filter(content => content !== LIST_SELECTED_CONTENTS.LOCATION));
+    } else {
+      setListSelectedContent([...listSelectedContent, LIST_SELECTED_CONTENTS.LOCATION]);
+    }
+  }
+
   return (
     <div className="postCreate">
       <div className="postCreateUser">
-        <UserCard user={user} sizeAvatar={36} hasAction={false} />
+        <UserCard user={user} sizeAvatar={36} hasAction={false} destination={currentSelectedDestination} />
       </div>
       <div className="postCreatePostForm">
         <Form
@@ -79,28 +111,61 @@ function PostCreate() {
                 rows={4}
                 className="postCreateInput"
                 type="text"
-                style={{ fontSize: "14px", border: "none", paddingLeft: "0px" }}
+                style={{ fontSize: "16px", border: "none", paddingLeft: "0px" }}
                 placeholder={t("whatAreYouThinking?")}
               />
             </Form.Item>
           </div>
-          <div
+
+          <div className="addContent">
+            <div className="addContentHeader">
+              <img
+                src={icPlus}
+                alt="ic plus"
+                style={{
+                  width: "28px",
+                }}
+              />
+              <div className="addContentHeaderText">{t('addContent.addToPost')}</div>
+            </div>
+            <div className="addContentList">
+              {/* <img
+                className="addContentItem"
+                src={icPicture}
+                alt="ic pictures"
+                style={{
+                  height: "28px",
+                }}
+                onClick={() => handleSelectPictures()}
+              /> */}
+              <img
+                className="addContentItem"
+                src={icLocationRed}
+                alt="ic location"
+                style={{
+                  height: "28px",
+                }}
+                onClick={() => handleSelectLocation()}
+              />
+            </div>
+          </div>
+          {listSelectedContent.includes(LIST_SELECTED_CONTENTS.LOCATION) && <div
             style={{
               display: "flex",
               alignItems: "center",
               width: "100%",
-              marginBottom: "10px",
+              margin: "10px 0px",
             }}
           >
-            <EnvironmentOutlined
+            <img
+              src={location}
+              alt="location"
               style={{
                 width: "5%",
-                fontSize: "20px",
-                marginRight: "6px",
-                color: "#777",
+                marginRight: "10px",
               }}
             />
-            <Form.Item style={{ width: "95%" }} name="destinationId">
+            <Form.Item style={{ width: "93%" }} name="destinationId">
               <Select
                 showSearch
                 value={destinationSearchParams}
@@ -118,9 +183,13 @@ function PostCreate() {
                 ))}
               </Select>
             </Form.Item>
-          </div>
+          </div>}
 
-          <div style={{ width: "100%" }}>
+          {listSelectedContent.includes(LIST_SELECTED_CONTENTS.IMAGES) && <div style={{
+            width: "100%",
+            marginTop: "10px",
+
+          }}>
             <Form.Item
               name="media"
               rules={[
@@ -150,7 +219,8 @@ function PostCreate() {
                 </div>
               </Upload>
             </Form.Item>
-          </div>
+          </div>}
+
 
           <div className="postCreateSubmit">
             <Button
@@ -158,7 +228,7 @@ function PostCreate() {
                 postImages.length === 0 ||
                 profile.createPostState === REQUEST_STATE.REQUEST
               }
-              style={{ width: "100%" }}
+              style={{ width: "100%", height: "40px", }}
               size="middle"
               type="primary"
               htmlType="submit"

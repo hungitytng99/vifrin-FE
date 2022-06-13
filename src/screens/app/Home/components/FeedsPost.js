@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import ImageLoading from "components/ImageLoading/ImageLoading";
 import { AVATAR_DEFAULT } from "configs";
 import ReactModal from "react-modal";
-import PostDetail from "screens/app/Profile/components/PostDetail";
+import PostDetail from "screens/app/Profile/pages/PostDetail";
 import "./FeedsPost.sass";
 
 
