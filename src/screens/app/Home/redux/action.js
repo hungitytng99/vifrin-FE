@@ -71,3 +71,28 @@ export function HOMEPAGE_GET_TOTAL_FEED_SUCCESS(payload) {
     payload,
   };
 }
+
+export function GET_TOP_DESTINATION(payload) {
+  return {
+    type: "GET_TOP_DESTINATION",
+    payload,
+  };
+}
+export function GET_TOP_DESTINATION_SUCCESS(payload) {
+  return {
+    type: "GET_TOP_DESTINATION_SUCCESS",
+    payload,
+  };
+}
+export function GET_TOP_DESTINATION_FAIL(payload) {
+  return {
+    type: "GET_TOP_DESTINATION_FAIL",
+    payload,
+  };
+}
+export function RESET_GET_TOP_DESTINATION(payload) {
+  return {
+    type: "RESET_GET_TOP_DESTINATION",
+    payload,
+  };
+}

@@ -1,13 +1,15 @@
 import { REQUEST_STATE } from "configs";
 import { isEmptyValue } from "utils/checkType";
-import { GET_LIST_SUGGEST_FOLLOWER, GET_LIST_SUGGEST_FOLLOWER_FAIL, GET_LIST_SUGGEST_FOLLOWER_SUCCESS, HOMEPAGE_GET_FEED, HOMEPAGE_GET_FEED_FAIL, HOMEPAGE_GET_FEED_SUCCESS, HOMEPAGE_GET_TOTAL_FEED_SUCCESS } from "./action";
+import { GET_LIST_SUGGEST_FOLLOWER, GET_LIST_SUGGEST_FOLLOWER_FAIL, GET_LIST_SUGGEST_FOLLOWER_SUCCESS, GET_TOP_DESTINATION, GET_TOP_DESTINATION_FAIL, GET_TOP_DESTINATION_SUCCESS, HOMEPAGE_GET_FEED, HOMEPAGE_GET_FEED_FAIL, HOMEPAGE_GET_FEED_SUCCESS, HOMEPAGE_GET_TOTAL_FEED_SUCCESS, RESET_GET_TOP_DESTINATION } from "./action";
 
 const defaultState = {
   listSuggestionUser: [],
   listPostsInFeed: [],
+  listTopDestinations: [],
 
   getListSuggestionState: null,
   getListPostsInFeedState: null,
+  getTopDestinationsState: null,
 };
 
 export default function homeReducer(state = defaultState, action) {
@@ -55,7 +57,32 @@ export default function homeReducer(state = defaultState, action) {
         getListPostsInFeedState: REQUEST_STATE.ERROR,
       }
     }
-    
+    case GET_TOP_DESTINATION().type: {
+      return {
+        ...state,
+        getTopDestinationsState: REQUEST_STATE.REQUEST,
+      };
+    }
+    case GET_TOP_DESTINATION_SUCCESS().type: {
+      const { data } = action.payload;
+      return {
+        ...state,
+        listTopDestinations: data,
+        getTopDestinationsState: REQUEST_STATE.SUCCESS,
+      };
+    }
+    case GET_TOP_DESTINATION_FAIL().type: {
+      return {
+        ...state,
+        getTopDestinationsState: REQUEST_STATE.ERROR,
+      };
+    }
+    case RESET_GET_TOP_DESTINATION().type: {
+      return {
+        ...defaultState,
+      };
+    }
+
     default:
       return state;
   }

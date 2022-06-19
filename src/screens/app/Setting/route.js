@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 export const exploreModule = { key: "setting", path: "Setting" };
 
 const exploreRoute = {
-  index: uuidv4(),
+  index: 6,
   path: "/setting",
   label: "Settings",
   exact: true,

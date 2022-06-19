@@ -1,0 +1,65 @@
+.topDestination
+    margin-bottom: 20px
+    background-color: #e5e6f3
+    border-radius: 15px
+    padding: 15px 15px
+    margin-top: 10px
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px
+    &Text
+        font-weight: 700
+        margin: 0px 0px 15px 0px
+        font-size: 18px
+    &List
+        position: relative
+    &Row
+        overflow-y: auto
+        display: flex
+        position: relative
+        &::-webkit-scrollbar
+            display: none
+    &GoLeft
+        position: absolute
+        top: 50%
+        left: 15px
+        transform: translateY(-50%)
+        font-size: 28px
+        z-index: 10
+        border-radius: 50%
+        background-color: #fafafa
+        color: #8d8d8d
+        width: 50px
+        height: 50px
+        display: flex
+        align-items: center
+        justify-content: center
+        box-shadow: 0 6px 16px -8px rgb(0 0 0 / 8%), 0 9px 28px 0 rgb(0 0 0 / 5%), 0 12px 48px 16px rgb(0 0 0 / 3%)
+        &:hover
+            cursor: pointer
+            background-color: #eeeeee
+        &:active
+            width: 48px
+            height: 48px
+            left: 16px
+    &GoRight
+        position: absolute
+        top: 50%
+        right: 15px
+        transform: translateY(-50%)
+        font-size: 28px
+        z-index: 12
+        border-radius: 50%
+        background-color: #fafafa
+        color: #8d8d8d
+        width: 50px
+        height: 50px
+        display: flex
+        align-items: center
+        justify-content: center
+        box-shadow: 0 6px 16px -8px rgb(0 0 0 / 8%), 0 9px 28px 0 rgb(0 0 0 / 5%), 0 12px 48px 16px rgb(0 0 0 / 3%)
+        &:hover
+            cursor: pointer
+            background-color: #eeeeee
+        &:active
+            width: 48px
+            height: 48px
+            right: 16px

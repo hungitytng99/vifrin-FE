@@ -12,8 +12,10 @@ import { BEEN_ALERT_UPDATE_PROFILE } from "configs";
 import { isEmptyValue } from "utils/checkType";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { GET_LIST_SUGGEST_FOLLOWER } from "./redux/action";
+import { GET_LIST_SUGGEST_FOLLOWER, GET_TOP_DESTINATION } from "./redux/action";
 import { Link } from "react-router-dom";
+import TopDestination from "./components/DestinationTop";
+import { use } from "i18next";
 
 function HomePage() {
   const { t } = useTranslation();
@@ -50,9 +52,14 @@ function HomePage() {
     );
   }, [dispatch]);
 
+  useEffect(() => {
+    dispatch(GET_TOP_DESTINATION({ page: 0, size: 20 }));
+  }, [])
+
   return (
     <div className="app-container content">
       <div className="my-container">
+
         <Row>
           <Col xl={8} lg={8} md={12} sm={12} xs={12}>
             {shouldShowAlertUpdateProfile() && (
@@ -74,7 +81,7 @@ function HomePage() {
                 />
               </div>
             )}
-
+            <TopDestination />
             <div className="home-feeds">
               <div className="home-daily-post">
                 <DailyPane />

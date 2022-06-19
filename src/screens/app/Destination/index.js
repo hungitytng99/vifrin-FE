@@ -7,7 +7,7 @@ import ShowMoreText from "react-show-more-text";
 import { useTranslation } from "react-i18next";
 import { Divider } from "antd";
 import { Carousel } from "react-responsive-carousel";
-import locationDefaultImg from "assets/images/image_location_default.jpeg";
+import destinationDefaultImg from "assets/images/image_location_default.jpeg";
 import Comment from "components/Comment/Comment";
 import "./LocationPage.sass";
 import { REQUEST_STATE } from "configs";
@@ -19,23 +19,22 @@ import { CREATE_NEW_COMMENT_SUCCESS } from "../Profile/redux/action";
 function LocationPage({ match, history }) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const location = useSelector((state) => state?.location);
-  console.log("location: ", location);
+  const destination = useSelector((state) => state?.destination);
 
   useEffect(() => {
     dispatch(GET_DETAIL_LOCATION({ id: match.params.id }));
   }, [match.params.id, dispatch]);
 
   return (
-    <div className="my-container locationPage">
-      {location?.getDetailLocationState === REQUEST_STATE.REQUEST && (
+    <div className="my-container destinationPage">
+      {destination?.getDetailLocationState === REQUEST_STATE.REQUEST && (
         <FullComponentLoading bgColor="rgba(255,255,255,1)" />
       )}
-      <Row className="locationPageInfo">
+      <Row className="destinationPageInfo">
         <Col span={8} style={{ paddingRight: "15px" }}>
           <div style={{ width: "100%" }}>
             <Carousel showThumbs={false} emulateTouch={true}>
-              {location.detailLocation?.medias?.map((media) => {
+              {destination.detailLocation?.medias?.map((media) => {
                 if (media?.mime.includes("image"))
                   return (
                     <div
@@ -59,33 +58,33 @@ function LocationPage({ match, history }) {
                   );
               })}
             </Carousel>
-            {location.detailLocation?.medias?.length === 0 && (
+            {destination.detailLocation?.medias?.length === 0 && (
               <img
-                className="locationPageDefaultImage protect-img"
-                src={locationDefaultImg}
-                alt={location?.detailLocation?.name}
+                className="destinationPageDefaultImage protect-img"
+                src={destinationDefaultImg}
+                alt={destination?.detailLocation?.name}
               ></img>
             )}
           </div>
         </Col>
         <Col span={16}>
-          <div className="locationPageName">
-            {location.detailLocation?.name}
+          <div className="destinationPageName">
+            {destination.detailLocation?.name}
           </div>
           <ShowMoreText
             lines={3}
             more={t("showMore")}
             less={t("showLess")}
-            className="locationPageDescription"
+            className="destinationPageDescription"
             expanded={false}
           >
-            {location.detailLocation?.description}
+            {destination.detailLocation?.description}
           </ShowMoreText>
-          <div className="locationPageScore flex-center">
-            {location.detailLocation?.averageScore}
+          <div className="destinationPageScore flex-center">
+            {destination.detailLocation?.averageScore}
           </div>
-          <div className="locationPageCheckInCount">
-            {t("location.haved")} {location.detailLocation?.checkInsCount}{" "}
+          <div className="destinationPageCheckInCount">
+            {t("destination.haved")} {destination.detailLocation?.checkInsCount}{" "}
             {t("peopleCheckInAtThisPlace")}
           </div>
         </Col>
@@ -93,38 +92,38 @@ function LocationPage({ match, history }) {
       <Divider style={{ margin: "10px" }} />
       <Row style={{ fontSize: "14px" }}>
         <Col span={8}>
-          {location.detailLocation?.listComment && (
+          {destination.detailLocation?.listComment && (
             <div>
               {t("totalComments")}:{" "}
-              {location.detailLocation?.listComment.length}
+              {destination.detailLocation?.listComment.length}
             </div>
           )}
-          {isEmptyValue(location.detailLocation?.listComment) ? (
+          {isEmptyValue(destination.detailLocation?.listComment) ? (
             <div>{t("totalComments")}: 0</div>
           ) : (
             <></>
           )}
         </Col>
         <Col span={16}>
-          <div className="locationPageComment">
+          <div className="destinationPageComment">
             
-            <div className="locationPageCommentList">
+            <div className="destinationPageCommentList">
               <div>
                 <TypeBox
                   type="destination"
-                  post={location?.detailLocation}
+                  post={destination?.detailLocation}
                   hasRate={true}
                   page="destination"
                 />
               </div>
               <div
-              className="locationPageCommentHeader"
+              className="destinationPageCommentHeader"
               style={{ fontSize: "14px" }}
             >
               {t("profile.listPeopleRate")}
             </div>
-              {location.detailLocation?.listComment &&
-                location.detailLocation?.listComment.map((comment, index) => {
+              {destination.detailLocation?.listComment &&
+                destination.detailLocation?.listComment.map((comment, index) => {
                   return (
                     <Comment
                       key={index}
@@ -134,12 +133,12 @@ function LocationPage({ match, history }) {
                     />
                   );
                 })}
-              {isEmptyValue(location.detailLocation?.listComment) && (
+              {isEmptyValue(destination.detailLocation?.listComment) && (
                 <div
                   className="flex-center"
                   style={{ color: "#777", marginTop: "6px" }}
                 >
-                  {t("location.noPeopleRate")}
+                  {t("destination.noPeopleRate")}
                 </div>
               )}
             </div>

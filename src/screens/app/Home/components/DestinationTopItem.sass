@@ -1,0 +1,45 @@
+.destinationTopItem
+    position: relative
+    width: 100%
+    aspect-ratio: 12 / 20
+    background-color: #F1F3F4
+    border-radius: 10px
+    margin-right: 15px
+    &:last-child
+        margin-right: 15px    
+    &:hover
+        cursor: pointer
+        & > .destinationTopItemOverlay
+            display: flex
+    &Overlay
+        display: none
+        position: absolute
+        top: 0
+        bottom: 0
+        left: 0
+        right: 0
+        background-color: rgba(0,0,0,0.6)
+        color: white
+        border-radius: 10px
+        align-items: start
+        justify-content: flex-end
+        flex-direction: column
+        padding: 0px 4px 6px 4px
+    &Img
+        width: 100%
+        height: 100%
+        object-fit: contain
+    &Ranking
+        position: absolute
+        top: 10px
+        left: 10px
+        font-weight: bold
+    &Title
+        font-weight: bold
+    &Desc
+        display: -webkit-box
+        -webkit-line-clamp: 2
+        -webkit-box-orient: vertical
+        overflow: hidden
+        text-overflow: ellipsis
+        text-align: start

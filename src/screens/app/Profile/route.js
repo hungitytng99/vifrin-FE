@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 export const profileModule = { key: "profile", path: "Profile" };
 
 const exploreRoute = {
-  index: uuidv4(),
+  index: 7,
   path: "/profile/:username",
   label: "Profile",
   exact: true,

@@ -11,6 +11,18 @@ import { useTranslation } from "react-i18next";
 import i18n from "i18next";
 import { changeLanguage } from "helper/language";
 import Cookies from "js-cookie";
+import { compareByIndex } from "utils/compare";
+
+const sortNav = appRoutes.sort((a, b) => {
+  if (a.index < b.index) {
+    return -1;
+  }
+  if (a.index > b.index) {
+    return 1;
+  }
+  return 0;
+});
+
 
 function Header() {
   const [isSelectItem, setIsSelectItem] = useState(false);
@@ -28,6 +40,8 @@ function Header() {
   const handleDropdownDisplay = (e) => {
     e.preventDefault();
   };
+
+  console.log('sortNav: ', sortNav);
 
   return (
     <header className="header flex-center">
