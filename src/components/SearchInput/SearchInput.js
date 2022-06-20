@@ -13,12 +13,12 @@ function SearchInput() {
   const { t } = useTranslation();
   const [destinationOptions, setDestinationOptions] = useState([]);
   const [users, setUsers] = useState([]);
-  const [isFocusSearch, setIsFocusSearch] = useState(false);
   const [searchParams, setSearchParams] = useState("");
 
   async function handleSearchDestination(e) {
-    setSearchParams(() => e.target.value);
-    if (e.target.value) {
+    setSearchParams(e.target.value);
+    if (e?.target?.value) {
+      setSearchParams(e.target.value);
       const resultSearch = await apiSearchUserAndDestination({
         key: e.target.value,
       });
@@ -47,20 +47,20 @@ function SearchInput() {
     }
   }
 
-  useEffect(() => {
-    if (searchParams === "") {
-      setIsFocusSearch(false);
-    } else {
-      setIsFocusSearch(true);
-    }
-  }, [searchParams]);
+  // useEffect(() => {
+  //   if (searchParams === "") {
+  //     setIsFocusSearch(false);
+  //   } else {
+  //     setIsFocusSearch(true);
+  //   }
+  // }, [searchParams]);
 
   return (
     <div style={{
       marginTop: "10px",
     }}>
       <Dropdown
-        visible={isFocusSearch}
+      trigger={["click"]}
         overlay={
           <Menu onClick={(a) => console.log(a)}>
             {destinationOptions?.length > 0 && (
