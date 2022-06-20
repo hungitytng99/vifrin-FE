@@ -28,7 +28,7 @@ function FollowCard(props) {
       style={isShowBoxShadowStyle ? {
         padding: '8px',
         borderRadius: '10px',
-        boxShadow: 'rgba(0, 0, 0, 0.08) 0px 6px 16px -8px, rgba(0, 0, 0, 0.05) 0px 9px 28px 0px, rgba(0, 0, 0, 0.03) 0px 12px 48px 16px'
+        boxShadow: 'rgb(0 0 0 / 10%) 0px 1px 3px 0px, rgb(0 0 0 / 6%) 0px 1px 2px 0px'
       } : {}}
     >
       <Link to={`/profile/${user.username}`} className="follow-card__avatar">

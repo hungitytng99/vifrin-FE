@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Input, Rate } from "antd";
-import "./TypeBox.sass";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -12,15 +11,28 @@ import { v4 as uuidv4 } from "uuid";
 import { COMMENT_SOCKET_URL, SENDING_SUCCESS_KEY } from "configs";
 import { SOCKET_CREATE_COMMENT } from "configs/socket";
 import SockJsClient from "react-stomp";
+import { FrownOutlined, MehOutlined, SmileOutlined, CommentOutlined } from "@ant-design/icons";
+import "./TypeBox.sass";
+
 
 const { TextArea } = Input;
 let commentSocket = null;
+
+const customRatingIcons = {
+  1: <FrownOutlined />,
+  2: <FrownOutlined />,
+  3: <MehOutlined />,
+  4: <SmileOutlined />,
+  5: <SmileOutlined />,
+};
+
+
 function TypeBox(props) {
   const {
     isFocusTextBox,
     post,
     user,
-    scrollToBottomListComment = () => {},
+    scrollToBottomListComment = () => { },
     isShowDetailPost,
     type = "",
     hasRate = false,
@@ -108,23 +120,32 @@ function TypeBox(props) {
   return (
     <>
       {hasRate && (
-        <div style={{ paddingLeft: "15px", fontSize: "14px" }}>
-          <span>{t('rate')}: </span>
+        <div style={{ paddingLeft: "15px", fontSize: "14px", display: "flex", alignItems: "center", }}>
+          <span style={{
+            marginTop: "5px",
+          }}>
+            {t('rate')}:
+          </span>
           <Rate
-            style={{ fontSize: "16px" }}
+            style={{
+              fontSize: "20px",
+              color: "#007bff",
+              marginLeft: "10px",
+            }}
             allowClear={false}
             defaultValue={5}
             onChange={handleChangeRate}
+            character={({ index }) => customRatingIcons[index + 1]}
           />
         </div>
       )}
       <div className="type-box">
-        <div className="emoji__box">
-          <i
-            className="type-box__emoji far fa-grin"
-            onClick={() => setDisplayEmoji(!displayEmoji)}
-          ></i>
-        </div>
+        <CommentOutlined
+          className="type-box__emoji"
+        />
+        <div style={{
+          height: "10px"
+        }}></div>
         <TextArea
           ref={inputRef}
           autoSize={{
@@ -136,7 +157,7 @@ function TypeBox(props) {
           value={inputVal}
           onChange={(e) => setInputVal(e.target.value)}
         />
-        <button onClick={onCreateComment} className="type-box__btn-post">
+        <button onClick={onCreateComment} className="type-box__btn-post flex-center">
           {t("profile.post")}
         </button>
         <SockJsClient

@@ -119,15 +119,6 @@ function Header() {
                           </Link>
                         </li>
                         <li className="header__dropdown-item">
-                          <Link className="header__dropdown-link" to="#">
-                            <i className="header__dropdown-item-icon fas fa-bookmark"></i>
-                            <div className="header__dropdown-item-text">
-                              Saved
-                            </div>
-                          </Link>
-                        </li>
-
-                        <li className="header__dropdown-item">
                           <Link className="header__dropdown-link" to="/setting">
                             <i className="header__dropdown-item-icon fas fa-cogs"></i>
                             <div className="header__dropdown-item-text">

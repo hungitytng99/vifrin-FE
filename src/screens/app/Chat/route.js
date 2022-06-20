@@ -10,7 +10,7 @@ const chatRoute = {
   label: "Messenger",
   exact: true,
   isPrivate: true,
-  isShowOnNav: true,
+  isShowOnNav: false,
   activeIcon: <MessageFilled />,
   inActiveIcon: <MessageOutlined />,
   component: lazy(async () => {

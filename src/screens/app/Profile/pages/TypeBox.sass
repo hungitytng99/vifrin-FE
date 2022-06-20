@@ -1,5 +1,6 @@
 .type-box
     margin-top: 4px
+    padding: 4px 0px
     border-top: 1px solid var(--grey-11)
     display: flex
     justify-content: space-between
@@ -9,13 +10,21 @@
         font-size: 2.4rem
         margin: 15px
         cursor: pointer
+        color: #555
 
     &__btn-post
-        background: 0 0
-        color: var(--blue-normal)
-        padding: 10px 20px 10px 5px
+        padding: 10px
         font-weight: 500
         font-size: 1.5rem
+        color: #fff
+        background-color: #1890ff
+        margin: 0px 10px 0px 15px
+        border-radius: 4px
+        height: 32px
+        width: 95px
+        &:hover
+            background-color: #0772d6
+
 .emoji__box
     position: relative
     &-pane
@@ -27,7 +36,10 @@
     &Input
         border-color: transparent !important
         font-size: 14px
-        padding-left: 0px
+        background-color: #cfdce9
+        border-radius: 10px
+        &::placeholder
+            color: #555
         &:focus
             border-color: transparent
             box-shadow: none !important
