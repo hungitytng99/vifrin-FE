@@ -49,6 +49,7 @@ function TypeBox(props) {
   const profile = useSelector((state) => state.profile);
   const [rate, setRate] = useState(5);
   function onCreateComment() {
+    console.log('rate: ', rate);
     if (inputVal !== "") {
       if (type === "destination") {
         const params = {

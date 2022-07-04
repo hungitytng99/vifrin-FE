@@ -49,7 +49,7 @@ export const apiSearchDestination = async (params) => {
   }
 };
 
-export const apiGetTopDestination  = async (params) => {
+export const apiGetTopDestination = async (params) => {
   try {
     const response = await GET("/destinations/top-ranking", params);
     return {
@@ -58,7 +58,39 @@ export const apiGetTopDestination  = async (params) => {
     };
   } catch (error) {
     console.log("error", error);
-    return { 
+    return {
+      state: REQUEST_STATE.ERROR,
+      message: error.message,
+    };
+  }
+};
+
+export const apiGetExploreDestinations = async (params) => {
+  try {
+    const response = await GET("/destinations/random_destination", params);
+    return {
+      state: REQUEST_STATE.SUCCESS,
+      data: response,
+    };
+  } catch (error) {
+    console.log("error", error);
+    return {
+      state: REQUEST_STATE.ERROR,
+      message: error.message,
+    };
+  }
+};
+
+export const apiGetAnalyzeStarsByDestination = async (destinationId, params) => {
+  try {
+    const response = await GET(`/comments/stats-by-destination/${destinationId}`, params);
+    return {
+      state: REQUEST_STATE.SUCCESS,
+      data: response.data,
+    };
+  } catch (error) {
+    console.log("error", error);
+    return {
       state: REQUEST_STATE.ERROR,
       message: error.message,
     };

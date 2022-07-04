@@ -1,36 +1,41 @@
-.comment-item{
+.comment-item {
     display: flex;
     flex-direction: column;
     margin: 10px 0 0 10px;
-   
 }
-.comment-box{
+
+.comment-box {
     display: flex;
     justify-content: space-between;
-   
-    &__avatar{
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
+    &__avatar {
+        width: 100%;
+        &-outer {
+            width: 40px;
+            height: 40px;
+            overflow: hidden;
+            border-radius: 50%;
+        }
     }
-    &__content{
+    &__content {
         display: flex;
         flex-direction: column;
         flex: 1;
         color: black;
         font-size: 1.4rem;
-        // padding-bottom: 0px;
-        &-user{
+        background-color: #f1f3f4;
+        margin-left: 10px;
+        padding: 6px 8px;
+        border-radius: 10px;
+        &-username {
+            margin-right: 6px;
             color: black;
             font-weight: 600;
-            margin-left: 10px;
-            &:hover{
+            &:hover {
                 text-decoration: underline;
                 color: black;
             }
         }
-        &-comment{
-            margin-left: 10px;
+        &-comment {
             word-break: break-word;
             height: 100%;
             // line-height: 2.1rem;
@@ -39,30 +44,31 @@
             // display: -webkit-box;
             // -webkit-box-orient: vertical;
             // -webkit-line-clamp: 3;
-        }   
+        }
     }
-    &__icon-like{
+    &__icon-like {
         margin: auto;
         font-size: 1.5rem;
         cursor: pointer;
         margin-left: 10px;
-        &.--liked{
+        &.--liked {
             color: red;
         }
     }
 }
-.interactive{
+
+.interactive {
     display: flex;
     font-size: 1.3rem;
     font-weight: 500;
     color: var(--grey-6);
-    margin-left: 42px;
-    &__item{
+    &__item {
         margin-right: 5px;
         cursor: pointer;
     }
 }
-.reply{  
+
+.reply {
     &__view {
         position: relative;
         font-size: 1.3rem;
@@ -71,8 +77,8 @@
         margin-left: 80px;
         margin-top: 4px;
         cursor: pointer;
-        &::before{
-            content: '';
+        &::before {
+            content: "";
             position: absolute;
             background-color: var(--grey-6);
             height: 1px;
@@ -81,7 +87,7 @@
             top: 9px;
         }
     }
-    &__comment{
+    &__comment {
         margin-left: 32px;
     }
 }

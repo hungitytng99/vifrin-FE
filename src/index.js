@@ -8,8 +8,6 @@ import "antd/dist/antd.css";
 import "./index.sass";
 import { I18nextProvider } from "react-i18next";
 import i18n from "languages";
-import SockJsClient from "react-stomp";
-
 
 ReactDOM.render(
   <Provider store={store}>

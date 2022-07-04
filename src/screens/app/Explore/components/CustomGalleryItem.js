@@ -1,5 +1,6 @@
 import { Rate } from "antd";
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 
 import "./CustomGalleryItem.sass"
 
@@ -18,6 +19,12 @@ const CustomGalleryItem = ({
     left,
 }) => {
 
+    const history = useHistory();
+
+    function onClickPhotoItem() {
+        history.push(`/destination/${photo?.id}`)
+    }
+
     if (direction === "column") {
         cont.position = "absolute";
         cont.left = left;
@@ -28,6 +35,7 @@ const CustomGalleryItem = ({
         <div
             style={{ margin, height: photo.height, width: photo.width, ...cont }}
             className="customGalleryItem"
+            onClick={onClickPhotoItem}
         >
             <img
                 alt={photo.name}
@@ -37,6 +45,7 @@ const CustomGalleryItem = ({
             />
             <div className="customGalleryItemOverlay">
                 <Rate
+                    disabled
                     style={{
                         fontSize: "14px",
                         color: "#007bff",

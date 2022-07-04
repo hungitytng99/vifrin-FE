@@ -17,7 +17,7 @@ function* handleLogin({ type, payload }) {
     const response = yield call(apiLogin, account);
     console.log("response: ", response);
     if (response.state === REQUEST_STATE.SUCCESS) {
-      Cookies.set("token", response.data.access_token, { secure: true });
+      Cookies.set("token", response.data.access_token);
       if (originalAccount.remember) {
         localStorage.setItem(
           REMEMBER_ACCOUNT_KEY,

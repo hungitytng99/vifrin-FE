@@ -55,6 +55,8 @@ export const AVATAR_DEFAULT =
   "http://res.cloudinary.com/da4oquz0i/image/upload/v1639910699/zrqjbwkmtvypudv9kctr.png";
 export const IMAGE_LOCATION_DEFAULT =
   "https://res.cloudinary.com/da4oquz0i/image/upload/v1639929197/ij77a9rewdpggmq1wbnv.png";
+export const IMAGE_HOTEL_DEFAULT =
+  "http://res.cloudinary.com/dzhowprbg/image/upload/v1656908993/zgihvsdk5v71du2xnqdo.png";
 // For language
 export const REGISTER_ACCOUNT_EMAIL_EXIST = "yourEmailAlreadyExist"; // t
 export const REGISTER_ACCOUNT_USERNAME_EXIST = "yourUsernameAlreadyExist"; // t
@@ -77,4 +79,4 @@ export const MONTHNAMES = [
 ]; // t
 
 // Socket
-export const COMMENT_SOCKET_URL =  process.env.REACT_APP_COMMENT_SERVICE;
+export const COMMENT_SOCKET_URL = process.env.REACT_APP_COMMENT_SERVICE;

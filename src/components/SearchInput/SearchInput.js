@@ -5,7 +5,7 @@ import { apiSearchUserAndDestination } from "data-source/search";
 import { SearchOutlined } from "@ant-design/icons";
 import { Col, Dropdown, Input, Row, Select, Menu } from "antd";
 import { AVATAR_DEFAULT, IMAGE_LOCATION_DEFAULT } from "configs";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 const { Option } = Select;
 
@@ -14,6 +14,8 @@ function SearchInput() {
   const [destinationOptions, setDestinationOptions] = useState([]);
   const [users, setUsers] = useState([]);
   const [searchParams, setSearchParams] = useState("");
+  const history = useHistory();
+  // const [isFocusSearch, setIsFocusSearch] = useState(false);
 
   async function handleSearchDestination(e) {
     setSearchParams(e.target.value);
@@ -47,20 +49,19 @@ function SearchInput() {
     }
   }
 
-  // useEffect(() => {
-  //   if (searchParams === "") {
-  //     setIsFocusSearch(false);
-  //   } else {
-  //     setIsFocusSearch(true);
-  //   }
-  // }, [searchParams]);
+  function onClickSeeAll() {
+    history.push(`/search?key=${searchParams}`);
+  }
 
   return (
-    <div style={{
-      marginTop: "10px",
-    }}>
+    <div
+      style={{
+        marginTop: "10px",
+
+      }}
+    >
       <Dropdown
-      trigger={["click"]}
+        trigger={["click"]}
         overlay={
           <Menu onClick={(a) => console.log(a)}>
             {destinationOptions?.length > 0 && (
@@ -68,7 +69,7 @@ function SearchInput() {
                 <div className="searchInputResultTitle">{t("destination")}</div>
                 {destinationOptions?.map((destination) => (
                   <Menu.Item key={destination.value}>
-                    <Link to={`/location/${destination.value}`}>
+                    <Link to={`/destination/${destination.value}`}>
                       <span>{destination?.text}</span>
                     </Link>
                   </Menu.Item>
@@ -82,26 +83,35 @@ function SearchInput() {
                   users?.map((user) => (
                     <Menu.Item key={user.value}>
                       <Link to={`/profile/${user.text}`}>
-                        <Col span={24}>
-                          <div style={{ width: '50px', height: '50px' }}>
-                            <img
-                              style={{ width: "100%", height: "100%", borderRadius: "50%" }}
-                              src={user?.avatarUrl ?? AVATAR_DEFAULT}
-                              alt="result"
-                            />
-                            <span style={{ marginLeft: '6px' }}>{user?.text}</span>
-                          </div>
-                        </Col>
+                        <img
+                          style={{
+                            width: "100%",
+                            objectFit: "contain",
+                            width: "50px",
+                            height: "50px",
+                            borderRadius: "50%",
+                          }}
+                          src={user?.avatarUrl ?? AVATAR_DEFAULT}
+                          alt="result"
+                        />
+                        <span style={{ marginLeft: '6px' }}>{user?.text}</span>
                       </Link>
                     </Menu.Item>
                   ))}
               </>
             )}
-            {destinationOptions.length === 0 && users?.length === 0 && (
+            {(destinationOptions.length === 0 && users?.length === 0) && (
               <div className="flex-center" style={{ padding: "8px" }}>
                 {t("noResult")}
               </div>
             )}
+            {((destinationOptions.length > 0 || users?.length > 0) && searchParams) && <div
+              className="searchInputResultAll"
+              onClick={onClickSeeAll}
+            >
+              {t("showAllResultFor")} "{searchParams}"
+            </div>}
+
           </Menu>
         }
         placement="bottomRight"
@@ -112,9 +122,10 @@ function SearchInput() {
           prefix={<SearchOutlined style={{
             fontSize: "20px",
             marginRight: "4px",
-          }}/>}
+            color: "#555"
+          }} />}
           onChange={handleSearchDestination}
-          onBlur={() => { }}
+
           allowClear={true}
           size="large"
           style={{

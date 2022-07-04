@@ -34,7 +34,6 @@ function FollowCard(props) {
       <Link to={`/profile/${user.username}`} className="follow-card__avatar">
         <img
           className="follow-card__avatar-img"
-          style={{ width: `${sizeAvatar}px`, height: `${sizeAvatar}px` }}
           src={user?.avatarUrl ?? AVATAR_DEFAULT}
           alt={user?.username}
         />

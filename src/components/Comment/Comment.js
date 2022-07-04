@@ -12,42 +12,55 @@ import { Rate } from "antd";
 // 3.
 function Comment({ comment, hasRate = false, rate = 5 }) {
   const { content, likesCount, updatedAt, user } = comment;
-  console.log('comment: ', comment);
+  // console.log('comment: ', comment);
   const { t } = useTranslation();
   const [likeState, setLikeState] = useState(false);
   const [likedCount, setLikeCount] = useState(likesCount ?? 0);
   function handleLiked() {
-    if (comment.status === SENDING_SUCCESS_KEY) {
-      setLikeState(!likeState);
-      if (!likeState) {
-        setLikeCount(likedCount + 1);
-      } else {
-        setLikeCount(likedCount - 1);
-      }
+    setLikeState(!likeState);
+    if (!likeState) {
+      setLikeCount(likedCount + 1);
+    } else {
+      setLikeCount(likedCount - 1);
     }
   }
   return (
     <div className="comment-item">
       <div className="comment-box">
-        <Link to={`/profile/${user?.username}`}>
-          <img
-            className="comment-box__avatar"
-            src={user?.avatarUrl ?? AVATAR_DEFAULT}
-            alt={`avatar ${user?.username}`}
-          ></img>
+        <Link to={`/profile/${user?.username}`} className="flex-center">
+          <div className="comment-box__avatar-outer flex-center">
+            <img
+              className="comment-box__avatar"
+              src={user?.avatarUrl ?? AVATAR_DEFAULT}
+              alt={`avatar ${user?.username}`}
+            ></img>
+          </div>
         </Link>
-        <div className="comment-box__content">
-          <Link
-            className="comment-box__content-user"
-            to={`/profile/${user?.username}`}
-          >
-            {user?.username}
-            {hasRate && (
-              <span style={{ marginLeft: "6px" }}>
-                <Rate allowClear={false} disabled defaultValue={rate} style={{ fontSize: "14px" }} />
+        <div
+          className="comment-box__content"
+          style={{
+            display: "flex",
+            justifyContent: 'center',
+            alignContent: 'center',
+          }}
+        >
+          <div style={{
+            display: "flex",
+            alignContent: "center",
+          }}>
+            <Link
+              className="comment-box__content-user"
+
+              to={`/profile/${user?.username}`}
+            >
+              <span className="comment-box__content-username">
+                {user?.username}
               </span>
+            </Link>
+            {hasRate && (
+              <Rate allowClear={false} disabled value={rate} style={{ fontSize: "14px", color: "#007bff", }} />
             )}
-          </Link>
+          </div>
           <ShowMoreText
             lines={2}
             more={t("showMore")}
@@ -57,6 +70,18 @@ function Comment({ comment, hasRate = false, rate = 5 }) {
           >
             {content}
           </ShowMoreText>
+          <div className="interactive">
+            <div className="interactive__item --date">
+              {updatedAt && <ReactTimeAgo date={updatedAt} locale={localStorage.getItem(I18LANGUAGE)} />}
+            </div>
+            {updatedAt && (
+              <div className="interactive__item --liked">
+                {likedCount > 1
+                  ? likedCount + " " + t("count.likes")
+                  : likedCount + " " + t("count.like")}
+              </div>
+            )}
+          </div>
         </div>
         {likeState ? (
           <i
@@ -70,22 +95,7 @@ function Comment({ comment, hasRate = false, rate = 5 }) {
           ></i>
         )}
       </div>
-      <div className="interactive">
-        <div className="interactive__item --date">
-          {comment?.status !== SENDING_SUCCESS_KEY ? (
-            t(comment.status)
-          ) : (
-            <ReactTimeAgo date={updatedAt} locale={localStorage.getItem(I18LANGUAGE)} />
-          )}
-        </div>
-        {comment.status === SENDING_SUCCESS_KEY && (
-          <div className="interactive__item --liked">
-            {likedCount > 1
-              ? likedCount + " " + t("count.like")
-              : likedCount + " " + t("count.likes")}
-          </div>
-        )}
-      </div>
+
     </div>
   );
 }

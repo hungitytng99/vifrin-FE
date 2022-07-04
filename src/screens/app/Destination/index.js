@@ -2,7 +2,7 @@ import { Col, Rate, Row } from "antd";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { GET_DETAIL_LOCATION } from "./redux/action";
+import { GET_DETAIL_LOCATION, GET_TOP_HOTELS_BY_DESTINATION } from "./redux/action";
 import ShowMoreText from "react-show-more-text";
 import { useTranslation } from "react-i18next";
 import { Carousel } from "react-responsive-carousel";
@@ -17,29 +17,21 @@ import HotelItem from "screens/app/Destination/components/HotelItem"
 import { CheckOutlined } from "@ant-design/icons";
 import ReactImageGallery from "react-image-gallery";
 import Destination from "assets/images/destination.png"
-
-const images = [
-  {
-    original: 'https://picsum.photos/id/1018/1000/600/',
-    thumbnail: 'https://picsum.photos/id/1018/250/150/',
-  },
-  {
-    original: 'https://picsum.photos/id/1015/1000/600/',
-    thumbnail: 'https://picsum.photos/id/1015/250/150/',
-  },
-  {
-    original: 'https://picsum.photos/id/1019/1000/600/',
-    thumbnail: 'https://picsum.photos/id/1019/250/150/',
-  },
-];
+import AnalzyeComments from "./components/AnalzyeComments";
 
 function LocationPage({ match, history }) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const destination = useSelector((state) => state?.destination);
-  console.log('destination?.detailLocation?.medias?: ', destination?.detailLocation?.medias);
+  const topHotels = useSelector((state) => state.destination?.topHotels);
+  const totalHotels = useSelector((state) => state.destination?.totalHotels);
+
   useEffect(() => {
     dispatch(GET_DETAIL_LOCATION({ id: match.params.id }));
+    dispatch(GET_TOP_HOTELS_BY_DESTINATION({
+      destinationId: match.params.id,
+      page: 0,
+    }));
   }, [match.params.id, dispatch]);
 
   return (
@@ -51,13 +43,13 @@ function LocationPage({ match, history }) {
         display: "flex",
         flexDirection: "column",
       }}>
-        <div 
-        className="destinationPageName"
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
+        <div
+          className="destinationPageName"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
         >
           {destination.detailLocation?.name}
           <img
@@ -94,10 +86,11 @@ function LocationPage({ match, history }) {
         </div>
 
       </div>
-      <Row>
+      <Row
+        gutter={10}
+      >
         <div style={{ width: "100%" }}>
           {destination?.detailLocation?.medias?.length > 0 && <ReactImageGallery
-
             items={destination?.detailLocation?.medias.map(des => ({
               original: des?.url,
               thumbnail: des?.url,
@@ -121,6 +114,8 @@ function LocationPage({ match, history }) {
         style={{
           marginTop: "15px",
         }}
+        gutter={10}
+
       >
         <Col span={16} className="destinationPageIntro">
           <div style={{
@@ -132,7 +127,7 @@ function LocationPage({ match, history }) {
             Giới thiệu
           </div>
           <ShowMoreText
-            lines={6}
+            lines={4}
             more={t("showMore")}
             less={t("showLess")}
             className="destinationPageDescription"
@@ -140,7 +135,7 @@ function LocationPage({ match, history }) {
           >
             {destination.detailLocation?.description}
           </ShowMoreText>
-          <div style={{
+          {totalHotels > 0 && <div style={{
             marginRight: "18px",
             fontSize: "16px",
             textAlign: "start",
@@ -153,7 +148,7 @@ function LocationPage({ match, history }) {
                 marginRight: "4px",
                 fontSize: "24px",
               }}>
-                +14
+                {totalHotels}
               </span>khách sạn cao cấp giá rẻ
             </div>
             <div style={{
@@ -198,10 +193,11 @@ function LocationPage({ match, history }) {
                 <b>Nhiều</b> địa điểm ăn uống ngon bổ rẻ
               </span>
             </div>
-          </div>
+          </div>}
+
 
         </Col>
-        <Col span={8}>
+        {topHotels.length > 0 && <Col span={8}>
           <div style={{
             display: "flex",
             flexDirection: "column",
@@ -215,15 +211,24 @@ function LocationPage({ match, history }) {
             }}>
               Khách sạn nổi bật
             </div>
-            <HotelItem />
-            <HotelItem />
-            <HotelItem />
-            <HotelItem />
-          </div>
-        </Col>
 
+            {
+              (topHotels ?? []).map(hotel => {
+                return hotel.medias[0] ? <HotelItem
+                  hotel={hotel}
+                /> : <div></div>;
+              })
+            }
+          </div>
+        </Col>}
       </Row>
-      <Row style={{ fontSize: "14px", marginTop: "40px", }}>
+      <Row
+        style={{
+          fontSize: "14px",
+          marginTop: "40px",
+        }}
+        gutter={10}
+      >
         <Col span={16}>
           <div className="destinationPageComment">
             <div className="destinationPageCommentList">
@@ -238,7 +243,6 @@ function LocationPage({ match, history }) {
               <div
                 className="destinationPageCommentHeader"
               >
-                {/* {t("profile.listContribution")} */}
                 Danh sách đóng góp
               </div>
               {destination.detailLocation?.listComment &&
@@ -263,20 +267,16 @@ function LocationPage({ match, history }) {
             </div>
           </div>
         </Col>
-        <Col span={8}>
-          {/* {destination.detailLocation?.listComment && (
-            <div>
-              {t("totalRating")}:{" "}
-              {destination.detailLocation?.listComment.length}
-            </div>
-          )}
-          {isEmptyValue(destination.detailLocation?.listComment) ? (
-            <div>{t("totalRating")}: 0</div>
-          ) : (
-            <></>
-          )} */}
+        <Col
+          span={8}
+        >
+          <AnalzyeComments />
         </Col>
       </Row>
+      <div style={{
+        height: "40px"
+      }}>
+      </div>
     </div>
   );
 }

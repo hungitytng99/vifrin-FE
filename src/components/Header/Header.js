@@ -41,8 +41,6 @@ function Header() {
     e.preventDefault();
   };
 
-  console.log('sortNav: ', sortNav);
-
   return (
     <header className="header flex-center">
       <div className="header__container">

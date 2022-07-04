@@ -1,46 +1,88 @@
-import React from 'react';
-import top1 from "assets/images/top-1.png"
-import number2 from "assets/images/number-2.png"
-import number3 from "assets/images/number-3.png"
-import "./HotelItem.sass"
+import { Col, Modal, Rate, Row } from 'antd';
+import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Col, Row } from 'antd';
+import HotelDetail from "components/HotelDetail"
+import "./HotelItem.sass";
+import 'antd/dist/antd.css';
+import { PhoneOutlined } from '@ant-design/icons';
 
-function DestinationTopItem({
-    ranking,
-    destination,
+function HotelTopItem({
+    hotel,
 }) {
     const history = useHistory();
-    function onClickDotelItem(id) {
+    const [visible, setVisible] = useState(false);
 
-    }
+    function showDetailModal() {
+        setVisible(true);
+    };
+
+    function hideModal() {
+        setVisible(false);
+        console.log("CANCEL");
+    };
 
     return (
-        <div
-            className="hotelTopItem"
-            onClick={() => onClickDotelItem(destination?.id)}
-        >
-            <Row>
-                <Col xs={8} >
-                    <img className="hotelTopItemImg" src={"https://picsum.photos/300/300"} alt="avatar" />
-                </Col>
-                <Col xs={16}>
-                    <div className="hotelTopItemDetail">
-                        <div className="hotelTopItemName">
-                            Khách sạn 3 con sâu
+        <>
+            <div
+                className="hotelTopItem"
+                onClick={showDetailModal}
+            >
+                <Row>
+                    <Col xs={8} >
+
+                        <img className="hotelTopItemImg" src={hotel?.medias[0]?.url} alt="avatar" />
+                    </Col>
+                    <Col xs={16}>
+                        <div className="hotelTopItemDetail">
+                            <div className="hotelTopItemName">
+                                {hotel?.name}
+                            </div>
+                            <div className="hotelTopItemPrice">
+                                <span>
+                                    {hotel?.price} ~ {hotel?.salesPrice}
+                                </span>
+                            </div>
+                            <div
+                                className="hotelTopItemAddress"
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <span style={{
+                                    marginRight: "4px",
+                                    marginBottom: "6px",
+                                }}>
+                                    <PhoneOutlined />
+                                </span>
+                                {hotel?.phone}
+                            </div>
+                            <div className="hotelTopItemRating">
+                                <Rate
+                                    allowClear={false}
+                                    disabled
+                                    defaultValue={hotel?.averageScore}
+                                    style={{ fontSize: "14px", color: "#007bff", }}
+                                />
+                            </div>
                         </div>
-                        <div className="hotelTopItemRating">
-                            5 sao
-                        </div>
-                        <div className="hotelTopItemPrice">
-                            <span>400000</span>
-                            <span>300000</span>
-                        </div>
-                    </div>
-                </Col>
-            </Row>
-        </div>
+                    </Col>
+                </Row>
+            </div>
+            <Modal
+                title="Khách sạn 3 con sâu"
+                visible={visible}
+                footer={null}
+                onCancel={hideModal}
+                width="1100px"
+            >
+                <HotelDetail
+                    hotel={hotel}
+                />
+            </Modal>
+        </>
+
     );
 }
 
-export default DestinationTopItem;
+export default HotelTopItem;

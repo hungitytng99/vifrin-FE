@@ -66,6 +66,7 @@ function FeedsPost(props) {
       /> */}
       <div className="post__user">
         <Link to={`/profile/${post?.user?.username}`}>
+          
           <img
             className="post__user-avatar"
             src={post?.user?.avatarUrl ?? AVATAR_DEFAULT}
