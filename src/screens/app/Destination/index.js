@@ -1,15 +1,15 @@
 import { Col, Rate, Row } from "antd";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { GET_DETAIL_LOCATION, GET_TOP_HOTELS_BY_DESTINATION } from "./redux/action";
+import { GET_COMMENTS_OF_DESTINATION, GET_DETAIL_LOCATION, GET_TOP_HOTELS_BY_DESTINATION } from "./redux/action";
 import ShowMoreText from "react-show-more-text";
 import { useTranslation } from "react-i18next";
 import { Carousel } from "react-responsive-carousel";
 import destinationDefaultImg from "assets/images/image_location_default.jpeg";
 import Comment from "components/Comment/Comment";
 import "./DestinationPage.sass";
-import { REQUEST_STATE } from "configs";
+import { Configs, REQUEST_STATE } from "configs";
 import FullComponentLoading from "components/Loading/FullComponentLoading";
 import TypeBox from "../Profile/pages/TypeBox";
 import { isEmptyValue } from "utils/checkType";
@@ -25,12 +25,31 @@ function LocationPage({ match, history }) {
   const destination = useSelector((state) => state?.destination);
   const topHotels = useSelector((state) => state.destination?.topHotels);
   const totalHotels = useSelector((state) => state.destination?.totalHotels);
+  const [currentCommentPage, setCurrentCommentPage] = useState(0);
+
+  function viewMoreComments() {
+    setCurrentCommentPage(currentCommentPage + 1);
+    dispatch(GET_COMMENTS_OF_DESTINATION({
+      id: match.params.id,
+      page: currentCommentPage + 1,
+      size: Configs.PAGE_SIZE_10,
+    }));
+  }
 
   useEffect(() => {
-    dispatch(GET_DETAIL_LOCATION({ id: match.params.id }));
+    dispatch(GET_DETAIL_LOCATION({
+      id: match.params.id,
+      page: currentCommentPage,
+      size: Configs.PAGE_SIZE_10,
+    }));
     dispatch(GET_TOP_HOTELS_BY_DESTINATION({
       destinationId: match.params.id,
       page: 0,
+    }));
+    dispatch(GET_COMMENTS_OF_DESTINATION({
+      id: match.params.id,
+      page: 0,
+      size: Configs.PAGE_SIZE_10,
     }));
   }, [match.params.id, dispatch]);
 
@@ -84,7 +103,6 @@ function LocationPage({ match, history }) {
             {destination.detailLocation?.checkInsCount}{" "}{t("peopleCheckInAtThisPlace")}
           </div>
         </div>
-
       </div>
       <Row
         gutter={10}
@@ -123,8 +141,7 @@ function LocationPage({ match, history }) {
             fontWeight: "bold",
             marginBottom: "5px",
           }}>
-            {/* {t("destination.intro")} */}
-            Giới thiệu
+            {t("destination.intro")}
           </div>
           <ShowMoreText
             lines={4}
@@ -149,7 +166,7 @@ function LocationPage({ match, history }) {
                 fontSize: "24px",
               }}>
                 {totalHotels}
-              </span>khách sạn cao cấp giá rẻ
+              </span> {t("destination.luxuryAndCheapHotel")}
             </div>
             <div style={{
               display: "flex",
@@ -162,7 +179,7 @@ function LocationPage({ match, history }) {
                 }}
               />
               <span>
-                <b>Hàng trăm</b> tiện ích nổi bật
+                <b>{t("destination.hundreds")}</b> {t("destination.outstandingUtils")}
               </span>
             </div>
             <div style={{
@@ -176,7 +193,7 @@ function LocationPage({ match, history }) {
                 }}
               />
               <span>
-                <b>Hàng nghìn</b> địa điểm sống ảo
+                <b>{t("destination.thoudsands")}</b> {t("destination.checkInPlaces")}
               </span>
             </div>
             <div style={{
@@ -190,7 +207,7 @@ function LocationPage({ match, history }) {
                 }}
               />
               <span>
-                <b>Nhiều</b> địa điểm ăn uống ngon bổ rẻ
+                <b>{t("destination.more")}</b> {t("destination.cheapEatPlaces")}
               </span>
             </div>
           </div>}
@@ -209,7 +226,7 @@ function LocationPage({ match, history }) {
               fontSize: '18px',
               fontWeight: "bold",
             }}>
-              Khách sạn nổi bật
+              {t("destination.outstandingHotel")}
             </div>
 
             {
@@ -243,10 +260,10 @@ function LocationPage({ match, history }) {
               <div
                 className="destinationPageCommentHeader"
               >
-                Danh sách đóng góp
+                {t("destination.listContributions")}
               </div>
-              {destination.detailLocation?.listComment &&
-                destination.detailLocation?.listComment.map((comment, index) => {
+              {destination?.listComments &&
+                destination?.listComments.map((comment, index) => {
                   return (
                     <Comment
                       key={index}
@@ -256,7 +273,28 @@ function LocationPage({ match, history }) {
                     />
                   );
                 })}
-              {isEmptyValue(destination.detailLocation?.listComment) && (
+              {(destination?.listComments ?? []).length < destination?.totalComments && (
+                <div style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  fontSize: "16px",
+                  margin: "10px 0px 20px 0px",
+                }}>
+                  <div
+                    className="destinationPageMoreComments"
+                    style={{
+                      textDecoration: "underline",
+                    }}
+                    onClick={viewMoreComments}
+                  >
+                    {t("destination.viewMoreComments")}
+                  </div>
+                  <div>
+                    ({(destination?.listComments ?? []).length} {t("destination.of")} {destination?.totalComments})
+                  </div>
+                </div>
+              )}
+              {isEmptyValue(destination?.listComments) && (
                 <div
                   className="flex-center"
                   style={{ color: "#777", marginTop: "6px", marginBottom: "30px" }}

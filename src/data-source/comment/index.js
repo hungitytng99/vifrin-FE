@@ -67,6 +67,7 @@ export const apiGetListCommentByDestination = async (id, params) => {
     return {
       state: REQUEST_STATE.SUCCESS,
       data: response.data,
+      total: response?.total ?? 0,
     };
   } catch (error) {
     console.log("error", error);

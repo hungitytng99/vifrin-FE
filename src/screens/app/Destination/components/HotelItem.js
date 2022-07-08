@@ -18,7 +18,6 @@ function HotelTopItem({
 
     function hideModal() {
         setVisible(false);
-        console.log("CANCEL");
     };
 
     return (
@@ -70,7 +69,6 @@ function HotelTopItem({
                 </Row>
             </div>
             <Modal
-                title="Khách sạn 3 con sâu"
                 visible={visible}
                 footer={null}
                 onCancel={hideModal}

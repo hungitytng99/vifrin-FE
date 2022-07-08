@@ -18,6 +18,7 @@ import ReactImageGallery from 'react-image-gallery';
 function Page({
     hotel,
 }) {
+    console.log('hotel?.medias: ', hotel?.medias);
     return (
         <Row gutter={10}>
             <Col xs={14}>
@@ -27,12 +28,14 @@ function Page({
                         thumbnail: media?.url,
                     })) ?? []}
                     slideDuration={300}
+                    onErrorImageURL={IMAGE_HOTEL_DEFAULT}
                     infinite
                     lazyLoad
                     thumbnailPosition='left'
                 />
             </Col>
             <Col xs={10}>
+                <div className='hotelDetailName'>{hotel?.name}</div>
                 <div className='hotelDetailDesc'>{hotel?.description}</div>
                 <div className="hotelDetailAddress">
                     <div style={{

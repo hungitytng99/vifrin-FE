@@ -7,6 +7,7 @@ export const Configs = {
   CURRENT_PAGE: 1,
   FILE_MAXIMUM: 2, //MB
   PAGE_SIZE_20: 20,
+  PAGE_SIZE_10: 10,
 };
 
 export const REQUEST_STATE = {
