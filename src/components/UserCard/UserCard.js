@@ -19,7 +19,7 @@ function UserCard(props) {
       <Link to={`/profile/${user?.username}`} className="user-card__avatar">
         <img
           className="user-card__avatar-img"
-          style={{ width: `${sizeAvatar}px`, height: `${sizeAvatar}px` }}
+          // style={{ width: `${sizeAvatar}px`, height: `${sizeAvatar}px` }}
           src={user?.avatarUrl ?? AVATAR_DEFAULT}
           alt={"aaa"}
         />

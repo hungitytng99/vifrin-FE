@@ -229,12 +229,15 @@ function* updateAvatar({ type, payload }) {
 }
 
 function* getListCommentByPost({ type, payload }) {
-  const { id } = payload;
+  const { id, page, size } = payload;
   try {
-    const response = yield call(apiGetListCommentByPost, id);
+    const response = yield call(apiGetListCommentByPost, id, { page, size });
     if (response.state === REQUEST_STATE.SUCCESS) {
       yield put(
-        GET_LIST_COMMENT_BY_POST_SUCCESS({ comments: response.data ?? [] })
+        GET_LIST_COMMENT_BY_POST_SUCCESS({
+          comments: response.data ?? [],
+          total: response?.total,
+        })
       );
     }
   } catch (error) {
@@ -244,7 +247,6 @@ function* getListCommentByPost({ type, payload }) {
 
 function* createNewComment({ type, payload }) {
   const { comment } = payload;
-  console.log("comment: ", comment);
   try {
     const commentParams = { ...comment };
     delete commentParams.user;

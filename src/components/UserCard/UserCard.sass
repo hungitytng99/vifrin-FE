@@ -4,8 +4,16 @@
     align-items: center
     height: 34x
     &__avatar
+        width: 34px
+        height: 34px
+        display: flex
+        justify-content: center
+        align-items: center
+        overflow: hidden
+        border-radius: 50%
         &-img
-            border-radius: 50%
+            width: 100%
+            object-fit: contain
 
     &__info
         flex: 1

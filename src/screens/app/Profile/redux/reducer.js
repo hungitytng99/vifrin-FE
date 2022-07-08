@@ -54,6 +54,7 @@ const defaultState = {
   listFollowing: [],
   profileUserByUsername: null,
   listCommentByPost: [],
+  totalCommentsByPost: 0,
 
   getListCommentByPostState: null,
   getDetailPostState: null,
@@ -287,14 +288,18 @@ export default function profileReducer(state = defaultState, action) {
       };
     }
     case GET_LIST_COMMENT_BY_POST_SUCCESS().type: {
-      const { comments } = action.payload;
+      const { comments, total } = action.payload;
       return {
         ...state,
         getListCommentByPostState: REQUEST_STATE.SUCCESS,
-        listCommentByPost: comments.map((comment) => ({
-          ...comment,
-          status: SENDING_SUCCESS_KEY,
-        })),
+        listCommentByPost: [
+          ...state?.listCommentByPost ?? [],
+          ...comments.map((comment) => ({
+            ...comment,
+            status: SENDING_SUCCESS_KEY,
+          })),
+        ],
+        totalCommentsByPost: total,
       };
     }
     case GET_LIST_COMMENT_BY_POST_FAIL().type: {

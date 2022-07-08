@@ -1,5 +1,6 @@
 import { DELETE, GET, POST, PUT } from "data-source/fetch.js";
 import { REQUEST_STATE } from "configs/index.js";
+import { removeEmptyPropertyOfObject } from "helper/format";
 
 export const apiCreateComment = async (params) => {
   try {
@@ -43,12 +44,13 @@ export const apiGetDetailComment = async (id) => {
 
 export const apiGetListCommentByPost = async (id, params) => {
   try {
-    const response = await GET("/comments/by-post/" + id, params, {
+    const response = await GET("/comments/by-post/" + id, removeEmptyPropertyOfObject(params), {
       isFullPath: false,
     });
     return {
       state: REQUEST_STATE.SUCCESS,
       data: response.data,
+      total: response?.total,
     };
   } catch (error) {
     console.log("error", error);

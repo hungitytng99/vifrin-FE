@@ -11,7 +11,7 @@ import {
 } from "../redux/action";
 import { useSelector } from "react-redux";
 import Comment from "components/Comment/Comment";
-import { REQUEST_STATE } from "configs";
+import { Configs, REQUEST_STATE } from "configs";
 import FullComponentLoading from "components/Loading/FullComponentLoading";
 import "./PostDetail.sass";
 import TypeBox from "./TypeBox";
@@ -22,13 +22,15 @@ function PostDetail({ post, isShowDetailPost, setIsShowDetailPost }) {
   const [isLiked, setIsLiked] = useState(false);
   const [isFavourite, setIsFavourite] = useState(false);
   const [numLiked, setNumLiked] = useState(post.likesCount);
+  const [currentCommentPage, setCurrentCommentPage] = useState(0);
   const [isFocusComment, setIsFocusComment] = useState({ focus: false });
   const comments =
     useSelector((state) => state.profile?.listCommentByPost) ?? [];
+  const totalCommentsByPost =
+    useSelector((state) => state.profile?.totalCommentsByPost) ?? 0;
   const profile = useSelector((state) => state.profile);
   const user = useSelector((state) => state.user.profile);
   const bottomListCommentRef = useRef(null);
-
 
   function handleLikedClick() {
     setIsLiked(!isLiked);
@@ -45,6 +47,15 @@ function PostDetail({ post, isShowDetailPost, setIsShowDetailPost }) {
     setIsFocusComment({ focus: true });
   }
 
+  function viewMoreComments() {
+    setCurrentCommentPage(currentCommentPage + 1);
+    dispatch(GET_LIST_COMMENT_BY_POST({
+      id: post.id,
+      page: currentCommentPage + 1,
+      size: Configs.PAGE_SIZE_10,
+    }));
+  }
+
   const AlwaysScrollToBottom = () => {
     useEffect(() => bottomListCommentRef.current.scrollIntoView());
     return <div ref={bottomListCommentRef} />;
@@ -54,7 +65,11 @@ function PostDetail({ post, isShowDetailPost, setIsShowDetailPost }) {
     bottomListCommentRef.current.scrollIntoView({ behavior: "smooth" });
   }
   useEffect(() => {
-    dispatch(GET_LIST_COMMENT_BY_POST({ id: post.id }));
+    dispatch(GET_LIST_COMMENT_BY_POST({
+      id: post.id,
+      page: currentCommentPage,
+      size: Configs.PAGE_SIZE_10,
+    }));
   }, [dispatch, post.id]);
 
   return (
@@ -106,9 +121,32 @@ function PostDetail({ post, isShowDetailPost, setIsShowDetailPost }) {
                     {t("thisPostHasNoComment")}
                   </div>
                 )}
+
                 {comments.map((comment, index) => {
                   return <Comment key={index} comment={comment} />;
                 })}
+
+                {(comments ?? []).length < totalCommentsByPost && (
+                  <div style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    fontSize: "16px",
+                    margin: "10px 0px 20px 10px",
+                  }}>
+                    <div
+                      className="postDetailMoreComments"
+                      style={{
+                        textDecoration: "underline",
+                      }}
+                      onClick={viewMoreComments}
+                    >
+                      {t("postDetail.viewMoreComments")}
+                    </div>
+                    <div>
+                      ({(comments ?? []).length} {t("destination.of")} {totalCommentsByPost})
+                    </div>
+                  </div>
+                )}
                 <AlwaysScrollToBottom />
               </div>
             )}
